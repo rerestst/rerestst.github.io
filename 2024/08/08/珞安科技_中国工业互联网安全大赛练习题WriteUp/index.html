@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="1.Url编码URL解码得到flag{and 1&#x3D;1} 2.非常简单的简单题PDF文件中Base64解码flag{The_answer_to_the_question_is_very_simple!You_can_move_on_to_the_next_question.} 3.工控设备大量icmp打开流量包发现icmp请求包的长度不一致，在120左右 1C:\Users\winna">
+    <meta name="description" content="1.Url编码URL解码得到flag{and 1&#x3D;1}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="珞安科技_中国工业互联网安全大赛练习题WriteUp">
 <meta property="og:url" content="https://rerestst.github.io/2024/08/08/%E7%8F%9E%E5%AE%89%E7%A7%91%E6%8A%80_%E4%B8%AD%E5%9B%BD%E5%B7%A5%E4%B8%9A%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BB%83%E4%B9%A0%E9%A2%98WriteUp/index.html">
 <meta property="og:site_name" content="rerestst&#39;s blog">
-<meta property="og:description" content="1.Url编码URL解码得到flag{and 1&#x3D;1} 2.非常简单的简单题PDF文件中Base64解码flag{The_answer_to_the_question_is_very_simple!You_can_move_on_to_the_next_question.} 3.工控设备大量icmp打开流量包发现icmp请求包的长度不一致，在120左右 1C:\Users\winna">
+<meta property="og:description" content="1.Url编码URL解码得到flag{and 1&#x3D;1}">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-08-08T05:59:18.000Z">
-<meta property="article:modified_time" content="2024-08-08T08:17:42.763Z">
+<meta property="article:modified_time" content="2024-08-08T08:25:00.419Z">
 <meta property="article:author" content="rerestst">
 <meta property="article:tag" content="工控">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-08-08 13:59:18 / Modified: 16:17:42" itemprop="dateCreated datePublished" datetime="2024-08-08T13:59:18+08:00">2024-08-08</time>
+      <time title="Created: 2024-08-08 13:59:18 / Modified: 16:25:00" itemprop="dateCreated datePublished" datetime="2024-08-08T13:59:18+08:00">2024-08-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -217,9 +217,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <span id="more"></span>
+        <h3 id="1-Url编码"><a href="#1-Url编码" class="headerlink" title="1.Url编码"></a>1.Url编码</h3><p>URL解码得到flag{and 1&#x3D;1}</p>
+<span id="more"></span>
 
-<h3 id="1-Url编码"><a href="#1-Url编码" class="headerlink" title="1.Url编码"></a>1.Url编码</h3><p>URL解码得到flag{and 1&#x3D;1}</p>
 <h3 id="2-非常简单的简单题"><a href="#2-非常简单的简单题" class="headerlink" title="2.非常简单的简单题"></a>2.非常简单的简单题</h3><p>PDF文件中Base64解码flag{The_answer_to_the_question_is_very_simple!You_can_move_on_to_the_next_question.}</p>
 <h3 id="3-工控设备大量icmp"><a href="#3-工控设备大量icmp" class="headerlink" title="3.工控设备大量icmp"></a>3.工控设备大量icmp</h3><p>打开流量包发现icmp请求包的长度不一致，在120左右</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\winname\Desktop\a&gt;tshark -r icmp.pcap -Y &quot;icmp &amp;&amp; icmp.type==8&quot; -T fields -e data.len &gt; test.txt</span><br></pre></td></tr></table></figure>
