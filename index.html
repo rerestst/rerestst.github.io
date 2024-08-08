@@ -82,7 +82,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">15</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">18</span></a></li>
   </ul>
 </nav>
 
@@ -121,18 +121,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -158,7 +158,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2023/11/16/VulStack1_%E5%9F%9F%E7%8E%AF%E5%A2%83%E9%9D%B6%E5%9C%BA/">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2024/08/08/%E7%8F%9E%E5%AE%89%E7%A7%91%E6%8A%80_%E4%B8%AD%E5%9B%BD%E5%B7%A5%E4%B8%9A%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BB%83%E4%B9%A0%E9%A2%98WriteUp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -176,7 +176,103 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/16/VulStack1_%E5%9F%9F%E7%8E%AF%E5%A2%83%E9%9D%B6%E5%9C%BA/" class="post-title-link" itemprop="url">VulStack1_域环境靶场</a>
+          <a href="/2024/08/08/%E7%8F%9E%E5%AE%89%E7%A7%91%E6%8A%80_%E4%B8%AD%E5%9B%BD%E5%B7%A5%E4%B8%9A%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BB%83%E4%B9%A0%E9%A2%98WriteUp/" class="post-title-link" itemprop="url">珞安科技_中国工业互联网安全大赛练习题WriteUp</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-08-08 13:59:18 / Modified: 14:56:19" itemprop="dateCreated datePublished" datetime="2024-08-08T13:59:18+08:00">2024-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="1-Url编码"><a href="#1-Url编码" class="headerlink" title="1.Url编码"></a>1.Url编码</h3><p>URL解码得到flag{and 1&#x3D;1}</p>
+<h3 id="2-非常简单的简单题"><a href="#2-非常简单的简单题" class="headerlink" title="2.非常简单的简单题"></a>2.非常简单的简单题</h3><p>PDF文件中Base64解码flag{The_answer_to_the_question_is_very_simple!You_can_move_on_to_the_next_question.}</p>
+<h3 id="3-工控设备大量icmp"><a href="#3-工控设备大量icmp" class="headerlink" title="3.工控设备大量icmp"></a>3.工控设备大量icmp</h3><p>打开流量包发现icmp请求包的长度不一致，在120左右</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\winname\Desktop\a&gt;tshark -r icmp.pcap -Y &quot;icmp &amp;&amp; icmp.type==8&quot; -T fields -e data.len &gt; test.txt</span><br></pre></td></tr></table></figure>
+
+<p>将test.txt的ascii码转换为字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># coding = utf-8</span><br><span class="line">flag=&#x27;&#x27;</span><br><span class="line">f = open(&#x27;test.txt&#x27;,&#x27;r&#x27;)</span><br><span class="line">for line in f:</span><br><span class="line">    flag+=(chr(int(line.strip())))</span><br><span class="line">print(flag)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+
+<p>得到Ojpcbm1vbmdvZGI6IToxNzg0MzowOjk5OTk5Ojc6OjpcbnVidW50dTokNiRMaEhSb21URSRNN0M0bjg0VWNGTEFHe3h4MmI4YV82bW02NGNfZnNvY2lldHl9Ojo&#x3D;</p>
+<p>通过base64解码，得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">::\nmongodb:!:17843:0:99999:7:::\nubuntu:$6$LhHRomTE$M7C4n84UcFLAG&#123;xx2b8a_6mm64c_fsociety&#125;::</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/08/08/%E7%8F%9E%E5%AE%89%E7%A7%91%E6%8A%80_%E4%B8%AD%E5%9B%BD%E5%B7%A5%E4%B8%9A%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BB%83%E4%B9%A0%E9%A2%98WriteUp/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/" class="post-title-link" itemprop="url">ATT&CK红队评估三VulnStack靶场攻略</a>
         </h2>
 
         <div class="post-meta-container">
@@ -187,14 +283,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-11-16 01:12:49" itemprop="dateCreated datePublished" datetime="2023-11-16T01:12:49+08:00">2023-11-16</time>
+      <time title="Created: 2024-08-03 14:31:36" itemprop="dateCreated datePublished" datetime="2024-08-03T14:31:36+08:00">2024-08-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-11 11:43:43" itemprop="dateModified" datetime="2024-01-11T11:43:43+08:00">2024-01-11</time>
+      <time title="Modified: 2024-08-08 15:41:39" itemprop="dateModified" datetime="2024-08-08T15:41:39+08:00">2024-08-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -216,12 +312,201 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>本文内容纯属虚构！</p>
+          <p>本文内容梦里想到，纯属虚构！</p>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>VMware Workstation新建VMnet2网卡，仅主机模式，192.168.93.0</p>
+<p>web-centos机器需要重启桥接网卡：&#x2F;etc&#x2F;init.d&#x2F;network restart，IP地址为192.168.0.25</p>
+<p>测试机Windows：192.168.0.27</p>
+<p>测试机Linux：192.168.0.57</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/" class="post-title-link" itemprop="url">Windows 10加固</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-06-26 12:54:23" itemprop="dateCreated datePublished" datetime="2024-06-26T12:54:23+08:00">2024-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-08-08 16:04:02" itemprop="dateModified" datetime="2024-08-08T16:04:02+08:00">2024-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA/" itemprop="url" rel="index"><span itemprop="name">安全加固</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。</p>
+<p>本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，结果测试发现遇到很多问题，总结出来供参考，若有建议麻烦留言！将会在评论区置顶。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2023/11/16/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%80VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/11/16/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%80VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/" class="post-title-link" itemprop="url">ATT&CK红队评估一VulnStack靶场攻略</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-11-16 01:12:49" itemprop="dateCreated datePublished" datetime="2023-11-16T01:12:49+08:00">2023-11-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-08-08 16:05:39" itemprop="dateModified" datetime="2024-08-08T16:05:39+08:00">2024-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本文内容梦里想到，纯属虚构！</p>
 <h3 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h3><p>靶机地址：<br>Win03 32位 192.168.52.141<br>Win08 64位 192.168.52.138<br>Win7   32位 192.168.52.143 + 192.168.0.15</p>
 <p>测试机：<br>192.168.0.16 win<br>192.168.0.17 linux</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/11/16/VulStack1_%E5%9F%9F%E7%8E%AF%E5%A2%83%E9%9D%B6%E5%9C%BA/#more" rel="contents">
+              <a class="btn" href="/2023/11/16/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%80VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -787,287 +1072,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/08/22/symfonos%204_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2022/05/28/symfonos%203.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="rerestst">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="rerestst's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | rerestst's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/28/symfonos%203.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" class="post-title-link" itemprop="url">symfonos 3.1_VulnHub靶机攻略</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-05-28 23:21:53" itemprop="dateCreated datePublished" datetime="2022-05-28T23:21:53+08:00">2022-05-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-09 12:26:26" itemprop="dateModified" datetime="2024-01-09T12:26:26+08:00">2024-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>靶机IP地址：192.168.31.37</p>
-<p>测试机IP地址：192.168.31.38</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/28/symfonos%203.1_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2022/05/03/SickOs1.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="rerestst">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="rerestst's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | rerestst's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/03/SickOs1.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" class="post-title-link" itemprop="url">SickOs 1.2_VulnHub靶机攻略</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-05-03 15:24:54" itemprop="dateCreated datePublished" datetime="2022-05-03T15:24:54+08:00">2022-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-09 12:31:29" itemprop="dateModified" datetime="2024-01-09T12:31:29+08:00">2024-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文内容纯属虚构！</p>
-<p>测试机IP地址：192.168.0.111</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/03/SickOs1.2_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2022/04/30/symfonos%202_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="rerestst">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="rerestst's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | rerestst's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/30/symfonos%202_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" class="post-title-link" itemprop="url">symfonos 2_VulnHub靶机攻略</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-04-30 19:25:46" itemprop="dateCreated datePublished" datetime="2022-04-30T19:25:46+08:00">2022-04-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-01-09 12:25:40" itemprop="dateModified" datetime="2024-01-09T12:25:40+08:00">2024-01-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本文内容纯属虚构！</p>
-<p>将靶机网络连接设置成为NAT。</p>
-<p>靶机IP地址：192.168.31.244</p>
-<p>测试机IP地址：192.168.31.37</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/30/symfonos%202_VulnHub%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

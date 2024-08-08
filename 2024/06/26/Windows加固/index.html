@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。 本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，结果测试发现遇到很多问题，总结出来供参考，若有建议麻烦留言！将会在评论区置顶。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 10加固">
+<meta property="og:url" content="https://rerestst.github.io/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。 本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，结果测试发现遇到很多问题，总结出来供参考，若有建议麻烦留言！将会在评论区置顶。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-06-26T04:54:23.000Z">
+<meta property="article:modified_time" content="2024-08-08T08:04:02.513Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="加固">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/","path":"2024/06/26/Windows加固/","title":"Windows 10加固"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Windows 10加固 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">18</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD445%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">关闭445端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD139%E7%AB%AF%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">关闭139端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD135%E7%AB%AF%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">关闭135端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2%E7%94%A8%E6%88%B7%E6%9B%B4%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D"><span class="nav-number">4.</span> <span class="nav-text">禁止用户更改计算机名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2%E9%9D%9E%E7%AE%A1%E7%90%86%E5%91%98%E7%94%A8%E6%88%B7%E4%BF%AE%E6%94%B9IP"><span class="nav-number">5.</span> <span class="nav-text">禁止非管理员用户修改IP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E5%B1%8F%E5%B9%95%E4%BF%9D%E6%8A%A4%E7%A8%8B%E5%BA%8F"><span class="nav-number">6.</span> <span class="nav-text">开启屏幕保护程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2%E6%9C%AA%E7%99%BB%E5%BD%95%E5%85%B3%E6%9C%BA"><span class="nav-number">7.</span> <span class="nav-text">禁止未登录关机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2%E5%85%B3%E6%9C%BA"><span class="nav-number">8.</span> <span class="nav-text">禁止关机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E7%94%A8SYN%E6%94%BB%E5%87%BB%E4%BF%9D%E6%8A%A4"><span class="nav-number">9.</span> <span class="nav-text">启用SYN攻击保护</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%89%A7%E8%A1%8C%E4%BF%9D%E6%8A%A4%EF%BC%88DEP%EF%BC%89-%E9%BB%98%E8%AE%A4%E6%89%93%E5%BC%80"><span class="nav-number">10.</span> <span class="nav-text">数据执行保护（DEP） 默认打开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E7%94%A8%E5%A4%A7%E5%AE%B9%E9%87%8F%E5%AD%98%E5%82%A8%E4%BB%8B%E8%B4%A8%EF%BC%88USB%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%EF%BC%89"><span class="nav-number">11.</span> <span class="nav-text">禁用大容量存储介质（USB存储设备）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E6%92%AD%E6%94%BE-%E9%BB%98%E8%AE%A4%E5%85%B3%E9%97%AD"><span class="nav-number">12.</span> <span class="nav-text">自动播放 默认关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E9%BB%98%E8%AE%A4%E5%85%B1%E4%BA%AB"><span class="nav-number">13.</span> <span class="nav-text">关闭默认共享</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Windows 10加固 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows 10加固
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2024-06-26 12:54:23" itemprop="dateCreated datePublished" datetime="2024-06-26T12:54:23+08:00">2024-06-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-08-08 16:04:02" itemprop="dateModified" datetime="2024-08-08T16:04:02+08:00">2024-08-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA/" itemprop="url" rel="index"><span itemprop="name">安全加固</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。</p>
+<p>本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，结果测试发现遇到很多问题，总结出来供参考，若有建议麻烦留言！将会在评论区置顶。</p>
+<span id="more"></span>
+
+<h3 id="关闭445端口"><a href="#关闭445端口" class="headerlink" title="关闭445端口"></a>关闭445端口</h3><p>运行——&gt;regedit：HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters，新建QWORD（64），十六进制，名称为新值 #1，值为0</p>
+<p>注：32位的计算机选择QWORD（32）</p>
+<p>运行——&gt;services.msc，将Server服务停止并禁用</p>
+<p>注：停止该服务已知会无法使用WIreGuard协议</p>
+<p>重启计算机</p>
+<h3 id="关闭139端口"><a href="#关闭139端口" class="headerlink" title="关闭139端口"></a>关闭139端口</h3><p>更改适配器设置，右键某网卡驱动——&gt;属性，网络，双击”Internet协议版本4“——&gt;常规，高级——&gt;WINS，NetBIOS设置，禁用TCP&#x2F;IP上的NetBIOS</p>
+<p>不需要重启服务</p>
+<p>注：当存在多个网卡驱动，需要分别关闭，如安装有虚拟化、代理软件时。</p>
+<h3 id="关闭135端口"><a href="#关闭135端口" class="headerlink" title="关闭135端口"></a>关闭135端口</h3><p>运行——&gt;dcomcnfg——&gt;组件服务——&gt;计算机——&gt;右键”我的电脑“——&gt;属性：</p>
+<p>默认属性，去掉勾选”在此计算机上启用分布式COM“</p>
+<p>默认协议，移除“DCOM协议”中的内容</p>
+<p>运行——&gt;regedit：HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Rpc，新建项：Internet</p>
+<p>重启计算机</p>
+<h3 id="禁止用户更改计算机名"><a href="#禁止用户更改计算机名" class="headerlink" title="禁止用户更改计算机名"></a>禁止用户更改计算机名</h3><p>“此电脑”右键无“属性”</p>
+<p>运行——&gt;gpedit.msc——&gt;用户配置——&gt;管理摸板——&gt;桌面：设置  从“计算机”图标上下文菜单中删除“属性”选项”  为  已启用</p>
+<h3 id="禁止非管理员用户修改IP"><a href="#禁止非管理员用户修改IP" class="headerlink" title="禁止非管理员用户修改IP"></a>禁止非管理员用户修改IP</h3><p>修改网络适配器的右键属性为灰色：</p>
+<p>运行——&gt;gpedit.msc——&gt;用户配置——&gt;管理摸板——&gt;网络——&gt;网络连接，将以下设置为 已启用：</p>
+<p>禁止访问LAN连接的属性</p>
+<p>启用&#x2F;禁用LAN连接的能力</p>
+<p>为管理员启用windows 2000 网络连接设置</p>
+<h3 id="开启屏幕保护程序"><a href="#开启屏幕保护程序" class="headerlink" title="开启屏幕保护程序"></a>开启屏幕保护程序</h3><p>桌面右键——&gt;个性化——&gt;锁屏界面——&gt;屏幕保护程序设置</p>
+<h3 id="禁止未登录关机"><a href="#禁止未登录关机" class="headerlink" title="禁止未登录关机"></a>禁止未登录关机</h3><p>运行——&gt;gpedit.msc——&gt;计算机配置——&gt;Windows设置——&gt;安全设置——&gt;本地策略——&gt;安全选项：设置  关机: 允许系统在未登录的情况下关闭   为  已禁用</p>
+<h3 id="禁止关机"><a href="#禁止关机" class="headerlink" title="禁止关机"></a>禁止关机</h3><p>运行——&gt;gpedit.msc——&gt;用户配置——&gt;管理摸板——&gt;“开始”菜单和任务栏：设置  删除并阻止访问“关机”、“重新启动、“睡眠”和“休眠”命令  为  已启用</p>
+<h3 id="启用SYN攻击保护"><a href="#启用SYN攻击保护" class="headerlink" title="启用SYN攻击保护"></a>启用SYN攻击保护</h3><p>运行——&gt;regedit：HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters，新建DWORD值，十进制：</p>
+<p>启用SYN攻击保护：值名称为SynAttackProtect，推荐值为2</p>
+<p>指定触发SYN洪水攻击保护所必须超过的TCP连接请求数阀值：值名称为TcpMaxPortsExhausted，推荐值为5</p>
+<p>指定处于SYN_RCVD状态的TCP连接数的阈值：值名称为TcpMaxHalfOpen，推荐值为500</p>
+<p>指定处于至少已发送一次重传的 SYN_RCVD 状态中的 TCP 连接数的阈值：值名称为TcpMaxHalfOpenRetried，推荐值为400</p>
+<h3 id="数据执行保护（DEP）-默认打开"><a href="#数据执行保护（DEP）-默认打开" class="headerlink" title="数据执行保护（DEP） 默认打开"></a>数据执行保护（DEP） 默认打开</h3><p>”开始“菜单——&gt;Windows 安全中心——&gt;应用和浏览器控制——&gt;Exploit Protection——&gt;Exploit Protection设置</p>
+<h3 id="禁用大容量存储介质（USB存储设备）"><a href="#禁用大容量存储介质（USB存储设备）" class="headerlink" title="禁用大容量存储介质（USB存储设备）"></a>禁用大容量存储介质（USB存储设备）</h3><p>运行——&gt;gpedit.msc——&gt;计算机配置——&gt;管理模板——&gt;系统——&gt;可移动存储访问，设置  所有可移动存储类：拒绝所有权限  为  已启用</p>
+<h3 id="自动播放-默认关闭"><a href="#自动播放-默认关闭" class="headerlink" title="自动播放 默认关闭"></a>自动播放 默认关闭</h3><p>”开始“菜单——&gt;Windows 系统——&gt;控制面板，自动播放</p>
+<h3 id="关闭默认共享"><a href="#关闭默认共享" class="headerlink" title="关闭默认共享"></a>关闭默认共享</h3><p>运行——&gt;regedit：</p>
+<p>HEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\lanmanserver\Parameters，新建DWORD值：</p>
+<p>值名称为AutoShareServer，值为0</p>
+<p>值名称为AutoShareWKs，值为0</p>
+<p>HEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa，新建DWORD值：</p>
+<p>值名称为restrictanonymous，值为1</p>
+<p>需重启操作系统。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+              <a href="/tags/%E5%8A%A0%E5%9B%BA/" rel="tag"># 加固</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/16/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%80VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/" rel="prev" title="ATT&CK红队评估一VulnStack靶场攻略">
+                  <i class="fa fa-chevron-left"></i> ATT&CK红队评估一VulnStack靶场攻略
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/" rel="next" title="ATT&CK红队评估三VulnStack靶场攻略">
+                  ATT&CK红队评估三VulnStack靶场攻略 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
