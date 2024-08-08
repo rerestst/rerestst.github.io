@@ -188,7 +188,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-08-08 13:59:18 / Modified: 14:56:19" itemprop="dateCreated datePublished" datetime="2024-08-08T13:59:18+08:00">2024-08-08</time>
+      <time title="Created: 2024-08-08 13:59:18 / Modified: 16:14:58" itemprop="dateCreated datePublished" datetime="2024-08-08T13:59:18+08:00">2024-08-08</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -210,7 +210,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="1-Url编码"><a href="#1-Url编码" class="headerlink" title="1.Url编码"></a>1.Url编码</h3><p>URL解码得到flag{and 1&#x3D;1}</p>
+          <span id="more"></span>
+
+<h3 id="1-Url编码"><a href="#1-Url编码" class="headerlink" title="1.Url编码"></a>1.Url编码</h3><p>URL解码得到flag{and 1&#x3D;1}</p>
 <h3 id="2-非常简单的简单题"><a href="#2-非常简单的简单题" class="headerlink" title="2.非常简单的简单题"></a>2.非常简单的简单题</h3><p>PDF文件中Base64解码flag{The_answer_to_the_question_is_very_simple!You_can_move_on_to_the_next_question.}</p>
 <h3 id="3-工控设备大量icmp"><a href="#3-工控设备大量icmp" class="headerlink" title="3.工控设备大量icmp"></a>3.工控设备大量icmp</h3><p>打开流量包发现icmp请求包的长度不一致，在120左右</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\winname\Desktop\a&gt;tshark -r icmp.pcap -Y &quot;icmp &amp;&amp; icmp.type==8&quot; -T fields -e data.len &gt; test.txt</span><br></pre></td></tr></table></figure>
@@ -221,14 +223,40 @@
 <p>得到Ojpcbm1vbmdvZGI6IToxNzg0MzowOjk5OTk5Ojc6OjpcbnVidW50dTokNiRMaEhSb21URSRNN0M0bjg0VWNGTEFHe3h4MmI4YV82bW02NGNfZnNvY2lldHl9Ojo&#x3D;</p>
 <p>通过base64解码，得到</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">::\nmongodb:!:17843:0:99999:7:::\nubuntu:$6$LhHRomTE$M7C4n84UcFLAG&#123;xx2b8a_6mm64c_fsociety&#125;::</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/08/08/%E7%8F%9E%E5%AE%89%E7%A7%91%E6%8A%80_%E4%B8%AD%E5%9B%BD%E5%B7%A5%E4%B8%9A%E4%BA%92%E8%81%94%E7%BD%91%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B%E7%BB%83%E4%B9%A0%E9%A2%98WriteUp/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+
+<!--more-->
+
+<h3 id="4-奇怪的udp流量包"><a href="#4-奇怪的udp流量包" class="headerlink" title="4.奇怪的udp流量包"></a>4.奇怪的udp流量包</h3><p>打开流量包，筛选udp流量，点击协议排序，仅有一个流量包协议为UDP，数据中得到ZmxhZ3tnZXR5b3VwYXNzdzByZH1&#x3D;</p>
+<p>进行Base64解码后得到flag{getyoupassw0rd}</p>
+<h3 id="5-丢失的MD5"><a href="#5-丢失的MD5" class="headerlink" title="5.丢失的MD5"></a>5.丢失的MD5</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\winname\Desktop\a&gt;python2 md5.py</span><br><span class="line">e9032994dabac08080091151380478a2</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-变异凯撒"><a href="#6-变异凯撒" class="headerlink" title="6.变异凯撒"></a>6.变异凯撒</h3><p>密文afZ_r9VYfScOeO_UL^RWUc中有下划线和阿拉伯数字，猜测不是通过往常的字母表进行替换，查看ASCII表，用afZ_r去对照flag{，a的ASCII码+5&#x3D;f，之后+6+7+8+9</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># coding = utf-8</span><br><span class="line">secret=&#x27;afZ_r9VYfScOeO_UL^RWUc&#x27;</span><br><span class="line">offset=5</span><br><span class="line">flag=&#x27;&#x27;</span><br><span class="line">for c in secret:</span><br><span class="line">    temp=(ord(c))</span><br><span class="line">    flag+=(chr(temp+offset))</span><br><span class="line">    offset+=1</span><br><span class="line">print(flag)</span><br></pre></td></tr></table></figure>
+
+<p>得到flag{Caesar_variation}</p>
+<h3 id="7-权限获取第一步"><a href="#7-权限获取第一步" class="headerlink" title="7.权限获取第一步"></a>7.权限获取第一步</h3><p>Administrator:500:806EDC27AA52E314AAD3B435B51404EE:F4AD50F57683D4260DFD48AA351A17A8:::</p>
+<p>查hashcat中500为md5，在线解密F4AD50F57683D4260DFD48AA351A17A8</p>
+<p>得到3617656</p>
+<h3 id="8-神奇的MODBUS"><a href="#8-神奇的MODBUS" class="headerlink" title="8.神奇的MODBUS"></a>8.神奇的MODBUS</h3><p>过滤数据包modbus contains “c” and modbus contains “t” and modbus contains “f” and modbus contains “{“</p>
+<p>追踪TCP流，得到ctf{Easy_Mdbus}</p>
+<h3 id="9-PLC故障分析"><a href="#9-PLC故障分析" class="headerlink" title="9.PLC故障分析"></a>9.PLC故障分析</h3><p>关注工控协议（modbus）和数量较少的功能码（写单线圈指令（write single coil））（info中的Func：）</p>
+<p>过滤条件：modbus.func_code&#x3D;&#x3D;5，发现4个82长度的，数据包末尾有额外数据</p>
+<p>frame.len&#x3D;&#x3D;82</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MHg3ZjB4MzUweDNm</span><br><span class="line">MHg0YTB4NzQweDcz</span><br><span class="line">MHg2NjB4N2QweDY5</span><br><span class="line">MHg2MzB4NmUweDY4</span><br></pre></td></tr></table></figure>
+
+<p>base64解码并拼一起为0x7f0x350x3f0x4a0x740x730x660x7d0x690x630x6e0x68</p>
+<p>十六进制转为ASCII为(某乱码)5?Jtsf}icnh，其中icnh每位ascii-2的倒序为flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># coding = utf-8</span><br><span class="line">secrets=&#x27;7f0x350x3f0x4a0x740x730x660x7d0x690x630x6e0x68&#x27;</span><br><span class="line">list = secrets.split(&#x27;0x&#x27;)</span><br><span class="line">galf=&#x27;&#x27;</span><br><span class="line">print(list)</span><br><span class="line">for c in list:</span><br><span class="line">    temp = int(c,16)-2</span><br><span class="line">    galf += (chr(temp))</span><br><span class="line">flag=galf[::-1]</span><br><span class="line">print(flag)</span><br></pre></td></tr></table></figure>
+
+<p>得到flag{dqrH&#x3D;3}</p>
+<h3 id="10-python-trade"><a href="#10-python-trade" class="headerlink" title="10.python-trade"></a>10.python-trade</h3><p>反编译pyc得到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line"></span><br><span class="line">def encode(message):</span><br><span class="line">    s = &#x27;&#x27;</span><br><span class="line">    for i in message:</span><br><span class="line">        x = ord(i) ^ 32</span><br><span class="line">        x = x + 16</span><br><span class="line">        s += chr(x)</span><br><span class="line">    </span><br><span class="line">    return base64.b64encode(s)</span><br><span class="line"></span><br><span class="line">correct = &#x27;XlNkVmtUI1MgXWBZXCFeKY+AaXNt&#x27;</span><br><span class="line">flag = &#x27;&#x27;</span><br><span class="line">print &#x27;Input flag:&#x27;</span><br><span class="line">flag = raw_input()</span><br><span class="line">if encode(flag) == correct:</span><br><span class="line">    print &#x27;correct&#x27;</span><br><span class="line">else:</span><br><span class="line">    print &#x27;wrong&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>分析encode流程：每个字符转为十进制ASCII码，与32二进制数进行异或运算，加16，对字符串进行base64编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import base64</span><br><span class="line">def decode(sec):</span><br><span class="line">    de64=base64.b64decode(sec)</span><br><span class="line">    t = &#x27;&#x27;</span><br><span class="line">    for i in de64:</span><br><span class="line">        y=i-16</span><br><span class="line">        y=y^32</span><br><span class="line">        t+=(chr(y))</span><br><span class="line">    return t</span><br><span class="line">secret=&#x27;XlNkVmtUI1MgXWBZXCFeKY+AaXNt&#x27;</span><br><span class="line">print(decode(secret))</span><br></pre></td></tr></table></figure>
+
+<p>得到nctf{d3c0mpil1n9_PyC}</p>
+
       
     </div>
 
