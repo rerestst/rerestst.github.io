@@ -27,7 +27,7 @@
 <meta property="og:description" content="本文内容梦里想到，纯属虚构！ OAuth常见位置用户选择使用社交媒体帐户登录 12GET &#x2F;authorization?client_id&#x3D;12345&amp;redirect_uri&#x3D;https:&#x2F;&#x2F;client-app.com&#x2F;callback&amp;response_type&#x3D;token&amp;scope&#x3D;openid%20profile&amp;state&#x3D;ae13d489bd00e3">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-04-15T18:18:43.000Z">
-<meta property="article:modified_time" content="2025-04-18T09:48:36.048Z">
+<meta property="article:modified_time" content="2025-04-18T09:58:39.674Z">
 <meta property="article:author" content="rerestst">
 <meta property="article:tag" content="OAuth">
 <meta property="article:tag" content="身份验证">
@@ -202,7 +202,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2025-04-18 17:48:36" itemprop="dateModified" datetime="2025-04-18T17:48:36+08:00">2025-04-18</time>
+      <time title="Modified: 2025-04-18 17:58:39" itemprop="dateModified" datetime="2025-04-18T17:58:39+08:00">2025-04-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -228,7 +228,7 @@
 <h2 id="OAuth常见位置"><a href="#OAuth常见位置" class="headerlink" title="OAuth常见位置"></a>OAuth常见位置</h2><p>用户选择使用社交媒体帐户登录</p>
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/authorization?client_id=12345&amp;redirect_uri=https://client-app.com/callback&amp;response_type=token&amp;scope=openid%20profile&amp;state=ae13d489bd00e3c24</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>oauth-authorization-server.com</span><br></pre></td></tr></table></figure>
 
-
+<span id="more"></span>
 
 <h2 id="收集信息"><a href="#收集信息" class="headerlink" title="收集信息"></a>收集信息</h2><p>当发现授权服务器主机名，可参考公共 API的文档，发送GET请求</p>
 <p>&#x2F;.well-known&#x2F;oauth-authorization-server<br>&#x2F;.well-known&#x2F;openid-configuration</p>
@@ -239,9 +239,9 @@
 <h6 id="案例：通过OAuth隐式流程绕过身份验证"><a href="#案例：通过OAuth隐式流程绕过身份验证" class="headerlink" title="案例：通过OAuth隐式流程绕过身份验证"></a>案例：通过OAuth隐式流程绕过身份验证</h6><p>客户端应用程序的验证存在缺陷</p>
 <p>OAuth服务验证后返回token，之后客户端应用程序：</p>
 <p>POST &#x2F;authenticate中</p>
-<p>{“email”:”<a href="mailto:&#119;&#x69;&#101;&#x6e;&#101;&#114;&#64;&#x68;&#x6f;&#116;&#100;&#x6f;&#x67;&#x2e;&#99;&#x6f;&#x6d;">&#119;&#x69;&#101;&#x6e;&#101;&#114;&#64;&#x68;&#x6f;&#116;&#100;&#x6f;&#x67;&#x2e;&#99;&#x6f;&#x6d;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
+<p>{“email”:”<a href="mailto:&#x77;&#x69;&#x65;&#x6e;&#101;&#114;&#x40;&#x68;&#111;&#x74;&#100;&#111;&#103;&#x2e;&#99;&#x6f;&#109;">&#x77;&#x69;&#x65;&#x6e;&#101;&#114;&#x40;&#x68;&#111;&#x74;&#100;&#111;&#103;&#x2e;&#99;&#x6f;&#109;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
 <p>将email改为</p>
-<p>{“email”:”<a href="mailto:&#x63;&#x61;&#114;&#x6c;&#111;&#x73;&#x40;&#99;&#x61;&#x72;&#x6c;&#x6f;&#x73;&#x2d;&#x6d;&#111;&#x6e;&#x74;&#111;&#x79;&#97;&#x2e;&#x6e;&#101;&#x74;">&#x63;&#x61;&#114;&#x6c;&#111;&#x73;&#x40;&#99;&#x61;&#x72;&#x6c;&#x6f;&#x73;&#x2d;&#x6d;&#111;&#x6e;&#x74;&#111;&#x79;&#97;&#x2e;&#x6e;&#101;&#x74;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
+<p>{“email”:”<a href="mailto:&#99;&#x61;&#x72;&#x6c;&#111;&#115;&#64;&#99;&#x61;&#x72;&#108;&#x6f;&#115;&#45;&#x6d;&#x6f;&#x6e;&#x74;&#x6f;&#121;&#97;&#x2e;&#x6e;&#101;&#116;">&#99;&#x61;&#x72;&#x6c;&#111;&#115;&#64;&#99;&#x61;&#x72;&#108;&#x6f;&#115;&#45;&#x6d;&#x6f;&#x6e;&#x74;&#x6f;&#121;&#97;&#x2e;&#x6e;&#101;&#116;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
 <h4 id="存在缺陷的CSRF保护"><a href="#存在缺陷的CSRF保护" class="headerlink" title="存在缺陷的CSRF保护"></a>存在缺陷的CSRF保护</h4><p>OAuth流程中的许多组件是可选的，强烈推荐state参数</p>
 <p>state参数应包含一个不可猜测的值，例如首次启动OAuth流程时与用户会话绑定的某个内容的哈希值。然后，此值作为客户端应用程序的 CSRF 令牌在客户端应用程序和 OAuth 服务之间来回传递。</p>
 <p>因此，如果注意到授权请求未发送state参数，可能可以在欺骗用户浏览器完成之前自行启动OAuth流程</p>
