@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/config.min.js"></script>
 
     <meta name="description" content="本文内容梦里想到，纯属虚构！ OAuth常见位置用户选择使用社交媒体帐户登录 12GET &#x2F;authorization?client_id&#x3D;12345&amp;redirect_uri&#x3D;https:&#x2F;&#x2F;client-app.com&#x2F;callback&amp;response_type&#x3D;token&amp;scope&#x3D;openid%20profile&amp;state&#x3D;ae13d489bd00e3">
 <meta property="og:type" content="article">
@@ -247,9 +247,9 @@
 <h6 id="案例：通过OAuth隐式流程绕过身份验证"><a href="#案例：通过OAuth隐式流程绕过身份验证" class="headerlink" title="案例：通过OAuth隐式流程绕过身份验证"></a>案例：通过OAuth隐式流程绕过身份验证</h6><p>客户端应用程序的验证存在缺陷</p>
 <p>OAuth服务验证后返回token，之后客户端应用程序：</p>
 <p>POST &#x2F;authenticate中</p>
-<p>{“email”:”<a href="mailto:&#x77;&#x69;&#x65;&#x6e;&#101;&#114;&#x40;&#x68;&#111;&#x74;&#100;&#111;&#103;&#x2e;&#99;&#x6f;&#109;">&#x77;&#x69;&#x65;&#x6e;&#101;&#114;&#x40;&#x68;&#111;&#x74;&#100;&#111;&#103;&#x2e;&#99;&#x6f;&#109;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
+<p>{“email”:”<a href="mailto:&#x77;&#105;&#101;&#x6e;&#101;&#114;&#x40;&#104;&#111;&#x74;&#100;&#111;&#x67;&#x2e;&#x63;&#x6f;&#x6d;">&#x77;&#105;&#101;&#x6e;&#101;&#114;&#x40;&#104;&#111;&#x74;&#100;&#111;&#x67;&#x2e;&#x63;&#x6f;&#x6d;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
 <p>将email改为</p>
-<p>{“email”:”<a href="mailto:&#99;&#x61;&#x72;&#x6c;&#111;&#115;&#64;&#99;&#x61;&#x72;&#108;&#x6f;&#115;&#45;&#x6d;&#x6f;&#x6e;&#x74;&#x6f;&#121;&#97;&#x2e;&#x6e;&#101;&#116;">&#99;&#x61;&#x72;&#x6c;&#111;&#115;&#64;&#99;&#x61;&#x72;&#108;&#x6f;&#115;&#45;&#x6d;&#x6f;&#x6e;&#x74;&#x6f;&#121;&#97;&#x2e;&#x6e;&#101;&#116;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
+<p>{“email”:”<a href="mailto:&#99;&#97;&#x72;&#108;&#111;&#115;&#x40;&#x63;&#97;&#114;&#x6c;&#x6f;&#115;&#45;&#109;&#111;&#x6e;&#x74;&#x6f;&#121;&#97;&#x2e;&#110;&#x65;&#116;">&#99;&#97;&#x72;&#108;&#111;&#115;&#x40;&#x63;&#97;&#114;&#x6c;&#x6f;&#115;&#45;&#109;&#111;&#x6e;&#x74;&#x6f;&#121;&#97;&#x2e;&#110;&#x65;&#116;</a>“,”username”:”wiener”,”token”:”Bn3TxxxdZl-jC2B9M8Vz3Nk”}</p>
 <h4 id="存在缺陷的CSRF保护"><a href="#存在缺陷的CSRF保护" class="headerlink" title="存在缺陷的CSRF保护"></a>存在缺陷的CSRF保护</h4><p>OAuth流程中的许多组件是可选的，强烈推荐state参数</p>
 <p>state参数应包含一个不可猜测的值，例如首次启动OAuth流程时与用户会话绑定的某个内容的哈希值。然后，此值作为客户端应用程序的 CSRF 令牌在客户端应用程序和 OAuth 服务之间来回传递。</p>
 <p>因此，如果注意到授权请求未发送state参数，可能可以在欺骗用户浏览器完成之前自行启动OAuth流程</p>
@@ -518,7 +518,7 @@
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/next-boot.min.js"></script>
 
   
 
