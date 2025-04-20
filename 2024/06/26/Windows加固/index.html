@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/config.min.js"></script>
 
-    <meta name="description" content="本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。 本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，结果测试发现遇到很多问题，总结出来供参考，若有建议麻烦留言！将会在评论区置顶。">
+    <meta name="description" content="本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。 本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，但尝试发现遇到很多不对的地方，总结出来供小伙伴你们少走弯路，若有建议麻烦留言！将会在评论区置顶。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows 10加固">
 <meta property="og:url" content="https://rerestst.github.io/2024/06/26/Windows%E5%8A%A0%E5%9B%BA/index.html">
 <meta property="og:site_name" content="rerestst&#39;s blog">
-<meta property="og:description" content="本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。 本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，结果测试发现遇到很多问题，总结出来供参考，若有建议麻烦留言！将会在评论区置顶。">
+<meta property="og:description" content="本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。 本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，但尝试发现遇到很多不对的地方，总结出来供小伙伴你们少走弯路，若有建议麻烦留言！将会在评论区置顶。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-06-26T04:54:23.000Z">
-<meta property="article:modified_time" content="2024-08-08T08:04:02.513Z">
+<meta property="article:modified_time" content="2025-04-20T05:58:45.755Z">
 <meta property="article:author" content="rerestst">
 <meta property="article:tag" content="Windows">
 <meta property="article:tag" content="加固">
@@ -88,7 +88,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">18</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">21</span></a></li>
   </ul>
 </nav>
 
@@ -128,18 +128,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -210,7 +210,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2024-08-08 16:04:02" itemprop="dateModified" datetime="2024-08-08T16:04:02+08:00">2024-08-08</time>
+      <time title="Modified: 2025-04-20 13:58:45" itemprop="dateModified" datetime="2025-04-20T13:58:45+08:00">2025-04-20</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>本文为了方便接入安全要求较高的网络前进行查阅，请了解各项加固措施的原理和可能带来的影响，造成不便或损失概不负责。</p>
-<p>本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，结果测试发现遇到很多问题，总结出来供参考，若有建议麻烦留言！将会在评论区置顶。</p>
+<p>本文并非最终版，暂未写口令策略等，本想着系统加固根据网上搜索有手就行，但尝试发现遇到很多不对的地方，总结出来供小伙伴你们少走弯路，若有建议麻烦留言！将会在评论区置顶。</p>
 <span id="more"></span>
 
 <h3 id="关闭445端口"><a href="#关闭445端口" class="headerlink" title="关闭445端口"></a>关闭445端口</h3><p>运行——&gt;regedit：HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters，新建QWORD（64），十六进制，名称为新值 #1，值为0</p>

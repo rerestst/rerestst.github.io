@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/config.min.js"></script>
+
+    <meta name="description" content="劝事业单位和国企小伙伴不要没苦硬吃。。。WAF能用国产就用国产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu 22.04旁路部署ModSecurity方案v0.1">
+<meta property="og:url" content="https://rerestst.github.io/2025/01/25/Ubuntu%2022.04%E6%97%81%E8%B7%AF%E9%83%A8%E7%BD%B2ModSecurity%E6%96%B9%E6%A1%88v0.1/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="劝事业单位和国企小伙伴不要没苦硬吃。。。WAF能用国产就用国产">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-01-25T12:35:13.000Z">
+<meta property="article:modified_time" content="2025-04-20T07:14:49.362Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="ModSecurity">
+<meta property="article:tag" content="WAF">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2025/01/25/Ubuntu%2022.04%E6%97%81%E8%B7%AF%E9%83%A8%E7%BD%B2ModSecurity%E6%96%B9%E6%A1%88v0.1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2025/01/25/Ubuntu%2022.04%E6%97%81%E8%B7%AF%E9%83%A8%E7%BD%B2ModSecurity%E6%96%B9%E6%A1%88v0.1/","path":"2025/01/25/Ubuntu 22.04旁路部署ModSecurity方案v0.1/","title":"Ubuntu 22.04旁路部署ModSecurity方案v0.1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ubuntu 22.04旁路部署ModSecurity方案v0.1 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">21</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#WAF%E5%AF%B9%E6%AF%94"><span class="nav-number">1.0.1.</span> <span class="nav-text">WAF对比</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%81%E8%B7%AF%E9%83%A8%E7%BD%B2"><span class="nav-number">1.0.2.</span> <span class="nav-text">旁路部署</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-ModSecurity%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">nginx+ModSecurity服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85ModSecurity"><span class="nav-number">2.0.1.</span> <span class="nav-text">安装ModSecurity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDModSecurity-nginx-Connector"><span class="nav-number">2.0.2.</span> <span class="nav-text">下载ModSecurity-nginx Connector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%89%E8%A3%85nginx"><span class="nav-number">2.0.3.</span> <span class="nav-text">安装nginx</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDnginx%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E6%BA%90%E7%A0%81"><span class="nav-number">2.0.4.</span> <span class="nav-text">下载nginx对应版本源码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEnginx-conf%E4%BD%BFModSecurity%E7%94%9F%E6%95%88"><span class="nav-number">2.0.5.</span> <span class="nav-text">配置nginx.conf使ModSecurity生效</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%BF%80%E6%B4%BBModSecurity"><span class="nav-number">2.0.6.</span> <span class="nav-text">激活ModSecurity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E8%A7%84%E5%88%99"><span class="nav-number">2.0.7.</span> <span class="nav-text">更新规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%86%85%E5%AE%B9%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.0.8.</span> <span class="nav-text">日志内容设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85%E6%83%85%E5%86%B5"><span class="nav-number">2.0.9.</span> <span class="nav-text">验证安装情况</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx%E5%89%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%95%9C%E5%83%8F%E6%B5%81%E9%87%8F%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">nginx前置服务器镜像流量设置</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description">B站联系</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/rerestst" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;rerestst" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/508572369" title="Bilibili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;508572369" rel="noopener me" target="_blank"><i class="fab fa-bilibili fa-fw"></i>Bilibili</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2025/01/25/Ubuntu%2022.04%E6%97%81%E8%B7%AF%E9%83%A8%E7%BD%B2ModSecurity%E6%96%B9%E6%A1%88v0.1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="B站联系">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Ubuntu 22.04旁路部署ModSecurity方案v0.1 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ubuntu 22.04旁路部署ModSecurity方案v0.1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-01-25 20:35:13" itemprop="dateCreated datePublished" datetime="2025-01-25T20:35:13+08:00">2025-01-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-04-20 15:14:49" itemprop="dateModified" datetime="2025-04-20T15:14:49+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AE%89%E5%85%A8%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">安全运维</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>劝事业单位和国企小伙伴不要没苦硬吃。。。WAF能用国产就用国产</p>
+<span id="more"></span>
+
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>串联部署应用防火墙可拦截绝大部分Web攻击，部分攻击手法可绕过防护，另外对于AES加密数据WAF无法进行监控拦截。</p>
+<p>因以生产环境稳定为优先，部署时可在nginx前置服务器通过流量镜像发送至nginx+ModSecurity服务器。</p>
+<h5 id="WAF对比"><a href="#WAF对比" class="headerlink" title="WAF对比"></a>WAF对比</h5><p>目前知名度第一梯队的WAF：雷池社区版和ModSecurity</p>
+<p>雷池社区版：仅支持docker串联一键部署，中文图形化界面，规则和日志较易维护，国产，部分开源。</p>
+<p>ModSecurity：可旁路部署，无图形化界面，规则和日志较难维护，开源，被多数WAF集成。</p>
+<h5 id="旁路部署"><a href="#旁路部署" class="headerlink" title="旁路部署"></a>旁路部署</h5><p>优点：防止误报误封；对服务器性能影响较小，若串联部署设置为只记录不拦截也影响了服务器处理速度。</p>
+<p>缺点：无法对攻击流量进行实时拦截和封禁。</p>
+<p>总结：旁路部署更加灵活，但无法实时阻挡攻击，建议长期充分测试拦截策略和性能后逐个采用串联部署至生产环境。</p>
+<h3 id="nginx-ModSecurity服务器"><a href="#nginx-ModSecurity服务器" class="headerlink" title="nginx+ModSecurity服务器"></a>nginx+ModSecurity服务器</h3><h5 id="安装ModSecurity"><a href="#安装ModSecurity" class="headerlink" title="安装ModSecurity"></a>安装ModSecurity</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install -y git g++ apt-utils autoconf automake build-essential libcurl4-openssl-dev libgeoip-dev liblmdb-dev libpcre2-dev libtool libxml2-dev libyajl-dev pkgconf zlib1g-dev libpcre3-dev</span><br><span class="line"></span><br><span class="line">$ cd /opt &amp;&amp; sudo git clone https://github.com/owasp-modsecurity/ModSecurity</span><br><span class="line">$ cd ModSecurity/</span><br><span class="line">$ sudo git submodule init</span><br><span class="line">$ sudo git submodule update</span><br><span class="line">$ sudo sh build.sh</span><br><span class="line">$ sudo ./configure --with-pcre2</span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="下载ModSecurity-nginx-Connector"><a href="#下载ModSecurity-nginx-Connector" class="headerlink" title="下载ModSecurity-nginx Connector"></a>下载ModSecurity-nginx Connector</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd /opt &amp;&amp; sudo git clone https://github.com/owasp-modsecurity/ModSecurity-nginx.git</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">安装nginx</span><br><span class="line">$ sudo apt install nginx -y</span><br><span class="line"></span><br><span class="line">$ sudo systemctl enable nginx</span><br><span class="line">$ sudo systemctl status nginx</span><br><span class="line"></span><br><span class="line">$ sudo nginx -V</span><br><span class="line">nginx version: nginx/1.18.0 (Ubuntu)</span><br><span class="line">--conf-path=/etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="下载nginx对应版本源码"><a href="#下载nginx对应版本源码" class="headerlink" title="下载nginx对应版本源码"></a>下载nginx对应版本源码</h5><p>（用于编译动态模块，将模块复制到nginx modules-enabled，同时复制modsecurity和unicode的配置。）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ cd /opt &amp;&amp; sudo wget https://nginx.org/download/nginx-1.18.0.tar.gz</span><br><span class="line">$ sudo tar -xzvf nginx-1.18.0.tar.gz </span><br><span class="line">$ cd nginx-1.18.0/</span><br><span class="line">sudo ./configure --with-compat --add-dynamic-module=/opt/ModSecurity-nginx</span><br><span class="line">sudo make</span><br><span class="line">sudo make modules</span><br><span class="line"></span><br><span class="line">sudo cp objs/ngx_http_modsecurity_module.so /etc/nginx/modules-enabled/</span><br><span class="line">sudo cp /opt/ModSecurity/modsecurity.conf-recommended /etc/nginx/modsecurity.conf</span><br><span class="line">sudo cp /opt/ModSecurity/unicode.mapping /etc/nginx/unicode.mapping</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="配置nginx-conf使ModSecurity生效"><a href="#配置nginx-conf使ModSecurity生效" class="headerlink" title="配置nginx.conf使ModSecurity生效"></a>配置nginx.conf使ModSecurity生效</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/nginx.conf</span><br><span class="line">添加</span><br><span class="line">load_module /etc/nginx/modules-enabled/ngx_http_modsecurity_module.so;</span><br><span class="line"></span><br><span class="line">nginx.conf例子：</span><br><span class="line">user www-data;</span><br><span class="line">worker_processes auto;</span><br><span class="line">pid /run/nginx.pid;</span><br><span class="line">include /etc/nginx/modules-enabled/*.conf;</span><br><span class="line">load_module /etc/nginx/modules-enabled/ngx_http_modsecurity_module.so;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="激活ModSecurity"><a href="#激活ModSecurity" class="headerlink" title="激活ModSecurity"></a>激活ModSecurity</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/sites-enabled/default</span><br><span class="line">添加</span><br><span class="line">modsecurity on;</span><br><span class="line">modsecurity_rules_file /etc/nginx/modsecurity.conf;</span><br><span class="line"></span><br><span class="line">default例子：</span><br><span class="line">server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        modsecurity on;</span><br><span class="line">        modsecurity_rules_file /etc/nginx/modsecurity.conf;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">将SecRuleEngine开启</span><br><span class="line">sudo nano /etc/nginx/modsecurity.conf</span><br><span class="line">SecRuleEngine DetectionOnly</span><br><span class="line">改为</span><br><span class="line">SecRuleEngine On</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="更新规则"><a href="#更新规则" class="headerlink" title="更新规则"></a>更新规则</h5><p>例子：使用最新版CORE RULE SET (CRS) </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo git clone https://github.com/coreruleset/coreruleset.git /etc/nginx/owasp-crs</span><br><span class="line">sudo cp /etc/nginx/owasp-crs/crs-setup.conf&#123;.example,&#125;</span><br><span class="line"></span><br><span class="line">sudo nano /etc/nginx/modsecurity.conf</span><br><span class="line">添加</span><br><span class="line">Include owasp-crs/crs-setup.conf</span><br><span class="line">Include owasp-crs/rules/*.conf</span><br><span class="line"></span><br><span class="line">modsecurity.conf例子：</span><br><span class="line">SecRuleEngine On</span><br><span class="line">Include owasp-crs/crs-setup.conf</span><br><span class="line">Include owasp-crs/rules/*.conf</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="日志内容设置"><a href="#日志内容设置" class="headerlink" title="日志内容设置"></a>日志内容设置</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/nginx/modsecurity.conf</span><br><span class="line">SecAuditLogParts ABIJDEFHZ</span><br><span class="line">改为</span><br><span class="line">SecAuditLogParts ABCEFHKZ</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="验证安装情况"><a href="#验证安装情况" class="headerlink" title="验证安装情况"></a>验证安装情况</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">配置nginx并重启</span><br><span class="line">sudo nginx -t &amp;&amp; sudo systemctl restart nginx</span><br><span class="line"></span><br><span class="line">测试</span><br><span class="line">https://ip_address/aaa.php?s=/bin/bash</span><br><span class="line"></span><br><span class="line">会显示禁止访问，代码为 403。已经成功部署了带有 modsecurity 模块的 nginx 服务器。</span><br><span class="line"></span><br><span class="line">查看这些错误的详细信息</span><br><span class="line">sudo tail -f /var/log/modsec_audit.log</span><br><span class="line">sudo tail -f /var/log/nginx/error.log</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="nginx前置服务器镜像流量设置"><a href="#nginx前置服务器镜像流量设置" class="headerlink" title="nginx前置服务器镜像流量设置"></a>nginx前置服务器镜像流量设置</h3><p>场景案例：nginx前置服务器某代理网站为<a target="_blank" rel="noopener" href="http://192.168.23.16:84/%EF%BC%8C%E9%83%A8%E7%BD%B2nginx+ModSecurity%E7%9A%84URL%E4%B8%BAhttp://192.168.22.27:88/">http://192.168.23.16:84/，部署nginx+ModSecurity的URL为http://192.168.22.27:88/</a></p>
+<p>$ sudo nano &#x2F;etc&#x2F;nginx&#x2F;sites-enabled&#x2F;default</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">        mirror /mirror;</span><br><span class="line">        proxy_pass http://192.168.23.16:84/;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">location = /mirror &#123;</span><br><span class="line">        internal;</span><br><span class="line">        proxy_set_header Content-Length &quot;&quot;;</span><br><span class="line">        proxy_set_header X-Original-URI $request_uri;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_pass http://192.168.22.27:88$request_uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置nginx并重启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nginx -t &amp;&amp; sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ModSecurity/" rel="tag"># ModSecurity</a>
+              <a href="/tags/WAF/" rel="tag"># WAF</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/08/03/ATT&CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E4%B8%89VulnStack%E9%9D%B6%E5%9C%BA%E6%94%BB%E7%95%A5/" rel="prev" title="ATT&CK红队评估三VulnStack靶场攻略">
+                  <i class="fa fa-chevron-left"></i> ATT&CK红队评估三VulnStack靶场攻略
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/02/17/PHP%208%E4%BB%A3%E7%A0%81%E5%AE%89%E5%85%A8%E6%8C%87%E5%8C%97v1.1/" rel="next" title="PHP 8代码安全指北v1.1">
+                  PHP 8代码安全指北v1.1 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/next-boot.min.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

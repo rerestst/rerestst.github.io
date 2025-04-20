@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rerestst.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/config.min.js"></script>
+
+    <meta name="description" content="非开发人员厚着脸皮给开发人员出代码规范，按各种漏洞类型的思路搞好后，感觉比网上那些强不知道多少有些膨胀。 一个月后查内部PHP版本漏洞时，突然想到应该把重要历史漏洞也加进来提醒开发和运维，就升级到了v1.1。 又过了一个月，开发同事总让我看一些开源的插件、库能不能用，虽然代码审计没实力但也不能让开发笑话不是，交流了一些函数的使用，想到可以把代码审计角度也加进来，但v1.2还没写，太懒了哈哈。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 8代码安全指北v1.1">
+<meta property="og:url" content="https://rerestst.github.io/2025/02/17/PHP%208%E4%BB%A3%E7%A0%81%E5%AE%89%E5%85%A8%E6%8C%87%E5%8C%97v1.1/index.html">
+<meta property="og:site_name" content="rerestst&#39;s blog">
+<meta property="og:description" content="非开发人员厚着脸皮给开发人员出代码规范，按各种漏洞类型的思路搞好后，感觉比网上那些强不知道多少有些膨胀。 一个月后查内部PHP版本漏洞时，突然想到应该把重要历史漏洞也加进来提醒开发和运维，就升级到了v1.1。 又过了一个月，开发同事总让我看一些开源的插件、库能不能用，虽然代码审计没实力但也不能让开发笑话不是，交流了一些函数的使用，想到可以把代码审计角度也加进来，但v1.2还没写，太懒了哈哈。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-17T12:45:42.000Z">
+<meta property="article:modified_time" content="2025-04-20T06:59:54.701Z">
+<meta property="article:author" content="rerestst">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="代码安全">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rerestst.github.io/2025/02/17/PHP%208%E4%BB%A3%E7%A0%81%E5%AE%89%E5%85%A8%E6%8C%87%E5%8C%97v1.1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://rerestst.github.io/2025/02/17/PHP%208%E4%BB%A3%E7%A0%81%E5%AE%89%E5%85%A8%E6%8C%87%E5%8C%97v1.1/","path":"2025/02/17/PHP 8代码安全指北v1.1/","title":"PHP 8代码安全指北v1.1"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PHP 8代码安全指北v1.1 | rerestst's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">rerestst's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">8</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">21</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BE%93%E5%85%A5%E9%AA%8C%E8%AF%81%E5%92%8C%E8%BF%87%E6%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">1.输入验证和过滤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%BF%87%E6%BB%A4%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.1.</span> <span class="nav-text">使用过滤函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B2%E6%AD%A2SQL%E6%B3%A8%E5%85%A5"><span class="nav-number">1.0.2.</span> <span class="nav-text">防止SQL注入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%BE%93%E5%87%BA%E8%BD%AC%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">2.输出转义</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HTML%E8%BD%AC%E4%B9%89"><span class="nav-number">2.0.1.</span> <span class="nav-text">HTML转义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JavaScript%E8%BD%AC%E4%B9%89"><span class="nav-number">2.0.2.</span> <span class="nav-text">JavaScript转义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">3.会话管理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%AE%89%E5%85%A8%E7%9A%84%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86"><span class="nav-number">3.0.1.</span> <span class="nav-text">使用安全的会话管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E5%9B%BA%E5%AE%9A%E4%BF%9D%E6%8A%A4"><span class="nav-number">3.0.2.</span> <span class="nav-text">会话固定保护</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%AF%86%E7%A0%81%E5%A4%84%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">4.密码处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E5%93%88%E5%B8%8C"><span class="nav-number">4.0.1.</span> <span class="nav-text">密码哈希</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">5.错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A6%81%E7%94%A8%E8%AF%A6%E7%BB%86%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF"><span class="nav-number">5.0.1.</span> <span class="nav-text">禁用详细错误信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">5.0.2.</span> <span class="nav-text">自定义错误处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Ephp-ini"><span class="nav-number">5.0.3.</span> <span class="nav-text">关于php.ini</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8C%E5%A4%84%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">6.文件上传和处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="nav-number">6.0.1.</span> <span class="nav-text">验证文件类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="nav-number">6.0.2.</span> <span class="nav-text">避免文件包含漏洞</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86"><span class="nav-number">7.</span> <span class="nav-text">7.数据加密</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%8E%B0%E4%BB%A3%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">7.0.1.</span> <span class="nav-text">使用现代加密算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%AE%A1%E7%90%86"><span class="nav-number">7.0.2.</span> <span class="nav-text">密钥管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E9%98%B2%E6%AD%A2CSRF%E6%94%BB%E5%87%BB"><span class="nav-number">8.</span> <span class="nav-text">8.防止CSRF攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CSRF%E4%BB%A4%E7%89%8C"><span class="nav-number">8.0.1.</span> <span class="nav-text">使用CSRF令牌</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%99%90%E5%88%B6HTTP%E6%96%B9%E6%B3%95"><span class="nav-number">8.0.2.</span> <span class="nav-text">限制HTTP方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E4%BF%9D%E6%8A%A4"><span class="nav-number">9.</span> <span class="nav-text">9.命令注入保护</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%99%BD%E5%90%8D%E5%8D%95%E9%AA%8C%E8%AF%81"><span class="nav-number">9.0.1.</span> <span class="nav-text">使用白名单验证</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E9%87%8D%E8%A6%81%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E"><span class="nav-number">10.</span> <span class="nav-text">10.重要历史漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-8-1-0-dev%E5%AD%98%E5%9C%A8User-Agentt%E5%90%8E%E9%97%A8"><span class="nav-number">10.1.</span> <span class="nav-text">PHP 8.1.0-dev存在User-Agentt后门</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP-CGI%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2012-1823%EF%BC%89"><span class="nav-number">10.2.</span> <span class="nav-text">PHP-CGI远程代码执行漏洞（CVE-2012-1823）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PHP%E5%88%A9%E7%94%A8GNU-C-Iconv%E5%B0%86%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E5%8F%98%E6%88%90RCE%EF%BC%88CVE-2024-2961%EF%BC%89"><span class="nav-number">10.3.</span> <span class="nav-text">PHP利用GNU C Iconv将文件读取变成RCE（CVE-2024-2961）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="rerestst"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">rerestst</p>
+  <div class="site-description" itemprop="description">B站联系</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/rerestst" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;rerestst" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/508572369" title="Bilibili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;508572369" rel="noopener me" target="_blank"><i class="fab fa-bilibili fa-fw"></i>Bilibili</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://rerestst.github.io/2025/02/17/PHP%208%E4%BB%A3%E7%A0%81%E5%AE%89%E5%85%A8%E6%8C%87%E5%8C%97v1.1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="rerestst">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="rerestst's blog">
+      <meta itemprop="description" content="B站联系">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PHP 8代码安全指北v1.1 | rerestst's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PHP 8代码安全指北v1.1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-02-17 20:45:42" itemprop="dateCreated datePublished" datetime="2025-02-17T20:45:42+08:00">2025-02-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2025-04-20 14:59:54" itemprop="dateModified" datetime="2025-04-20T14:59:54+08:00">2025-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">代码安全</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>非开发人员厚着脸皮给开发人员出代码规范，按各种漏洞类型的思路搞好后，感觉比网上那些强不知道多少有些膨胀。</p>
+<p>一个月后查内部PHP版本漏洞时，突然想到应该把重要历史漏洞也加进来提醒开发和运维，就升级到了v1.1。</p>
+<p>又过了一个月，开发同事总让我看一些开源的插件、库能不能用，虽然代码审计没实力但也不能让开发笑话不是，交流了一些函数的使用，想到可以把代码审计角度也加进来，但v1.2还没写，太懒了哈哈。</p>
+<span id="more"></span>
+
+<h3 id="1-输入验证和过滤"><a href="#1-输入验证和过滤" class="headerlink" title="1.输入验证和过滤"></a>1.输入验证和过滤</h3><h5 id="使用过滤函数"><a href="#使用过滤函数" class="headerlink" title="使用过滤函数"></a>使用过滤函数</h5><p>使用 filter_input() 和 filter_var() 对用户输入进行验证和过滤。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$email</span> = <span class="title function_ invoke__">filter_input</span>(INPUT_POST, <span class="string">&#x27;email&#x27;</span>, FILTER_VALIDATE_EMAIL);</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$email</span> === <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Invalid email address.&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="防止SQL注入"><a href="#防止SQL注入" class="headerlink" title="防止SQL注入"></a>防止SQL注入</h5><p>使用预处理语句和绑定参数 (PDO 或 MySQLi)。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$pdo</span> = <span class="keyword">new</span> <span class="title function_ invoke__">PDO</span>(<span class="string">&#x27;mysql:host=localhost;dbname=test&#x27;</span>, <span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;password&#x27;</span>);</span><br><span class="line"><span class="variable">$stmt</span> = <span class="variable">$pdo</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="string">&#x27;SELECT * FROM users WHERE email = :email&#x27;</span>);</span><br><span class="line"><span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">bindParam</span>(<span class="string">&#x27;:email&#x27;</span>, <span class="variable">$email</span>);</span><br><span class="line"><span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">execute</span>();</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-输出转义"><a href="#2-输出转义" class="headerlink" title="2.输出转义"></a>2.输出转义</h3><h5 id="HTML转义"><a href="#HTML转义" class="headerlink" title="HTML转义"></a>HTML转义</h5><p>使用 htmlspecialchars() 或 htmlentities() 函数，对所有输出至HTML的内容进行转义，防止XSS攻击。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">htmlspecialchars</span>(<span class="variable">$user_input</span>, ENT_QUOTES, <span class="string">&#x27;UTF-8&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="JavaScript转义"><a href="#JavaScript转义" class="headerlink" title="JavaScript转义"></a>JavaScript转义</h5><p>在输出到JavaScript之前进行适当的转义，避免XSS攻击。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$json_data</span> = <span class="title function_ invoke__">json_encode</span>(<span class="variable">$data</span>, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;var data = <span class="subst">&#123;$json_data&#125;</span>;&lt;/script&gt;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-会话管理"><a href="#3-会话管理" class="headerlink" title="3.会话管理"></a>3.会话管理</h3><h5 id="使用安全的会话管理"><a href="#使用安全的会话管理" class="headerlink" title="使用安全的会话管理"></a>使用安全的会话管理</h5><p>配置 session.cookie_secure 和 session.cookie_httponly。HttpOnly属性防止JavaScript访问Cookie，Secure属性限制Cookie通过HTTPS传输。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;session.cookie_secure&#x27;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;session.cookie_httponly&#x27;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="会话固定保护"><a href="#会话固定保护" class="headerlink" title="会话固定保护"></a>会话固定保护</h5><p>使用 session_regenerate_id() 在关键操作后重新生成会话ID，防止Session固定攻击。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="comment">// 在登录或其他敏感操作后</span></span><br><span class="line"><span class="title function_ invoke__">session_regenerate_id</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-密码处理"><a href="#4-密码处理" class="headerlink" title="4.密码处理"></a>4.密码处理</h3><h5 id="密码哈希"><a href="#密码哈希" class="headerlink" title="密码哈希"></a>密码哈希</h5><p>使用 password_hash() 和 password_verify() 函数来处理密码。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$hashed_password</span> = <span class="title function_ invoke__">password_hash</span>(<span class="variable">$password</span>, PASSWORD_DEFAULT);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">password_verify</span>(<span class="variable">$password</span>, <span class="variable">$hashed_password</span>)) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Password is valid!&#x27;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Invalid password.&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-错误处理"><a href="#5-错误处理" class="headerlink" title="5.错误处理"></a>5.错误处理</h3><h5 id="禁用详细错误信息"><a href="#禁用详细错误信息" class="headerlink" title="禁用详细错误信息"></a>禁用详细错误信息</h5><p>在生产环境中禁用错误显示，使用 ini_set(‘display_errors’, 0) 和 error_log() 记录错误日志。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">ini_set</span>(<span class="string">&#x27;display_errors&#x27;</span>, <span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">error_log</span>(<span class="string">&#x27;An error occurred!&#x27;</span>, <span class="number">3</span>, <span class="string">&#x27;/var/log/php_errors.log&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="自定义错误处理"><a href="#自定义错误处理" class="headerlink" title="自定义错误处理"></a>自定义错误处理</h5><p>实现自定义错误处理函数，并使用 set_error_handler() 注册。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">customError</span>(<span class="params"><span class="variable">$errno</span>, <span class="variable">$errstr</span></span>) </span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">error_log</span>(<span class="string">&quot;Error: [<span class="subst">$errno</span>] <span class="subst">$errstr</span>&quot;</span>, <span class="number">3</span>, <span class="string">&#x27;/var/log/php_errors.log&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">set_error_handler</span>(<span class="string">&#x27;customError&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="关于php-ini"><a href="#关于php-ini" class="headerlink" title="关于php.ini"></a>关于php.ini</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">开发环境</span><br><span class="line">display_errors = On</span><br><span class="line">display_startup_errors = On</span><br><span class="line">error_reporting = -1</span><br><span class="line">log_errors = On</span><br><span class="line"></span><br><span class="line">生产环境</span><br><span class="line">display_errors = Off</span><br><span class="line">display_startup_errors = Off</span><br><span class="line">error_reporting = E_ALL</span><br><span class="line">log_errors = On</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-文件上传和处理"><a href="#6-文件上传和处理" class="headerlink" title="6.文件上传和处理"></a>6.文件上传和处理</h3><h5 id="验证文件类型"><a href="#验证文件类型" class="headerlink" title="验证文件类型"></a>验证文件类型</h5><p>通过 MIME 类型和文件扩展名双重验证上传文件类型。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$allowed_types</span> = [<span class="string">&#x27;image/jpeg&#x27;</span>, <span class="string">&#x27;image/png&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span> (<span class="title function_ invoke__">in_array</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;type&#x27;</span>], <span class="variable">$allowed_types</span>) &amp;&amp; </span><br><span class="line">    <span class="title function_ invoke__">in_array</span>(<span class="title function_ invoke__">pathinfo</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>], PATHINFO_EXTENSION), [<span class="string">&#x27;jpg&#x27;</span>, <span class="string">&#x27;png&#x27;</span>])) &#123;</span><br><span class="line">    <span class="comment">// 文件处理逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="避免文件包含漏洞"><a href="#避免文件包含漏洞" class="headerlink" title="避免文件包含漏洞"></a>避免文件包含漏洞</h5><p>对include和require文件路径进行严格控制，并使用 realpath() 函数验证路径。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$base_dir</span> = <span class="string">&#x27;/var/www/html/uploads/&#x27;</span>;</span><br><span class="line"><span class="variable">$filename</span> = <span class="title function_ invoke__">basename</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="variable">$filepath</span> = <span class="title function_ invoke__">realpath</span>(<span class="variable">$base_dir</span> . <span class="variable">$filename</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$filepath</span> &amp;&amp; <span class="title function_ invoke__">strpos</span>(<span class="variable">$filepath</span>, <span class="variable">$base_dir</span>) === <span class="number">0</span> &amp;&amp; <span class="title function_ invoke__">file_exists</span>(<span class="variable">$filepath</span>)) &#123;</span><br><span class="line">    <span class="keyword">include</span> <span class="variable">$filepath</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Invalid file path&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-数据加密"><a href="#7-数据加密" class="headerlink" title="7.数据加密"></a>7.数据加密</h3><h5 id="使用现代加密算法"><a href="#使用现代加密算法" class="headerlink" title="使用现代加密算法"></a>使用现代加密算法</h5><p>使用 openssl 扩展提供的现代加密算法，避免使用过时或弱的加密方法。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$plaintext</span> = <span class="string">&quot;Sensitive Data&quot;</span>;</span><br><span class="line"><span class="variable">$cipher</span> = <span class="string">&quot;aes-256-cbc&quot;</span>;</span><br><span class="line"><span class="variable">$key</span> = <span class="title function_ invoke__">openssl_random_pseudo_bytes</span>(<span class="number">32</span>);</span><br><span class="line"><span class="variable">$iv</span> = <span class="title function_ invoke__">openssl_random_pseudo_bytes</span>(<span class="title function_ invoke__">openssl_cipher_iv_length</span>(<span class="variable">$cipher</span>));</span><br><span class="line"><span class="variable">$ciphertext</span> = <span class="title function_ invoke__">openssl_encrypt</span>(<span class="variable">$plaintext</span>, <span class="variable">$cipher</span>, <span class="variable">$key</span>, <span class="number">0</span>, <span class="variable">$iv</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="密钥管理"><a href="#密钥管理" class="headerlink" title="密钥管理"></a>密钥管理</h5><p>使用安全的密钥管理方法，避免将密钥硬编码在代码中，可以使用环境变量。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$key</span> = <span class="title function_ invoke__">getenv</span>(<span class="string">&#x27;ENCRYPTION_KEY&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-防止CSRF攻击"><a href="#8-防止CSRF攻击" class="headerlink" title="8.防止CSRF攻击"></a>8.防止CSRF攻击</h3><h5 id="使用CSRF令牌"><a href="#使用CSRF令牌" class="headerlink" title="使用CSRF令牌"></a>使用CSRF令牌</h5><p>在所有敏感表单提交中使用唯一的CSRF令牌，并验证它们。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">session_start();</span><br><span class="line">if ($_SERVER[&#x27;REQUEST_METHOD&#x27;] === &#x27;POST&#x27;) &#123;</span><br><span class="line">    if (!hash_equals($_SESSION[&#x27;token&#x27;], $_POST[&#x27;token&#x27;])) &#123;</span><br><span class="line">        die(&#x27;CSRF validation failed&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$_SESSION[&#x27;token&#x27;] = bin2hex(random_bytes(32));</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;form method=&quot;POST&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;hidden&quot; name=&quot;token&quot; value=&quot;&lt;?= $_SESSION[&#x27;token&#x27;] ?&gt;&quot;&gt;</span><br><span class="line">    &lt;!-- 其他表单字段 --&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="限制HTTP方法"><a href="#限制HTTP方法" class="headerlink" title="限制HTTP方法"></a>限制HTTP方法</h5><p>限制敏感操作仅允许通过POST请求进行。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>] !== <span class="string">&#x27;POST&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Invalid request method&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="9-命令注入保护"><a href="#9-命令注入保护" class="headerlink" title="9.命令注入保护"></a>9.命令注入保护</h3><h5 id="使用白名单验证"><a href="#使用白名单验证" class="headerlink" title="使用白名单验证"></a>使用白名单验证</h5><p>对于允许用户输入的内容进行白名单验证，而不是黑名单过滤。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$allowed_commands</span> = [<span class="string">&#x27;ls&#x27;</span>, <span class="string">&#x27;pwd&#x27;</span>, <span class="string">&#x27;whoami&#x27;</span>];</span><br><span class="line"><span class="variable">$command</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;command&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">in_array</span>(<span class="variable">$command</span>, <span class="variable">$allowed_commands</span>)) &#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Invalid command&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="10-重要历史漏洞"><a href="#10-重要历史漏洞" class="headerlink" title="10.重要历史漏洞"></a>10.重要历史漏洞</h3><h4 id="PHP-8-1-0-dev存在User-Agentt后门"><a href="#PHP-8-1-0-dev存在User-Agentt后门" class="headerlink" title="PHP 8.1.0-dev存在User-Agentt后门"></a>PHP 8.1.0-dev存在User-Agentt后门</h4><p>影响版本：PHP 8.1.0</p>
+<p>2021年3月28日，PHP 8.1.0-dev版本发布时带有一个隐藏后门，攻击者可执行任意代码。</p>
+<h4 id="PHP-CGI远程代码执行漏洞（CVE-2012-1823）"><a href="#PHP-CGI远程代码执行漏洞（CVE-2012-1823）" class="headerlink" title="PHP-CGI远程代码执行漏洞（CVE-2012-1823）"></a>PHP-CGI远程代码执行漏洞（CVE-2012-1823）</h4><p>影响版本：PHP&lt;5.3.12或5.4.0&#x3D;&lt;PHP&lt;5.4.2（5.3.12和5.4.2修复不完全可以被绕过，存在CVE-2012-2311漏洞</p>
+<p>本漏洞只出现在以cgi模式运行的PHP中，PHP中的sapi&#x2F;cgi&#x2F;cgi_main.c未限制php-cgi接受命令行参数。</p>
+<p>简单验证漏洞：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://your-ip:8080/index.php?-s</span><br></pre></td></tr></table></figure>
+
+<p>若显示源码说明漏洞存在。</p>
+<h4 id="PHP利用GNU-C-Iconv将文件读取变成RCE（CVE-2024-2961）"><a href="#PHP利用GNU-C-Iconv将文件读取变成RCE（CVE-2024-2961）" class="headerlink" title="PHP利用GNU C Iconv将文件读取变成RCE（CVE-2024-2961）"></a>PHP利用GNU C Iconv将文件读取变成RCE（CVE-2024-2961）</h4><p>影响版本：iconv库版本&lt;2.39， 猜测5.6.0-8.3.6，可通过phpinfo()查看，例PHP 8.3.4服务器，其使用iconv 2.36作为依赖，PHP 7.4.33对应iconv 2.27</p>
+<p>GNU C是一个标准的ISO C依赖库。在GNU C中，iconv()函数2.39及以前存在一处缓冲区溢出漏洞，这可能会导致应用程序崩溃或覆盖相邻变量。</p>
+<p>如果一个PHP应用中存在任意文件读取漏洞，攻击者可以利用iconv()的这个CVE-2024-2961漏洞，将其提升为代码执行漏洞。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PHP/" rel="tag"># PHP</a>
+              <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%89%E5%85%A8/" rel="tag"># 代码安全</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/01/25/Ubuntu%2022.04%E6%97%81%E8%B7%AF%E9%83%A8%E7%BD%B2ModSecurity%E6%96%B9%E6%A1%88v0.1/" rel="prev" title="Ubuntu 22.04旁路部署ModSecurity方案v0.1">
+                  <i class="fa fa-chevron-left"></i> Ubuntu 22.04旁路部署ModSecurity方案v0.1
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/30/gocron%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%AD%98%E5%82%A8%E5%9E%8BXSS%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0(CVE-2022-40365)/" rel="next" title="gocron定时任务管理系统存储型XSS漏洞(CVE-2022-40365)">
+                  gocron定时任务管理系统存储型XSS漏洞(CVE-2022-40365) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">rerestst</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/comments.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/utils.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/motion.min.js"></script><script src="https://cdn.jsdelivr.net/npm/hexo-theme-next@8.14.2/source/js/next-boot.min.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
